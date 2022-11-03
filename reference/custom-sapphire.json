@@ -1,7 +1,6 @@
 {
     "workbench.colorCustomizations": {
         "[Sapphire]": {
-            
             "list.activeSelectionBackground": "#399EF435",
             "list.hoverBackground": "#FFFFFF18",
             "list.inactiveSelectionBackground": "#FFFFFF25",
