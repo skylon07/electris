@@ -1,21 +1,24 @@
 {
-  "name": "electris",
-  "displayName": "electris",
-  "description": "An electric blue theme for VSCode",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.72.0"
-  },
-  "categories": [
-    "Themes"
-  ],
-  "contributes": {
-    "themes": [
-      {
-        "label": "electris",
-        "uiTheme": "vs-dark",
-        "path": "./themes/electris-color-theme.json"
-      }
-    ]
-  }
+    "name": "electris",
+    "displayName": "electris",
+    "description": "An electric blue theme for VSCode",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.72.0"
+    },
+    "categories": [
+        "Themes"
+    ],
+    "contributes": {
+        "themes": [
+            {
+                "label": "electris",
+                "uiTheme": "vs-dark",
+                "path": "./themes/electris-color-theme.json"
+            }
+        ],
+        "grammars": [
+            
+        ]
+    }
 }

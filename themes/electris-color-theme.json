@@ -63,10 +63,14 @@
 		// file viewer (searching all files)
 		"badge.background": "#399ef4",
 		"badge.foreground": "#efefef",
+
+		// run and debug
+		"dropdown.background": "#263041",
 		
 		// popups
 		"button.background": "#399ef4", // just primary button(s) specifically
 		"button.foreground": "#efefef",
+		"inputOption.activeBorder": "#399ef4", // ⌘+F -> border for buttons like regex
 		"editorWidget.background": "#1c2431", // for popups like ⌘+F
 		"editorHoverWidget.background": "#1c2431", // for boxes when hovering over variables
 		"peekView.border": "#399ef4",
@@ -122,24 +126,44 @@
 		"statusBarItem.remoteBackground": "#399ef4",
 		"statusBarItem.remoteForeground": "#efefef",
 
-		// unknown
-		"dropdown.background": "#878b0090",
-		"inputOption.activeBorder": "#f6ff00d0",
+		// unknown/unconsidered
 		"list.dropBackground": "#878b0090",
 		"editor.wordHighlightBackground": "#878b0090",
 		"editor.wordHighlightStrongBackground": "#878b0090",
 		"editorMarkerNavigation.background": "#878b0090",
 	},
 	"semanticHighlighting": true,
-	"semanticTokenColors": {
-		
-	},
 	"tokenColors": [
+		// ugly yellow -- unconsidered tokens
 		{
-			"scope": "*",
+			"scope": "source.dart",
 			"settings": {
-				"foreground": "#f6ff00d0"
+					"foreground": "#f6ff00"
 			}
-		}
+		},
+
+		// light blue -- defined variables/object properties
+		// TODO
+
+		// blue -- keywords/operators
+		// TODO
+
+		// orange -- literals
+		// TODO
+
+		// red -- escapes
+		// TODO
+		
+		// gray -- comments
+		// TODO
+
+		// green italicized -- types
+		// TODO
+
+		// turquoise -- function/method calls
+		// TODO
+
+		// white -- scopes/parameter lists
+		// TODO
 	]
 }

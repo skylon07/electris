@@ -1,4 +1,3 @@
+# stuff to ignore if this extension ever gets packaged...
 .vscode/**
-.vscode-test/**
 .gitignore
-vsc-extension-quickstart.md
