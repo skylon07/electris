@@ -1,6 +1,8 @@
 # TextMate Grammar/Language Cheatsheet
 This document contains the processes to use when defining grammars to inject into languages. This cheatsheet was created by referencing [these docs](https://macromates.com/manual/en/language_grammars).
 
+(If semantic tokens ever need to be added, [this example](https://github.com/microsoft/vscode-extension-samples/tree/main/semantic-tokens-sample) is great to copy!)
+
 
 ## New Language Files
 Two things must happen when defining new grammars for a language. First, the file must be added to the `grammars` key in `package.json`. Second, we must configure the top-level attributes in the new file.
@@ -30,7 +32,7 @@ After `package.json` is updated, create the `syntaxes/{language}-injections.tmLa
     ],
     // this MUST match `scopeName` in `package.json`
     "scopeName": "electris.injections.{language}",
-    "injectionSelector": "L:source.{language}",
+    "injectionSelector": "source.{language}",
     "patterns": [
         // base rule definitions here
     ],
@@ -83,7 +85,7 @@ Any `patterns` array can recursively refer to rules already defined. Instead of 
 }
 ```
 
-(where `{reference}` is one of ["#repository-rule"](#creating-new-named-rules), "L:reference.scope", or "$self")
+(where `{reference}` is one of ["#repository-rule"](#creating-new-named-rules), "source.{language}", or "$self")
 
 ### Creating new named rules
 The `repository` is a place to define named rules to use in [`include` statements](#including-rules-recursively). The `repository`'s sole purpose is to provide a dictionary of names to rules. An example repository with two rules might look like this:
