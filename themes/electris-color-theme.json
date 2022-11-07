@@ -136,34 +136,76 @@
 	"tokenColors": [
 		// ugly yellow -- unconsidered tokens
 		{
-			"scope": "source.dart",
+			"scope": "source",
 			"settings": {
-					"foreground": "#f6ff00"
+				"foreground": "#f6ff00"
 			}
 		},
 
 		// light blue -- defined variables/object properties
-		// TODO
+		{
+			"scope": "electris.variable",
+			"settings": {
+				"foreground": "#9fcff9"
+			}
+		},
 
-		// blue -- keywords/operators
-		// TODO
+		// blue -- operators/keywords
+		{
+			"scope": "electris.operator",
+			"settings": {
+				"foreground": "#339ef4"
+			}
+		},
 
-		// orange -- literals
-		// TODO
+		// orange -- primitive literals
+		{
+			"scope": "electris.primitive-literal",
+			"settings": {
+				"foreground": "#eea760"
+			}
+		},
 
 		// red -- escapes
-		// TODO
+		{
+			"scope": "electris.escape",
+			"settings": {
+				"foreground": "#d15551"
+			}
+		},
 		
 		// gray -- comments
-		// TODO
+		{
+			"scope": "electris.comment",
+			"settings": {
+				"foreground": "#717a8dde"
+			}
+		},
 
 		// green italicized -- types
-		// TODO
+		{
+			// semantic: "support.class"
+			"scope": "electris.type, support.class",
+			"settings": {
+				"foreground": "#4eb071",
+				"fontStyle": "italic"
+			}
+		},
 
 		// turquoise -- function/method calls
-		// TODO
+		{
+			"scope": "electris.function-call",
+			"settings": {
+				"foreground": "#21c5c7"
+			}
+		},
 
-		// white -- scopes/parameter lists
-		// TODO
+		// white -- punctuation for scopes/parameter lists
+		{
+			"scope": "electris.punctuation",
+			"settings": {
+				"foreground": "#efefef"
+			}
+		},
 	]
 }
