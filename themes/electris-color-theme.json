@@ -136,7 +136,7 @@
 	"tokenColors": [
 		// ugly yellow -- unconsidered tokens
 		{
-			"scope": "source",
+			"scope": "source, text",
 			"settings": {
 				"foreground": "#f6ff00"
 			}
@@ -144,7 +144,7 @@
 
 		// light blue -- defined variables/object properties
 		{
-			"scope": "electris.variable",
+			"scope": "electris.source-code.variable",
 			"settings": {
 				"foreground": "#9fcff9"
 			}
@@ -152,7 +152,7 @@
 
 		// blue -- operators/keywords
 		{
-			"scope": "electris.operator",
+			"scope": "electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef4"
 			}
@@ -160,7 +160,7 @@
 
 		// orange -- primitive literals
 		{
-			"scope": "electris.primitive-literal",
+			"scope": "electris.source-code.primitive-literal",
 			"settings": {
 				"foreground": "#eea760"
 			}
@@ -168,7 +168,7 @@
 
 		// red -- escapes
 		{
-			"scope": "electris.escape",
+			"scope": "electris.source-code.escape",
 			"settings": {
 				"foreground": "#d15551"
 			}
@@ -176,7 +176,7 @@
 		
 		// gray -- comments
 		{
-			"scope": "electris.comment",
+			"scope": "electris.source-code.comment",
 			"settings": {
 				"foreground": "#717a8dde"
 			}
@@ -185,7 +185,7 @@
 		// green italicized -- types
 		{
 			// semantic: "support.class"
-			"scope": "electris.type, support.class",
+			"scope": "electris.source-code.type, support.class",
 			"settings": {
 				"foreground": "#4eb071",
 				"fontStyle": "italic"
@@ -194,7 +194,7 @@
 
 		// turquoise -- function/method calls
 		{
-			"scope": "electris.function-call",
+			"scope": "electris.source-code.function-call",
 			"settings": {
 				"foreground": "#21c5c7"
 			}
@@ -202,10 +202,13 @@
 
 		// white -- punctuation for scopes/parameter lists
 		{
-			"scope": "electris.punctuation",
+			"scope": "electris.source-code.punctuation",
 			"settings": {
 				"foreground": "#efefef"
 			}
 		},
+
+		// TODO: markdown tokens
+		// TODO: json tokens
 	]
 }
