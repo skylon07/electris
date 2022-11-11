@@ -19,9 +19,9 @@
         ],
         "grammars": [
             {
-                "path": "./syntaxes/dart-injections.tmLanguage.json",
-                "scopeName": "electris.injections.dart",
-                "injectTo": ["source.dart"]
+                "path": "./syntaxes/dart-source.tmLanguage.json",
+                "scopeName": "electris.source.dart",
+                "language": "dart"
             }
         ]
     }

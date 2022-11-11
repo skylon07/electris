@@ -136,7 +136,7 @@
 	"tokenColors": [
 		// ugly yellow -- unconsidered tokens
 		{
-			"scope": "source, text",
+			"scope": "source, electris.source",
 			"settings": {
 				"foreground": "#f6ff00"
 			}
@@ -207,8 +207,19 @@
 				"foreground": "#efefef"
 			}
 		},
+		
 
-		// TODO: markdown tokens
 		// TODO: json tokens
+
+
+		// white -- unstyled text
+		{
+			"scope": "text, electris.text",
+			"settings": {
+				"foreground": "#efefef"
+			}
+		}
+		
+		// TODO: markdown tokens
 	]
 }

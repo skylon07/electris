@@ -13,14 +13,26 @@ To add a new grammer in `package.json`, simply add an object with these properti
 ``` json
 "grammars": [
     {
+        "path": "./syntaxes/{language}-source.tmLanguage.json",
+        "scopeName": "electris.source.{language}",
+        "language": "{language}"
+    }
+]
+```
+
+(where `{language}` is the VSCode-recognized language being used)
+
+To modify an existing language using injections, use these properties:
+
+``` json
+"grammars": [
+    {
         "path": "./syntaxes/{language}-injections.tmLanguage.json",
         "scopeName": "electris.injections.{language}",
         "injectTo": ["source.{language}"]
     }
 ]
 ```
-
-(where `{language}` is the VSCode-recognized language being used)
 
 ### Configuring the grammar file
 After `package.json` is updated, create the `syntaxes/{language}-injections.tmLanguage.json` file. This file should initially contain an object with these values:
@@ -31,8 +43,8 @@ After `package.json` is updated, create the `syntaxes/{language}-injections.tmLa
         "{language file type}"
     ],
     // this MUST match `scopeName` in `package.json`
-    "scopeName": "electris.injections.{language}",
-    "injectionSelector": "source.{language}",
+    "scopeName": "electris.source/injections.{language}",
+    "injectionSelector": "source.{language}", // delete if not injecting
     "patterns": [
         // base rule definitions here
     ],
@@ -85,7 +97,7 @@ Any `patterns` array can recursively refer to rules already defined. Instead of 
 }
 ```
 
-(where `{reference}` is one of ["#repository-rule"](#creating-new-named-rules), "source.{language}", or "$self")
+(where `{reference}` is one of ["#repository-rule"](#creating-new-named-rules), "defined.scope.name", or "$self")
 
 ### Creating new named rules
 The `repository` is a place to define named rules to use in [`include` statements](#including-rules-recursively). The `repository`'s sole purpose is to provide a dictionary of names to rules. An example repository with two rules might look like this:
