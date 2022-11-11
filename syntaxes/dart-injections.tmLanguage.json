@@ -1,0 +1,134 @@
+{
+    "fileTypes": [
+        "dart"
+    ],
+    "scopeName": "electris.injections.dart",
+    "injectionSelector": "source.dart",
+    "patterns": [
+        {
+            "name": "electris.source-code.variable",
+            "patterns": [
+                { "include": "#self-chain" }
+            ]
+        },
+        {
+            "name": "electris.source-code.operator",
+            "patterns": [
+                { "include": "#math-operator" },
+                { "include": "#extract-operator" },
+                { "include": "#condition-operator" },
+                { "include": "#assignment-operator" },
+                { "include": "#keyword" },
+                { "include": "#annotation" }
+            ]
+        },
+        {
+            "name": "electris.source-code.primitive-literal",
+            "patterns": [
+                { "include": "#literal-number" },
+                { "include": "#literal-string" },
+                { "include": "#literal-word" }
+            ]
+        },
+        {
+            "name": "electris.source-code.escape",
+            "patterns": [
+                { "include": "#string-escape" }
+            ]
+        },
+        {
+            "name": "electris.source-code.comment",
+            "patterns": [
+                { "include": "#single-line-comment" },
+                { "include": "#multi-line-comment" }
+            ]
+        },
+        {
+            "name": "electris.source-code.type",
+            "patterns": [
+                
+            ]
+        },
+        {
+            "name": "electris.source-code.function-call",
+            "patterns": [
+                
+            ]
+        },
+        {
+            "name": "electris.source-code.punctuation",
+            "patterns": [
+                { "include": "#scope-punctuation" },
+                { "include": "#index-punctuation" },
+                { "include": "#expression-punctuation" }
+            ]
+        },
+    ],
+    "repository": {
+        "self-chain": {
+            // TODO: ..
+        },
+        // TODO: variable
+
+        "math-operator": {
+            // TODO: + - ++ -- * / ~/ % << >> ^ & | ~
+        },
+        "extract-operator": {
+            // TODO: ${} # ... =>
+        },
+        "condition-operator": {
+            // TODO: > >= < <= == != ! ?: ?? ?
+        },
+        "assignment-operator": {
+            // TODO: = ??= += -= *= /= ~/= %= <<= >>= ^= &= |= ~=
+        },
+        "keyword": {
+            // TODO: import export library hide show deferred part
+            //       class extends abstract interface implements mixin with super is as enum typedef extension
+            //       var const final dynamic static covariant late
+            //       if else for in while continue break do switch case default
+            //       try on catch finally throw rethrow assert
+            //       async await sync
+            //       this new get set operator
+            //       void return yield external required factory
+        },
+        "annotation": {
+            // TODO: @
+        },
+
+        "literal-number": {
+            // TODO 5 -4.3 0xFF 0XFF 7.0e8
+        },
+        "literal-string": {
+            // TODO: ' " ''' """ 
+        },
+        "literal-word": {
+            // TODO: true false null
+        },
+
+        "string-escape": {
+            // TODO: \a \b \f \n \r \t \v \' \" \? \\ \x67
+        },
+
+        "single-line-comment": {
+            // TODO: // ///
+        },
+        "multi-line-comment": {
+            // TODO: /* */
+        },
+
+        // TODO: type
+
+        // TODO: function call
+
+        "scope-punctuation": {
+            // TODO: { }
+        },
+        "index-punctuation": {
+            // TODO: [ ]
+        },
+        "expression-punctuation": {
+            // TODO: . , ; ( )
+        }
+    }
+}
