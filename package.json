@@ -22,6 +22,16 @@
                 "path": "./syntaxes/dart-source.tmLanguage.json",
                 "scopeName": "electris.source.dart",
                 "language": "dart"
+            },
+            {
+                "path": "./syntaxes/json-source.tmLanguage.json",
+                "scopeName": "electris.source.json",
+                "language": "json"
+            },
+            {
+                "path": "./syntaxes/json-source.tmLanguage.json",
+                "scopeName": "electris.source.json",
+                "language": "jsonc"
             }
         ]
     }

@@ -1,0 +1,82 @@
+{
+    "fileTypes": [
+        "json"
+    ],
+    "scopeName": "electris.source.json",
+    "patterns": [
+        {
+            "precedenceGroup": "comments",
+            "patterns": [
+                { "include": "#single-line-comment" },
+                { "include": "#multi-line-comment" }
+            ]
+        },
+        {
+            "precedenceGroup": "key-strings",
+            "patterns": [
+                { "include": "#object-key-string" }
+            ]
+        },
+        {
+            "precedenceGroup": "literal-strings",
+            "patterns": [
+                { "include": "#literal-string" }
+            ]
+        },
+        {
+            "precedenceGroup": "rest",
+            "patterns": [
+                { "include": "#literal" },
+                { "include": "#object-punctuation" },
+                { "include": "#array-punctuation" },
+                { "include": "#separator-punctuation" }
+            ]
+        }
+    ],
+    "repository": {
+        "object-key-string": {
+            "name": "electris.source-code.variable",
+            "match": "(\\\".*\\\")(?=\\s*:\\s*)"
+        },
+
+        "literal-string": {
+            "name": "electris.source-code.primitive-literal.str",
+            "begin": "(?<!\\\\)\"",
+            "end": "(?<!\\\\)\"",
+            "patterns": [{ "include": "#literal-string-escape" }]
+        },
+        "literal": {
+            "name": "electris.source-code.primitive-literal.lit",
+            "match": "(?<=:\\s*)[^\\[\\]{},\"]+(?=,?)"
+        },
+        
+        "literal-string-escape": {
+            "name": "electris.source-code.escape",
+            "match": "\\\\x[0-9a-fA-F]{0,2}|\\\\u\\{[0-9a-fA-F]*\\}|\\\\u[0-9a-fA-F]{0,4}|\\\\."
+        },
+
+        "single-line-comment": {
+            "name": "electris.source-code.comment",
+            "match": "//.*"
+        },
+        "multi-line-comment": {
+            "name": "electris.source-code.comment",
+            "begin": "/\\*",
+            "end": "\\*/",
+            "patterns": [{ "include": "#multi-line-comment" }]
+        },
+
+        "object-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\{|\\}"
+        },
+        "array-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\[|\\]"
+        },
+        "separator-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": ":|,"
+        }
+    }
+}
