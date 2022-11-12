@@ -28,6 +28,7 @@
 		"editorGutter.modifiedBackground": "#4eb071",
 		"editorGutter.addedBackground": "#399ef4",
 		"editorGutter.deletedBackground": "#da6771",
+		"editorRuler.foreground": "#efefef40",
 		
 		// editor tabs
 		"tab.border": "#00000033",
