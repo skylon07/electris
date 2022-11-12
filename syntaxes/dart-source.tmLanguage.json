@@ -83,8 +83,8 @@
         },
         "extract-operator-dollar": {
             "patterns": [
-                { "include": "#extract-operator-dollar-variable" },
-                { "include": "#extract-operator-dollar-expression" }
+                { "include": "#extract-operator-dollar-expression" },
+                { "include": "#extract-operator-dollar-variable" }
             ]
         },
         "extract-operator-dollar-variable": {
