@@ -182,7 +182,7 @@
 
         "type-reference": {
             "name": "electris.source-code.type",
-            "match": "_*[A-Z][_a-zA-Z0-9<>]*\\??(?<!\\s*\\()"
+            "match": "_*[A-Z][_a-zA-Z0-9<>]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
         "builtin-type": {
             "name": "electris.source-code.type",
