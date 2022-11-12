@@ -37,6 +37,7 @@
         {
             "precedenceGroup": "type-references",
             "patterns": [
+                { "include": "#type-reference-with-generics" },
                 { "include": "#type-reference" }
             ]
         },
@@ -190,7 +191,19 @@
 
         "type-reference": {
             "name": "electris.source-code.type",
-            "match": "_*[A-Z][_a-zA-Z0-9<>]*(\\?(?!\\.))?(?<!\\s*\\()"
+            "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+        },
+        "type-reference-with-generics": {
+            "name": "electris.source-code.type",
+            "begin": "_*[A-Z][_a-zA-Z0-9]*<",
+            "end": ">(\\?(?!\\.))?(?<!\\s*\\()",
+            "patterns": [{ "include": "#type-reference-generics-list" }]
+        },
+        "type-reference-generics-list": {
+            "match": "(dynamic)",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
         },
         "builtin-type": {
             "name": "electris.source-code.type",
