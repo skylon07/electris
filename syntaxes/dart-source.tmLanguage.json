@@ -15,7 +15,8 @@
             "precedenceGroup": "builtin-keywords",
             "patterns": [
                 { "include": "#builtin-type" },
-                { "include": "#keyword" }
+                { "include": "#keyword" },
+                { "include": "#keyword-operator" }
             ]
         },
         {
@@ -104,7 +105,14 @@
         },
         "keyword": {
             "name": "electris.source-code.operator",
-            "match": "(import|export|library|hide|show|deferred|part|class|extends|abstract|interface|implements|mixin|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|operator|void|return|yield|external|required|factory)(?![_a-zA-Z0-9])"
+            "match": "(import|export|library|hide|show|deferred|part|class|extends|abstract|interface|implements|mixin|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|void|return|yield|external|required|factory)(?![_a-zA-Z0-9])"
+        },
+        "keyword-operator": {
+            "name": "electris.source-code.operator",
+            "match": "operator\\s*(>|>=|<|<=|==|\\+|\\-|\\*|/|~/|%|<<|>>|\\^|&|\\||~|>>>|\\[\\]|\\[\\]=)(?=\\s*\\()|operator\\s*([^\\(]*)",
+            "captures": {
+                "2": { "name": "electris.source-code.punctuation" }
+            }
         },
         "annotation": {
             "name": "electris.source-code.operator",
