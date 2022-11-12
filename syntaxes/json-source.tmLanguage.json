@@ -12,42 +12,32 @@
             ]
         },
         {
-            "precedenceGroup": "key-strings",
-            "patterns": [
-                { "include": "#object-key-string" }
-            ]
-        },
-        {
-            "precedenceGroup": "literal-strings",
-            "patterns": [
-                { "include": "#literal-string" }
-            ]
-        },
-        {
             "precedenceGroup": "rest",
             "patterns": [
-                { "include": "#literal" },
-                { "include": "#object-punctuation" },
-                { "include": "#array-punctuation" },
+                { "include": "#literal-string" },
+                { "include": "#literal-number" },
+                { "include": "#negative-operator" },
+                { "include": "#object-declaration" },
+                { "include": "#array-declaration" },
                 { "include": "#separator-punctuation" }
             ]
         }
     ],
     "repository": {
-        "object-key-string": {
-            "name": "electris.source-code.variable",
-            "match": "(\\\".*\\\")(?=\\s*:\\s*)"
+        "negative-operator": {
+            "name": "electris.source-code.operator",
+            "match": "-(?=[0-9])"
         },
 
         "literal-string": {
-            "name": "electris.source-code.primitive-literal.str",
-            "begin": "(?<!\\\\)\"",
-            "end": "(?<!\\\\)\"",
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"",
             "patterns": [{ "include": "#literal-string-escape" }]
         },
-        "literal": {
-            "name": "electris.source-code.primitive-literal.lit",
-            "match": "(?<=:\\s*)[^\\[\\]{},\"]+(?=,?)"
+        "literal-number": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "[0-9]+(\\.[0-9]*)?"
         },
         
         "literal-string-escape": {
@@ -66,17 +56,31 @@
             "patterns": [{ "include": "#multi-line-comment" }]
         },
 
-        "object-punctuation": {
-            "name": "electris.source-code.punctuation",
-            "match": "\\{|\\}"
+        "object-declaration": {
+            "name": "electris.source-code.punctuation.json-object",
+            "begin": "\\{",
+            "end": "\\}",
+            "patterns": [
+                { "include": "#first-string-object-key" },
+                { "include": "$self" }
+            ]
         },
-        "array-punctuation": {
-            "name": "electris.source-code.punctuation",
-            "match": "\\[|\\]"
+        "array-declaration": {
+            "name": "electris.source-code.punctuation.json-array",
+            "begin": "\\[",
+            "end": "\\]",
+            "patterns": [
+                { "include": "$self" }
+            ]
         },
         "separator-punctuation": {
             "name": "electris.source-code.punctuation",
             "match": ":|,"
+        },
+
+        "first-string-object-key": {
+            "name": "electris.source-code.variable.DEBUG",
+            "match": "(?<=^\\s*)(\"[^\"]*\")"
         }
     }
 }
