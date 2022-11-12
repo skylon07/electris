@@ -147,8 +147,8 @@
         },
         "literal-string-dquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!\\\\)\"",
-            "end": "(?<!\\\\)\"",
+            "begin": "(?<!(?<!\\\\)\\\\)\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"",
             "patterns": [
                 { "include": "#literal-string-escape" },
                 { "include": "#extract-operator-dollar" }
@@ -156,8 +156,8 @@
         },
         "literal-string-squote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!\\\\)'",
-            "end": "(?<!\\\\)'",
+            "begin": "(?<!(?<!\\\\)\\\\)'",
+            "end": "(?<!(?<!\\\\)\\\\)'",
             "patterns": [
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
@@ -165,8 +165,8 @@
         },
         "literal-string-tdquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!\\\\)\"\"\"",
-            "end": "(?<!\\\\)\"\"\"",
+            "begin": "(?<!(?<!\\\\)\\\\)\"\"\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
             "patterns": [
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
@@ -174,8 +174,8 @@
         },
         "literal-string-tsquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!\\\\)'''",
-            "end": "(?<!\\\\)'''",
+            "begin": "(?<!(?<!\\\\)\\\\)'''",
+            "end": "(?<!(?<!\\\\)\\\\)'''",
             "patterns": [
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
