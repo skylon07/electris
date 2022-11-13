@@ -230,13 +230,8 @@
         },
         "function-call-with-generics": {
             "name": "electris.source-code.function-call",
-            "contentName": "electris.source-code.type",
-            "begin": "[_a-zA-Z0-9]+\\s*(<)",
-            "end": "(>)(?=\\s*(<.*>)?\\()",
-            "beginCaptures": {
-                "1": { "name": "electris.source-code.type" }
-            },
-            "endCaptures": {
+            "match": "[_a-zA-Z0-9]+\\s*(<.*>)(?=\\s*(<.*>)?\\()",
+            "captures": {
                 "1": { "name": "electris.source-code.type" }
             },
             "patterns": [{ "include": "#generics-list-keywords" }]
