@@ -240,7 +240,7 @@
         },
         "function-call-with-generics": {
             "name": "electris.source-code.function-call",
-            "begin": "[_a-zA-Z0-9]+\\s*(?=<)",
+            "begin": "[_a-zA-Z0-9]+\\s*(?=<.*>\\()",
             "end": "(?<=>)(?=\\s*?\\()",
             "patterns": [{ "include": "#generics-list" }]
         },
