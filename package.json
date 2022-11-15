@@ -24,6 +24,11 @@
                 "language": "dart"
             },
             {
+                "path": "./syntaxes/python-source.tmLanguage.json",
+                "scopeName": "electris.source.python",
+                "language": "python"
+            },
+            {
                 "path": "./syntaxes/json-source.tmLanguage.json",
                 "scopeName": "electris.source.json",
                 "language": "json"

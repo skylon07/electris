@@ -1,0 +1,275 @@
+{
+    "fileTypes": [
+        "py"
+    ],
+    "scopeName": "electris.source.python",
+    "patterns": [
+        {
+            "precedenceGroup": "comments",
+            "patterns": [
+                { "include": "#single-line-comment" },
+                { "include": "#multi-line-comment" }
+            ]
+        },
+        {
+            "precedenceGroup": "keywords",
+            "patterns": [
+                { "include": "#keyword" },
+                { "include": "#self-keyword" }
+            ]
+        },
+        {
+            "precedenceGroup": "keyword-literals",
+            "patterns": [
+                { "include": "#literal-keyword" }
+            ]
+        },
+        {
+            "precedenceGroup": "typedef-type-references",
+            "patterns": [
+                { "include": "#typedef-punctuation" },
+                { "include": "#typedef-type-reference" }
+            ]
+        },
+        {
+            "precedenceGroup": "non-keyword-literals",
+            "patterns": [
+                { "include": "#literal-number" },
+                { "include": "#literal-string" }
+            ]
+        },
+        {
+            "precedenceGroup": "non-typedef-type-references",
+            "patterns": [
+                { "include": "#type-reference" },
+                { "include": "#builtin-type" }
+            ]
+        },
+        {
+            "precedenceGroup": "function-calls",
+            "patterns": [
+                { "include": "#function-call" }
+            ]
+        },
+        {
+            "precedenceGroup": "rest",
+            "patterns": [
+                { "include": "#math-operator" },
+                { "include": "#condition-operator" },
+                { "include": "#assignment-operator" },
+                { "include": "#decorator" },
+                { "include": "#scope-punctuation" },
+                { "include": "#index-punctuation" },
+                { "include": "#expression-punctuation" },
+                { "include": "#variable-reference" }
+            ]
+        }
+    ],
+    "repository": {
+        "variable-reference": {
+            "name": "electris.source-code.variable",
+            "match": "_*[a-z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
+        },
+
+        "math-operator": {
+            "name": "electris.source-code.operator",
+            "match": "\\+|\\-|\\*|/|%|\\*\\*|//|<<|>>|\\^|&|\\||~"
+        },
+        "format-operator": {
+            "begin": "(\\{)",
+            "end": "(\\})",
+            "beginCaptures": { 
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "endCaptures": { 
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [{ "include": "$self" }]
+        },
+        "condition-operator": {
+            "name": "electris.source-code.operator",
+            "match": ">|>=|<|<=|==|!="
+        },
+        "assignment-operator": {
+            "name": "electris.source-code.operator",
+            "match": "=|\\+=|\\-=|\\*=|/=|%=|\\*\\*=|//=|<<=|>>=|\\^=|&=|\\|=|~="
+        },
+        "keyword": {
+            "name": "electris.source-code.operator",
+            "match": "(and|as|assert|break|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|try|while|with|yield)(?![_a-zA-Z0-9])"
+        },
+        "self-keyword": {
+            "name": "electris.source-code.operator",
+            "match": "self(?![_a-zA-Z0-9])"
+        },
+        "decorator": {
+            "name": "electris.source-code.operator",
+            "match": "@([_a-zA-Z0-9]+)",
+            "captures": {
+                "1": { "name": "electris.source-code.function-call" }
+            }
+        },
+
+        "literal-number": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "0[xX][0-9a-fA-F]+|[0-9]+(\\.[0-9]*)?(e[0-9]+)?"
+        },
+        "literal-string": {
+            "patterns": [
+                { "include": "#literal-format-string-tdquote" },
+                { "include": "#literal-format-string-tsquote" },
+                { "include": "#literal-format-string-dquote" },
+                { "include": "#literal-format-string-squote" },
+                { "include": "#literal-string-tdquote" },
+                { "include": "#literal-string-tsquote" },
+                { "include": "#literal-string-dquote" },
+                { "include": "#literal-string-squote" }
+            ]
+        },
+        "literal-string-dquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"",
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-string-squote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?'",
+            "end": "(?<!(?<!\\\\)\\\\)'",
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-string-tdquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?\"\"\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-string-tsquote": {
+            "name": "electris.source-code.primitive-literal.DEBUG-BAD",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?'''",
+            "end": "(?<!(?<!\\\\)\\\\)'''",
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-format-string-dquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(f|F)\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [
+                { "include": "#literal-string-escape" },
+                { "include": "#format-operator" }
+            ]
+        },
+        "literal-format-string-squote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(f|F)'",
+            "end": "(?<!(?<!\\\\)\\\\)'",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [
+                { "include": "#literal-string-escape" },
+                { "include": "#format-operator" }
+            ]
+        },
+        "literal-format-string-tdquote": {
+            "name": "electris.source-code.primitive-literal.DEBUG",
+            "begin": "(?<!(?<!\\\\)\\\\)(f|F)\"\"\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [
+                { "include": "#literal-string-escape" },
+                { "include": "#format-operator" }
+            ]
+        },
+        "literal-format-string-tsquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(f|F)'''",
+            "end": "(?<!(?<!\\\\)\\\\)'''",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [
+                { "include": "#literal-string-escape" },
+                { "include": "#format-operator" }
+            ]
+        },
+        "literal-keyword": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "(True|False|None)(?![_a-zA-Z0-9])"
+        },
+
+        "literal-string-escape": {
+            "name": "electris.source-code.escape",
+            "match": "\\\\x[0-9a-fA-F]{0,2}|\\\\u[0-9a-fA-F]{0,4}|\\\\$|\\\\."
+        },
+
+        "single-line-comment": {
+            "name": "electris.source-code.comment",
+            "match": "#.*"
+        },
+        "multi-line-comment": {
+            "patterns": [
+                { "include": "#multi-line-comment-tdquote" },
+                { "include": "#multi-line-comment-tsquote" }
+            ]
+        },
+        "multi-line-comment-tdquote": {
+            "name": "electris.source-code.comment",
+            "begin": "(?<=^\\s*)\"\"\"",
+            "end": "\"\"\""
+        },
+        "multi-line-comment-tsquote": {
+            "name": "electris.source-code.comment",
+            "begin": "(?<=^\\s*)'''",
+            "end": "'''"
+        },
+
+        "type-reference": {
+            "name": "electris.source-code.type",
+            "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+        },
+        "builtin-type": {
+            "name": "electris.source-code.type",
+            "match": "(int|float|complex|list|tuple|range|str|bytes|bytearray|memoryview|set|frozenset|dict)(?![_a-zA-Z0-9])"
+        },
+        "typedef-type-reference": {
+            "name": "electris.source-code.type",
+            "match": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))['\"_a-zA-Z0-9.\\[\\]]+"
+        },
+
+        "function-call": {
+            "name": "electris.source-code.function-call",
+            "match": "[_a-zA-Z0-9]+(?=\\s*?\\()"
+        },
+
+        "scope-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": ":|\\\\"
+        },
+        "index-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\[|\\]"
+        },
+        "expression-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\.|,|;|\\(|\\)|\\{|\\}"
+        },
+        "typedef-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "->"
+        }
+    }
+}
