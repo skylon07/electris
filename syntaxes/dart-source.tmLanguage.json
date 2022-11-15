@@ -209,9 +209,23 @@
         },
         "type-reference-with-generics": {
             "name": "electris.source-code.type",
-            "begin": "_*[A-Z][_a-zA-Z0-9]*<",
-            "end": ">(\\?(?!\\.))?(?<!\\s*\\()",
-            "patterns": [{ "include": "#generics-list-keywords" }]
+            "begin": "_*[A-Z][_a-zA-Z0-9]*(?=<)",
+            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
+            "patterns": [{ "include": "#generics-list" }]
+        },
+        "builtin-type": {
+            "name": "electris.source-code.type",
+            "match": "(int|double|bool)(?![_a-zA-Z0-9])"
+        },
+
+        "generics-list": {
+            "name": "electris.source-code.type-inner",
+            "begin": "<",
+            "end": ">",
+            "patterns": [
+                { "include": "#generics-list" },
+                { "include": "#generics-list-keywords" }
+            ]
         },
         "generics-list-keywords": {
             "match": "(dynamic)",
@@ -219,22 +233,16 @@
                 "1": { "name": "electris.source-code.operator" }
             }
         },
-        "builtin-type": {
-            "name": "electris.source-code.type",
-            "match": "(int|double|bool)(?![_a-zA-Z0-9])"
-        },
 
         "function-call": {
             "name": "electris.source-code.function-call",
-            "match": "[_a-zA-Z0-9]+(?=\\s*(<.*>)?\\()"
+            "match": "[_a-zA-Z0-9]+(?=\\s*?\\()"
         },
         "function-call-with-generics": {
             "name": "electris.source-code.function-call",
-            "match": "[_a-zA-Z0-9]+\\s*(<.*>)(?=\\s*(<.*>)?\\()",
-            "captures": {
-                "1": { "name": "electris.source-code.type" }
-            },
-            "patterns": [{ "include": "#generics-list-keywords" }]
+            "begin": "[_a-zA-Z0-9]+\\s*(?=<)",
+            "end": "(?<=>)(?=\\s*?\\()",
+            "patterns": [{ "include": "#generics-list" }]
         },
 
         "scope-punctuation": {

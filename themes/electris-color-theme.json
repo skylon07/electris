@@ -119,6 +119,7 @@
 		// other stuff
 		"titleBar.activeBackground": "#131820",
 		"statusBar.background": "#131820",
+		"statusBar.focusBorder": "#efefef40",
 		"statusBar.debuggingBackground": "#399ef4",
 		"statusBar.debuggingForeground": "#efefef",
 		"statusBar.noFolderBackground": "#131820",
@@ -189,6 +190,27 @@
 			"scope": "electris.source-code.type, support.class",
 			"settings": {
 				"foreground": "#4eb071",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"scope": "electris.source-code.type-inner",
+			"settings": {
+				"foreground": "#4eb071b0",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"scope": "electris.source-code.type-inner electris.source-code.type-inner",
+			"settings": {
+				"foreground": "#4eb07170",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"scope": "electris.source-code.type-inner electris.source-code.type-inner electris.source-code.type-inner",
+			"settings": {
+				"foreground": "#4eb07140",
 				"fontStyle": "italic"
 			}
 		},
