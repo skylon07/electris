@@ -52,6 +52,12 @@
             ]
         },
         {
+            "precedenceGroup": "modules",
+            "patterns": [
+                { "include": "#module-reference" }
+            ]
+        },
+        {
             "precedenceGroup": "rest",
             "patterns": [
                 { "include": "#math-operator" },
@@ -69,6 +75,10 @@
         "variable-reference": {
             "name": "electris.source-code.variable",
             "match": "_*[a-z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
+        },
+        "module-reference": {
+            "name": "electris.source-code.variable",
+            "match": "(?<=(from|import)\\s*)\\.*[_.a-zA-Z0-9]"
         },
 
         "math-operator": {
@@ -130,6 +140,9 @@
             "name": "electris.source-code.primitive-literal",
             "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?\"",
             "end": "(?<!(?<!\\\\)\\\\)\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#literal-string-escape" }
             ]
@@ -138,6 +151,9 @@
             "name": "electris.source-code.primitive-literal",
             "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?'",
             "end": "(?<!(?<!\\\\)\\\\)'",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#literal-string-escape" }
             ]
@@ -146,14 +162,20 @@
             "name": "electris.source-code.primitive-literal",
             "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?\"\"\"",
             "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#literal-string-escape" }
             ]
         },
         "literal-string-tsquote": {
-            "name": "electris.source-code.primitive-literal.DEBUG-BAD",
+            "name": "electris.source-code.primitive-literal",
             "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?'''",
             "end": "(?<!(?<!\\\\)\\\\)'''",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#literal-string-escape" }
             ]
@@ -183,7 +205,7 @@
             ]
         },
         "literal-format-string-tdquote": {
-            "name": "electris.source-code.primitive-literal.DEBUG",
+            "name": "electris.source-code.primitive-literal",
             "begin": "(?<!(?<!\\\\)\\\\)(f|F)\"\"\"",
             "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
             "captures": {
@@ -243,7 +265,7 @@
         },
         "builtin-type": {
             "name": "electris.source-code.type",
-            "match": "(int|float|complex|list|tuple|range|str|bytes|bytearray|memoryview|set|frozenset|dict)(?![_a-zA-Z0-9])"
+            "match": "(type|int|float|complex|list|tuple|range|str|bytes|bytearray|memoryview|set|frozenset|dict)(?![_a-zA-Z0-9])"
         },
         "typedef-type-reference": {
             "name": "electris.source-code.type",
