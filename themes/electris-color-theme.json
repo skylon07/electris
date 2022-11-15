@@ -154,9 +154,30 @@
 
 		// blue -- operators/keywords
 		{
-			"scope": "electris.source-code.operator",
+			// (also includes first layer of generic lists for function calls)
+			"scope": "electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef4"
+			}
+		},
+
+		// blue faded -- operators in generic lists
+		{
+			"scope": "electris.source-code.type.inner electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator",
+			"settings": {
+				"foreground": "#339ef4b0"
+			}
+		},
+		{
+			"scope": "electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator",
+			"settings": {
+				"foreground": "#339ef470"
+			}
+		},
+		{
+			"scope": "electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator",
+			"settings": {
+				"foreground": "#339ef440"
 			}
 		},
 
