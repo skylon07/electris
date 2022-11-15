@@ -140,10 +140,10 @@
         },
         "literal-string": {
             "patterns": [
-                { "include": "#literal-string-dquote" },
-                { "include": "#literal-string-squote" },
                 { "include": "#literal-string-tdquote" },
-                { "include": "#literal-string-tsquote" }
+                { "include": "#literal-string-tsquote" },
+                { "include": "#literal-string-dquote" },
+                { "include": "#literal-string-squote" }
             ]
         },
         "literal-string-dquote": {
