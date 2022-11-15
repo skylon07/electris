@@ -219,7 +219,7 @@
         },
 
         "generics-list": {
-            "name": "electris.source-code.type-inner",
+            "name": "electris.source-code.type.inner",
             "begin": "<",
             "end": ">",
             "patterns": [

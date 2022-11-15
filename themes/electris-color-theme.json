@@ -187,28 +187,31 @@
 		// green italicized -- types
 		{
 			// semantic: "support.class"
-			"scope": "electris.source-code.type, support.class",
+			// (also includes first layer of generic lists for function calls)
+			"scope": "electris.source-code.type, support.class, electris.source-code.function-call electris.source-code.type.inner",
 			"settings": {
 				"foreground": "#4eb071",
 				"fontStyle": "italic"
 			}
 		},
+
+		// green italicized fading -- generic type lists
 		{
-			"scope": "electris.source-code.type-inner",
+			"scope": "electris.source-code.type.inner, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner",
 			"settings": {
 				"foreground": "#4eb071b0",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.type-inner electris.source-code.type-inner",
+			"scope": "electris.source-code.type.inner electris.source-code.type.inner, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner",
 			"settings": {
 				"foreground": "#4eb07170",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.type-inner electris.source-code.type-inner electris.source-code.type-inner",
+			"scope": "electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner",
 			"settings": {
 				"foreground": "#4eb07140",
 				"fontStyle": "italic"
