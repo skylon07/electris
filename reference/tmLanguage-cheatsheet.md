@@ -43,7 +43,7 @@ After `package.json` is updated, create the `syntaxes/{language}-injections.tmLa
         "{language file type}"
     ],
     // this MUST match `scopeName` in `package.json`
-    "scopeName": "electris.source/injections.{language}",
+    "scopeName": "electris.{source/injections}.{language}",
     "injectionSelector": "source.{language}", // delete if not injecting
     "patterns": [
         // base rule definitions here
