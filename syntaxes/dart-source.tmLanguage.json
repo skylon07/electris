@@ -43,6 +43,12 @@
             ]
         },
         {
+            "precedenceGroup": "function-calls",
+            "patterns": [
+                { "include": "#function-call" }
+            ]
+        },
+        {
             "precedenceGroup": "rest",
             "patterns": [
                 { "include": "#cascade-chain" },
@@ -52,7 +58,6 @@
                 { "include": "#condition-operator-ternary" },
                 { "include": "#assignment-operator" },
                 { "include": "#annotation" },
-                { "include": "#function-call" },
                 { "include": "#scope-punctuation" },
                 { "include": "#index-punctuation" },
                 { "include": "#expression-punctuation" }
