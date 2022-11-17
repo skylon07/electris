@@ -37,15 +37,9 @@
         {
             "precedenceGroup": "type-references",
             "patterns": [
-                { "include": "#type-reference-with-generics" },
-                { "include": "#type-reference" }
-            ]
-        },
-        {
-            "precedenceGroup": "function-calls",
-            "patterns": [
-                { "include": "#function-call-with-generics" },
-                { "include": "#function-call" }
+                { "include": "#type-reference-generic" },
+                { "include": "#type-reference" },
+                { "include": "#type-args-list" }
             ]
         },
         {
@@ -58,6 +52,7 @@
                 { "include": "#condition-operator-ternary" },
                 { "include": "#assignment-operator" },
                 { "include": "#annotation" },
+                { "include": "#function-call" },
                 { "include": "#scope-punctuation" },
                 { "include": "#index-punctuation" },
                 { "include": "#expression-punctuation" }
@@ -204,30 +199,30 @@
         },
 
         "type-reference": {
-            "name": "electris.source-code.type",
+            "name": "electris.source-code.types.type",
             "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
-        "type-reference-with-generics": {
-            "name": "electris.source-code.type",
+        "type-reference-generic": {
+            "name": "electris.source-code.types.type",
             "begin": "_*[A-Z][_a-zA-Z0-9]*(?=<)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
-            "patterns": [{ "include": "#generics-list" }]
+            "patterns": [{ "include": "#type-args-list" }]
         },
         "builtin-type": {
-            "name": "electris.source-code.type",
+            "name": "electris.source-code.types.type",
             "match": "(int|double|bool)(?![_a-zA-Z0-9])"
         },
 
-        "generics-list": {
-            "name": "electris.source-code.type.inner",
-            "begin": "<",
+        "type-args-list": {
+            "name": "electris.source-code.types.type-args",
+            "begin": "(?<=[_a-zA-Z0-9]<*)<|<(?=<*[_a-zA-Z0-9])",
             "end": ">",
             "patterns": [
-                { "include": "#generics-list" },
-                { "include": "#generics-list-keywords" }
+                { "include": "#type-args-list" },
+                { "include": "#type-args-keywords" }
             ]
         },
-        "generics-list-keywords": {
+        "type-args-keywords": {
             "match": "(dynamic)",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -237,12 +232,6 @@
         "function-call": {
             "name": "electris.source-code.function-call",
             "match": "[_a-zA-Z0-9]+(?=\\s*?\\()"
-        },
-        "function-call-with-generics": {
-            "name": "electris.source-code.function-call",
-            "begin": "[_a-zA-Z0-9]+\\s*(?=<.*>\\()",
-            "end": "(?<=>)(?=\\s*?\\()",
-            "patterns": [{ "include": "#generics-list" }]
         },
 
         "scope-punctuation": {

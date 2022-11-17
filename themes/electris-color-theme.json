@@ -154,8 +154,7 @@
 
 		// blue -- operators/keywords
 		{
-			// (also includes first layer of generic lists for function calls)
-			"scope": "electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.operator",
+			"scope": "electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef4"
 			}
@@ -163,21 +162,21 @@
 
 		// blue faded -- operators in generic lists
 		{
-			"scope": "electris.source-code.type.inner electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator",
+			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef4b0"
+				"foreground": "#339ef4d0"
 			}
 		},
 		{
-			"scope": "electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator",
+			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef470"
+				"foreground": "#339ef4a0"
 			}
 		},
 		{
-			"scope": "electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.operator",
+			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef440"
+				"foreground": "#339ef480"
 			}
 		},
 
@@ -208,8 +207,8 @@
 		// green italicized -- types
 		{
 			// semantic: "support.class"
-			// (also includes first layer of generic lists for function calls)
-			"scope": "electris.source-code.type, support.class, electris.source-code.function-call electris.source-code.type.inner",
+			// (also includes first layer of non-generic type arguments)
+			"scope": "electris.source-code.types.type, support.class, electris.source-code.types.type-args",
 			"settings": {
 				"foreground": "#4eb071",
 				"fontStyle": "italic"
@@ -218,23 +217,30 @@
 
 		// green italicized fading -- generic type lists
 		{
-			"scope": "electris.source-code.type.inner, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner",
+			"scope": "electris.source-code.types electris.source-code.types.type-args",
 			"settings": {
-				"foreground": "#4eb071b0",
+				"foreground": "#4eb071d0",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.type.inner electris.source-code.type.inner, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner",
+			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args",
 			"settings": {
-				"foreground": "#4eb07170",
+				"foreground": "#4eb071a0",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner, electris.source-code.function-call electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner electris.source-code.type.inner",
+			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args",
 			"settings": {
-				"foreground": "#4eb07140",
+				"foreground": "#4eb07180",
+				"fontStyle": "italic"
+			}
+		},
+		{
+			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"settings": {
+				"foreground": "#b04e4e50",
 				"fontStyle": "italic"
 			}
 		},
