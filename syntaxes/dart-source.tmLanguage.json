@@ -228,7 +228,7 @@
             ]
         },
         "type-args-keywords": {
-            "match": "(dynamic)",
+            "match": "(dynamic|extends|implements)",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
             }
