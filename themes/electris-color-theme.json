@@ -50,6 +50,7 @@
 		"list.activeSelectionForeground": "#efefef",
 		"list.hoverBackground": "#efefef18",
 		"list.inactiveSelectionBackground": "#efefef30",
+		"list.dropBackground": "#399ef480", // drag and drop!
 		"activityBar.background": "#399ef435",
 		"activityBarBadge.background": "#399ef4", // notification number circle, like how many files changed on source control
 		"activityBarBadge.foreground": "#efefef",
@@ -129,7 +130,6 @@
 		"statusBarItem.remoteForeground": "#efefef",
 
 		// unknown/unconsidered
-		"list.dropBackground": "#878b0090",
 		"editor.wordHighlightBackground": "#878b0090",
 		"editor.wordHighlightStrongBackground": "#878b0090",
 		"editorMarkerNavigation.background": "#878b0090",
