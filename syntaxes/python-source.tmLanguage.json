@@ -275,15 +275,15 @@
         },
 
         "type-reference": {
-            "name": "electris.source-code.type",
+            "name": "electris.source-code.types.type",
             "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
         "builtin-type": {
-            "name": "electris.source-code.type",
+            "name": "electris.source-code.types.type",
             "match": "(type|int|float|complex|list|tuple|range|str|bytes|bytearray|memoryview|set|frozenset|dict)(?![_a-zA-Z0-9])"
         },
         "typedef-type-reference": {
-            "name": "electris.source-code.type",
+            "name": "electris.source-code.types.type",
             "match": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))['\"_a-zA-Z0-9.\\[\\]]+"
         },
 
