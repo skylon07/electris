@@ -37,7 +37,7 @@
         },
         "literal-number": {
             "name": "electris.source-code.primitive-literal",
-            "match": "[0-9]+(\\.[0-9]*)?"
+            "match": "[0-9]+(\\.[0-9]*)?|\\.[0-9]+"
         },
         
         "literal-string-escape": {
