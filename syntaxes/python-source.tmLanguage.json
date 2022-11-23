@@ -74,7 +74,7 @@
     "repository": {
         "variable-reference": {
             "name": "electris.source-code.variable",
-            "match": "_*[a-z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
+            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
         },
         "module-reference": {
             "name": "electris.source-code.variable",
@@ -276,7 +276,7 @@
 
         "type-reference": {
             "name": "electris.source-code.types.type",
-            "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+            "match": "_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
         "builtin-type": {
             "name": "electris.source-code.types.type",

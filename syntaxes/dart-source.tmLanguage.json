@@ -71,7 +71,7 @@
         },
         "variable-reference": {
             "name": "electris.source-code.variable",
-            "match": "_*[a-z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
+            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
         },
 
         "math-operator": {
@@ -205,11 +205,11 @@
 
         "type-reference": {
             "name": "electris.source-code.types.type",
-            "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+            "match": "_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
         "type-reference-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "_*[A-Z][_a-zA-Z0-9]*(?=<)",
+            "begin": "_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*(?=<)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
             "patterns": [{ "include": "#type-args-list" }]
         },
@@ -236,7 +236,7 @@
 
         "function-call": {
             "name": "electris.source-code.function-call",
-            "match": "[_a-zA-Z0-9]+(?=\\s*?(<.*>)?\\()"
+            "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\()"
         },
 
         "scope-punctuation": {
