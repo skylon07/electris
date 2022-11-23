@@ -148,8 +148,11 @@
         },
         "literal-string-dquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)\"",
+            "begin": "(?<!(?<!\\\\)\\\\)(r?)\"",
             "end": "(?<!(?<!\\\\)\\\\)\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
@@ -157,8 +160,11 @@
         },
         "literal-string-squote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)'",
+            "begin": "(?<!(?<!\\\\)\\\\)(r?)'",
             "end": "(?<!(?<!\\\\)\\\\)'",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
@@ -166,8 +172,11 @@
         },
         "literal-string-tdquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)\"\"\"",
+            "begin": "(?<!(?<!\\\\)\\\\)(r?)\"\"\"",
             "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
@@ -175,8 +184,11 @@
         },
         "literal-string-tsquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)'''",
+            "begin": "(?<!(?<!\\\\)\\\\)(r?)'''",
             "end": "(?<!(?<!\\\\)\\\\)'''",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
             "patterns": [
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
