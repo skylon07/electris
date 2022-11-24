@@ -76,7 +76,7 @@
 
         "math-operator": {
             "name": "electris.source-code.operator",
-            "match": "\\+|\\-|\\+\\+|\\-\\-|\\*|/|~/|%|!|<<|>>|\\^|&|\\||~"
+            "match": "\\+|\\-|\\+\\+|\\-\\-|\\*|/|~/|%|!|<<|>>|>>>|\\^|&|\\||~"
         },
         "extract-operator": {
             "name": "electris.source-code.operator",
@@ -116,7 +116,7 @@
         },
         "assignment-operator": {
             "name": "electris.source-code.operator",
-            "match": "=|\\?\\?=|\\+=|\\-=|\\*=|/=|~/=|%=|<<=|>>=|\\^=|&=|\\|=|~="
+            "match": "=|\\?\\?=|\\+=|\\-=|\\*=|/=|~/=|%=|<<=|>>=|>>>=|\\^=|&=|\\|=|~="
         },
         "keyword": {
             "name": "electris.source-code.operator",
