@@ -4,74 +4,91 @@
     ],
     "scopeName": "electris.source.python",
     "patterns": [
-        {
-            "precedenceGroup": "comments",
-            "patterns": [
-                { "include": "#single-line-comment" },
-                { "include": "#multi-line-comment" }
-            ]
-        },
-        {
-            "precedenceGroup": "keywords",
-            "patterns": [
-                { "include": "#keyword" },
-                { "include": "#self-keyword" }
-            ]
-        },
-        {
-            "precedenceGroup": "keyword-literals",
-            "patterns": [
-                { "include": "#literal-keyword" }
-            ]
-        },
-        {
-            "precedenceGroup": "typedef-type-references",
-            "patterns": [
-                { "include": "#typedef-punctuation" },
-                { "include": "#typedef-type-reference" }
-            ]
-        },
-        {
-            "precedenceGroup": "non-keyword-literals",
-            "patterns": [
-                { "include": "#literal-number" },
-                { "include": "#literal-string" }
-            ]
-        },
-        {
-            "precedenceGroup": "non-typedef-type-references",
-            "patterns": [
-                { "include": "#type-reference" },
-                { "include": "#builtin-type" }
-            ]
-        },
-        {
-            "precedenceGroup": "function-calls",
-            "patterns": [
-                { "include": "#function-call" }
-            ]
-        },
-        {
-            "precedenceGroup": "modules",
-            "patterns": [
-                { "include": "#module-reference" }
-            ]
-        },
-        {
-            "precedenceGroup": "rest",
-            "patterns": [
-                { "include": "#math-operator" },
-                { "include": "#condition-operator" },
-                { "include": "#assignment-operator" },
-                { "include": "#decorator" },
-                { "include": "#scope-punctuation" },
-                { "include": "#index-punctuation" },
-                { "include": "#expression-punctuation" },
-                { "include": "#variable-reference" }
-            ]
-        }
+        { "include": "#self-with-typedefs" }
     ],
     "repository": {
+        "self-with-typedefs": {
+            "patterns": [
+                { "include": "#self-above-typedefs" },
+                {
+                    "precedenceGroup": "typedef-type-references",
+                    "patterns": [
+                        { "include": "#typedef-punctuation" },
+                        { "include": "#typedef-type-reference" }
+                    ]
+                },
+                { "include": "#self-below-typedefs" }
+            ]
+        },
+        "self-above-typedefs": {
+            "patterns": [
+                {
+                    "precedenceGroup": "comments",
+                    "patterns": [
+                        { "include": "#single-line-comment" },
+                        { "include": "#multi-line-comment" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "keywords",
+                    "patterns": [
+                        { "include": "#keyword" },
+                        { "include": "#self-keyword" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "non-typedef-literals",
+                    "patterns": [
+                        { "include": "#literal-keyword" },
+                        { "include": "#literal-dictionary-set" }
+                    ]
+                }
+            ]
+        },
+        "self-below-typedefs": {
+            "patterns": [
+                {
+                    "precedenceGroup": "non-keyword-literals",
+                    "patterns": [
+                        { "include": "#literal-number" },
+                        { "include": "#literal-string" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "non-typedef-type-references",
+                    "patterns": [
+                        { "include": "#type-reference" },
+                        { "include": "#builtin-type" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "function-calls",
+                    "patterns": [
+                        { "include": "#function-call" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "modules",
+                    "patterns": [
+                        { "include": "#module-reference" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "rest",
+                    "patterns": [
+                        { "include": "#math-operator" },
+                        { "include": "#condition-operator" },
+                        { "include": "#assignment-operator" },
+                        { "include": "#decorator" },
+                        { "include": "#scope-punctuation" },
+                        { "include": "#index-punctuation" },
+                        { "include": "#expression-punctuation" },
+                        { "include": "#variable-reference" }
+                    ]
+                }
+            ]
+        },
+
         "variable-reference": {
             "name": "electris.source-code.variable",
             "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
@@ -243,10 +260,23 @@
             "name": "electris.source-code.primitive-literal",
             "match": "(True|False|None)(?![_a-zA-Z0-9])"
         },
-
         "literal-string-escape": {
             "name": "electris.source-code.escape",
             "match": "\\\\x[0-9a-fA-F]{0,2}|\\\\u[0-9a-fA-F]{0,4}|\\\\$|\\\\[^{]"
+        },
+        "literal-dictionary-set": {
+            "begin": "(\\{)",
+            "end": "(\\})",
+            "beginCaptures": {
+                "1": {"name": "electris.source-code.punctuation"}
+            },
+            "endCaptures": {
+                "1": {"name": "electris.source-code.punctuation"}
+            },
+            "patterns": [
+                { "include": "#self-above-typedefs" },
+                { "include": "#self-below-typedefs" }
+            ]
         },
 
         "single-line-comment": {
@@ -330,7 +360,7 @@
         },
         "expression-punctuation": {
             "name": "electris.source-code.punctuation",
-            "match": "\\.|,|;|\\(|\\)|\\{|\\}"
+            "match": "\\.|,|;|\\(|\\)"
         },
         "typedef-punctuation": {
             "name": "electris.source-code.punctuation",
