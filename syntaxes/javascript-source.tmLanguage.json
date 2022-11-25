@@ -1,8 +1,8 @@
 {
     "fileTypes": [
-        "dart"
+        "js"
     ],
-    "scopeName": "electris.source.dart",
+    "scopeName": "electris.source.javascript",
     "patterns": [
         {
             "precedenceGroup": "comments",

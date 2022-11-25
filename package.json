@@ -40,8 +40,8 @@
             },
             {
                 "path": "./syntaxes/javascript-source.tmLanguage.json",
-                "scopeName": "electris.source.json",
-                "language": "jsonc"
+                "scopeName": "electris.source.javascript",
+                "language": "javascript"
             }
         ]
     }
