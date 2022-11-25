@@ -13,6 +13,8 @@
 		"editorCursor.foreground": "#efefef",
 		"editor.selectionBackground": "#399ef440",
 		"editor.selectionHighlightBackground": "#efefef2a", // aka variables matching the one under cursor
+		"editor.wordHighlightBackground": "#efefef2a", // similar to the above (first found using python)
+		"editor.wordHighlightStrongBackground": "#efefef2a", // also similar to the above (also found using python)
 		"editorInfo.foreground": "#9fcff980", // squigglies!
 		"editor.findMatchBackground": "#399ef460", // aka first match
 		"editor.rangeHighlightBackground": "#efefef0d", // background of line of first match
@@ -130,8 +132,6 @@
 		"statusBarItem.remoteForeground": "#efefef",
 
 		// unknown/unconsidered
-		"editor.wordHighlightBackground": "#878b0090",
-		"editor.wordHighlightStrongBackground": "#878b0090",
 		"editorMarkerNavigation.background": "#878b0090",
 	},
 	"semanticHighlighting": true,
