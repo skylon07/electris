@@ -129,7 +129,7 @@
         },
         "decorator": {
             "name": "electris.source-code.operator",
-            "match": "@[_a-zA-Z0-9]+"
+            "match": "@[_a-zA-Z0-9]*"
         },
 
         "literal-number": {
