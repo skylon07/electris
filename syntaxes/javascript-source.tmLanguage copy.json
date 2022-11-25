@@ -1,0 +1,184 @@
+{
+    "fileTypes": [
+        "dart"
+    ],
+    "scopeName": "electris.source.dart",
+    "patterns": [
+        {
+            "precedenceGroup": "comments",
+            "patterns": [
+                { "include": "#single-line-comment" },
+                { "include": "#multi-line-comment" }
+            ]
+        },
+        {
+            "precedenceGroup": "builtin-keywords",
+            "patterns": [
+                { "include": "#builtin-type" },
+                { "include": "#keyword" },
+                { "include": "#keyword-operator" }
+            ]
+        },
+        {
+            "precedenceGroup": "extraction-operators",
+            "patterns": [
+                { "include": "#extract-operator" }
+            ]
+        },
+        {
+            "precedenceGroup": "literals",
+            "patterns": [
+                { "include": "#literal-keyword" },
+                { "include": "#literal-number" },
+                { "include": "#literal-string" }
+            ]
+        },
+        {
+            "precedenceGroup": "type-references",
+            "patterns": [
+                { "include": "#type-reference" }
+            ]
+        },
+        {
+            "precedenceGroup": "function-calls",
+            "patterns": [
+                { "include": "#function-call" }
+            ]
+        },
+        {
+            "precedenceGroup": "rest",
+            "patterns": [
+                { "include": "#variable-reference" },
+                { "include": "#math-operator" },
+                { "include": "#condition-operator" },
+                { "include": "#condition-operator-ternary" },
+                { "include": "#assignment-operator" },
+                { "include": "#scope-punctuation" },
+                { "include": "#index-punctuation" },
+                { "include": "#expression-punctuation" }
+            ]
+        }
+    ],
+    "repository": {
+        "variable-reference": {
+            "name": "electris.source-code.variable",
+            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
+        },
+
+        "math-operator": {
+            "name": "electris.source-code.operator",
+            "match": "\\+|\\-|\\+\\+|\\-\\-|\\*|/|\\*\\*|%|!|<<|>>|>>>|\\^|&|\\||~"
+        },
+        "extract-operator": {
+            "name": "electris.source-code.operator",
+            "match": "\\.\\.\\.|=>"
+        },
+        "extract-operator-dollar": {
+            "begin": "(\\$\\{)",
+            "end": "(\\})",
+            "beginCaptures": { 
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "endCaptures": { 
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [{ "include": "$self" }]
+        },
+        "condition-operator": {
+            "name": "electris.source-code.operator",
+            "match": ">|>=|<|<=|==|!=|\\?(?=\\.)"
+        },
+        "condition-operator-ternary": {
+            "name": "electris.source-code.operator",
+            "match": "\\?|:"
+        },
+        "assignment-operator": {
+            "name": "electris.source-code.operator",
+            "match": "=|\\+=|\\-=|\\*=|/=|%=|<<=|>>=|>>>=|\\^=|&=|\\|=|~="
+        },
+        "keyword": {
+            "name": "electris.source-code.operator",
+            "match": "(abstract|arguments|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|(async )?function|goto|if|implements|import|in|instanceof|interface|let|new|package|private|protected|public|return|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)(?![_a-zA-Z0-9])"
+        },
+
+        "literal-number": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "0[xX][0-9a-fA-F]+|[0-9]+(\\.[0-9]*)?(e[0-9]+)?|\\.[0-9]+(e[0-9]+)?"
+        },
+        "literal-string": {
+            "patterns": [
+                { "include": "#literal-string-tquote" },
+                { "include": "#literal-string-dquote" },
+                { "include": "#literal-string-squote" }
+            ]
+        },
+        "literal-string-dquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"",
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-string-squote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)'",
+            "end": "(?<!(?<!\\\\)\\\\)'",
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-string-tquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)`",
+            "end": "(?<!(?<!\\\\)\\\\)`",
+            "patterns": [
+                { "include": "#extract-operator-dollar" },
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-keyword": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "(true|false|null)(?![_a-zA-Z0-9])"
+        },
+
+        "literal-string-escape": {
+            "name": "electris.source-code.escape",
+            "match": "\\\\x[0-9a-fA-F]{0,2}|\\\\u\\{[0-9a-fA-F]*\\}|\\\\u[0-9a-fA-F]{0,4}|\\\\."
+        },
+
+        "single-line-comment": {
+            "name": "electris.source-code.comment",
+            "match": "//.*"
+        },
+        "multi-line-comment": {
+            "name": "electris.source-code.comment",
+            "begin": "/\\*",
+            "end": "\\*/",
+            "patterns": [{ "include": "#multi-line-comment" }]
+        },
+
+        "type-reference": {
+            "name": "electris.source-code.types.type",
+            "match": "_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+        },
+
+        "function-call": {
+            "name": "electris.source-code.function-call",
+            "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\()"
+        },
+
+        "scope-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\{|\\}"
+        },
+        "index-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\[|\\]"
+        },
+        "expression-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\.|,|;|\\(|\\)"
+        }
+    }
+}

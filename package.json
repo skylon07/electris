@@ -37,6 +37,11 @@
                 "path": "./syntaxes/json-source.tmLanguage.json",
                 "scopeName": "electris.source.json",
                 "language": "jsonc"
+            },
+            {
+                "path": "./syntaxes/javascript-source.tmLanguage.json",
+                "scopeName": "electris.source.json",
+                "language": "jsonc"
             }
         ]
     }
