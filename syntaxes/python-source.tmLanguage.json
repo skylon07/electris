@@ -92,7 +92,6 @@
             ]
         },
         "escaped-format-operator": {
-            "name": "DEBUG",
             "begin": "\\{\\{",
             "end": "\\}\\}",
             "patterns": [
@@ -280,8 +279,40 @@
             "match": "(type|int|float|complex|list|tuple|range|str|bytes|bytearray|memoryview|set|frozenset|dict)(?![_a-zA-Z0-9])"
         },
         "typedef-type-reference": {
+            "patterns": [
+                { "include": "#typedef-type-reference-first-brackets" },
+                { "include": "#typedef-type-reference-first" }
+            ]
+        },
+        "typedef-type-reference-first": {
             "name": "electris.source-code.types.type",
-            "match": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))['\"_a-zA-Z0-9.\\[\\]]+"
+            "match": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))['\"_a-zA-Z0-9.]+"
+        },
+        "typedef-type-reference-first-brackets": {
+            "name": "electris.source-code.types.type",
+            "begin": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))['\"_a-zA-Z0-9.]+(?=\\[)",
+            "end": "(?<=\\])",
+            "patterns": [
+                { "include": "#typedef-type-reference-recursive-brackets" },
+                { "include": "#typedef-type-reference-recursive" },
+                { "include": "#typedef-type-punctuation-recursive" }
+            ]
+        },
+        "typedef-type-reference-recursive": {
+            "match": "['\"_a-zA-Z0-9.]+"
+        },
+        "typedef-type-punctuation-recursive": {
+            "match": "[,\\s]+"
+        },
+        "typedef-type-reference-recursive-brackets": {
+            "name": "electris.source-code.types.type-args",
+            "begin": "\\[",
+            "end": "\\]",
+            "patterns": [
+                { "include": "#typedef-type-reference-recursive-brackets" },
+                { "include": "#typedef-type-reference-recursive" },
+                { "include": "#typedef-type-punctuation-recursive" }
+            ]
         },
 
         "function-call": {
