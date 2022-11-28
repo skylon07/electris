@@ -92,7 +92,7 @@
 
         "variable-reference": {
             "name": "electris.source-code.variable",
-            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
+            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*|(_|__|___|____)(?![_A-Z])"
         },
         "module-reference": {
             "name": "electris.source-code.variable",

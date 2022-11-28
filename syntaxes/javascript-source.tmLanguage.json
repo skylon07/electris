@@ -63,7 +63,7 @@
     "repository": {
         "variable-reference": {
             "name": "electris.source-code.variable",
-            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*(?<!\\s*\\()|(_|__|___|____)(?![_A-Z])"
+            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*|(_|__|___|____)(?![_A-Z])"
         },
 
         "math-operator": {
@@ -142,7 +142,6 @@
             "name": "electris.source-code.primitive-literal",
             "match": "(true|false|null)(?![_a-zA-Z0-9])"
         },
-
         "literal-string-escape": {
             "name": "electris.source-code.escape",
             "match": "\\\\x[0-9a-fA-F]{0,2}|\\\\u\\{[0-9a-fA-F]*\\}|\\\\u[0-9a-fA-F]{0,4}|\\\\."
