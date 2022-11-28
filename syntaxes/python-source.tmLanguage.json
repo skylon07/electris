@@ -51,7 +51,8 @@
                     "precedenceGroup": "non-keyword-literals",
                     "patterns": [
                         { "include": "#literal-number" },
-                        { "include": "#literal-string" }
+                        { "include": "#literal-string" },
+                        { "include": "#constant-literal" }
                     ]
                 },
                 {
@@ -263,6 +264,10 @@
         "literal-string-escape": {
             "name": "electris.source-code.escape",
             "match": "\\\\x[0-9a-fA-F]{0,2}|\\\\u[0-9a-fA-F]{0,4}|\\\\$|\\\\[^{]"
+        },
+        "constant-literal": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "_*[A-Z][A-Z0-9]*(?![a-z])"
         },
         "literal-dictionary-set": {
             "begin": "(\\{)",
