@@ -267,7 +267,7 @@
         },
         "constant-literal": {
             "name": "electris.source-code.primitive-literal",
-            "match": "_*[A-Z][A-Z0-9]*(?![a-z])"
+            "match": "_*[A-Z]{2}[A-Z0-9]*(?![a-z])"
         },
         "literal-dictionary-set": {
             "begin": "(\\{)",
@@ -307,7 +307,7 @@
 
         "type-reference": {
             "name": "electris.source-code.types.type",
-            "match": "_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+            "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
         "builtin-type": {
             "name": "electris.source-code.types.type",
