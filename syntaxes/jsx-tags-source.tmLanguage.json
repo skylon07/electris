@@ -29,12 +29,15 @@
             },
             "patterns": [
                 { "include": "#tag-property-declaration-expression" },
-                { "include": "#tag-property-declaration-literal" }
+                { "include": "#tag-property-declaration-tag" },
+                { "include": "#tag-property-declaration-literal" },
+                { "include": "#tag-property-declaration-bad-literal" },
+                { "include": "#tag-property-declaration-literal-no-assignment" }
             ]
         },
 
         "tag-property-declaration-expression": {
-            "begin": "([_a-zA-Z0-9\\-]+)(=)(?=\\{)",
+            "begin": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(?=\\{)",
             "end": "(?<=\\})",
             "beginCaptures": {
                 "1": { "name": "electris.xml.property" },
@@ -47,12 +50,42 @@
                 { "include": "#javascript-block" }
             ]
         },
+        "tag-property-declaration-tag": {
+            "begin": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(?=\\<)",
+            "end": "(?<=\\>)",
+            "beginCaptures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.xml.property-assignment" }
+            },
+            "patterns": [
+                { "include": "#tag-declaration" }
+            ]
+        },
         "tag-property-declaration-literal": {
-            "match": "([_a-zA-Z0-9\\-]+)(?:(=)(.*))?",
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(['\"].*)",
             "captures": {
                 "1": { "name": "electris.xml.property" },
                 "2": { "name": "electris.xml.property-assignment" },
                 "3": { "name": "electris.xml.property-value" }
+            }
+        },
+        "tag-property-declaration-literal-no-assignment": {
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(?!=)",
+            "captures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" },
+                "3": { "name": "electris.xml.property-value" }
+            }
+        },
+        "tag-property-declaration-bad-literal": {
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(.*)",
+            "captures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" },
+                "3": { "name": "electris.text" }
             }
         },
 
