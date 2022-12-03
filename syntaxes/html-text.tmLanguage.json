@@ -1,0 +1,9 @@
+{
+    "fileTypes": [
+        "html"
+    ],
+    "scopeName": "electris.text.html",
+    "patterns": [
+        { "include": "electris.text.xml" }
+    ]
+}

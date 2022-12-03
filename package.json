@@ -23,26 +23,31 @@
                 "scopeName": "electris.source.dart",
                 "language": "dart"
             },
+
             {
                 "path": "./syntaxes/python-source.tmLanguage.json",
                 "scopeName": "electris.source.python",
                 "language": "python"
             },
+
             {
                 "path": "./syntaxes/json-source.tmLanguage.json",
                 "scopeName": "electris.source.json",
                 "language": "json"
             },
+
             {
                 "path": "./syntaxes/json-source.tmLanguage.json",
                 "scopeName": "electris.source.json",
                 "language": "jsonc"
             },
+
             {
                 "path": "./syntaxes/javascript-source.tmLanguage.json",
                 "scopeName": "electris.source.javascript",
                 "language": "javascript"
             },
+
             {
                 "path": "./syntaxes/markdown-text.tmLanguage.json",
                 "scopeName": "electris.text.markdown",
@@ -50,6 +55,17 @@
                 "embeddedLanguages": {
                     "electris.source.embedded.python": "python"
                 }
+            },
+
+            {
+                "path": "./syntaxes/xml-like-text.tmLanguage.json",
+                "scopeName": "electris.text.xml",
+                "language": "xml"
+            },
+            {
+                "path": "./syntaxes/html-text.tmLanguage.json",
+                "scopeName": "electris.text.html",
+                "language": "html"
             }
         ]
     }
