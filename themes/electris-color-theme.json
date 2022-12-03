@@ -269,6 +269,13 @@
 				"foreground": "#efefef"
 			}
 		},
+		// orange -- unstyled "source-text"
+		{
+			"scope": "electris.source-text",
+			"settings": {
+				"foreground": "#eea760"
+			}
+		},
 
 
 		// blue -- style operators
@@ -383,6 +390,40 @@
 			"scope": "electris.markdown.link-path",
 			"settings": {
 				"foreground": "#9fcff9"
+			}
+		},
+
+
+		// blue -- tag braces/assignment
+		{
+			"scope": "electris.xml.tag-brace, electris.xml.property-assignment",
+			"settings": {
+				"foreground": "#339ef4"
+			}
+		},
+
+		// green italicized -- tag label
+		{
+			"scope": "electris.xml.tag-label",
+			"settings": {
+				"foreground": "#4eb071",
+				"fontStyle": "italic"
+			}
+		},
+
+		// light blue -- tag properties
+		{
+			"scope": "electris.xml.property",
+			"settings": {
+				"foreground": "#9fcff9"
+			}
+		},
+
+		// orange -- tag property values
+		{
+			"scope": "electris.xml.property-value",
+			"settings": {
+				"foreground": "#eea760"
 			}
 		},
 	]

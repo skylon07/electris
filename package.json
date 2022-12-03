@@ -45,7 +45,18 @@
             {
                 "path": "./syntaxes/javascript-source.tmLanguage.json",
                 "scopeName": "electris.source.javascript",
-                "language": "javascript"
+                "language": "javascript",
+                "embeddedLanguages": {
+                    "electris.source-text.embedded.jsx-tags": "jsx-tags"
+                }
+            },
+            {
+                "path": "./syntaxes/javascript-source.tmLanguage.json",
+                "scopeName": "electris.source.javascript",
+                "language": "javascriptreact",
+                "embeddedLanguages": {
+                    "electris.source-text.embedded.jsx-tags": "jsx-tags"
+                }
             },
 
             {
@@ -69,6 +80,14 @@
                 "path": "./syntaxes/html-text.tmLanguage.json",
                 "scopeName": "electris.text.html",
                 "language": "html"
+            },
+            {
+                "path": "./syntaxes/jsx-tags-source.tmLanguage.json",
+                "scopeName": "electris.source-text.jsx-tags",
+                "language": "jsx-tags",
+                "embeddedLanguages": {
+                    "electris.source.embedded.javascript": "javascript"
+                }
             }
         ]
     }
