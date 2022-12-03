@@ -52,7 +52,8 @@
                 { "include": "#box-link-def" },
                 { "include": "#box-link-ref" },
                 { "include": "#quick-link" },
-                { "include": "#definition-operator" }
+                { "include": "#definition-operator" },
+                { "include": "#html-block" }
             ]
         },
 
@@ -316,6 +317,15 @@
             "endCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             }
+        },
+
+        "html-block": {
+            "contentName": "electris.source.embedded.html",
+            "begin": "(?=<[a-zA-Z])",
+            "end": "(?<=</.*>|/>)",
+            "patterns": [
+                { "include": "electris.text.html" }
+            ]
         },
 
         "escaped-char": {
