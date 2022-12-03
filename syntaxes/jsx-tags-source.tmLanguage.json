@@ -65,7 +65,7 @@
             ]
         },
         "tag-property-declaration-literal": {
-            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(['\"].*)",
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(['\"][^\\s>]*)",
             "captures": {
                 "1": { "name": "electris.xml.property" },
                 "2": { "name": "electris.xml.property-assignment" },
@@ -81,7 +81,7 @@
             }
         },
         "tag-property-declaration-bad-literal": {
-            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(.*)",
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*([^\\s>]*)",
             "captures": {
                 "1": { "name": "electris.xml.property" },
                 "2": { "name": "electris.xml.property-assignment" },
