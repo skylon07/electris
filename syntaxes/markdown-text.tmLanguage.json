@@ -14,7 +14,8 @@
                 { "include": "#list-operator" },
                 { "include": "#blockquote-operator" },
                 { "include": "#heading-hash" },
-                { "include": "#horizontal-rule" }
+                { "include": "#horizontal-rule" },
+                { "include": "#table" }
             ]
         },
         "line-expression": {
@@ -355,6 +356,41 @@
             "captures": {
                 "1": { "name": "electris.markdown.extended.style-operator" }
             }
+        },
+
+        "table": {
+            "begin": "(?=^\\s*([^|\\s]+\\s*\\||\\|\\s*[^|\\s]+))",
+            "end": "(?=^[^|-]*$)",
+            "patterns": [
+                { "include": "#table-row-col-def" },
+                { "include": "#table-row-first" }
+            ]
+        },
+        "table-row-col-def": {
+            "name": "electris.markdown.extended.style-operator",
+            "match": "^\\|?(\\s*:?-+:?\\s*\\|)*\\s*:?-+:?\\s*\\|?$"
+        },
+        "table-row-first": {
+            "begin": "^\\s*(\\|)?",
+            "end": "(?=$)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "patterns": [
+                { "include": "#table-row" },
+                { "include": "#line-expression" }
+            ]
+        },
+        "table-row": {
+            "begin": "(\\|)",
+            "end": "(?=$)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "patterns": [
+                { "include": "#table-row" },
+                { "include": "#line-expression" }
+            ]
         }
     }
 }
