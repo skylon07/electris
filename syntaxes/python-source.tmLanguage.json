@@ -159,6 +159,10 @@
                 { "include": "#literal-format-string-tsquote" },
                 { "include": "#literal-format-string-dquote" },
                 { "include": "#literal-format-string-squote" },
+                { "include": "#literal-raw-string-tdquote" },
+                { "include": "#literal-raw-string-tsquote" },
+                { "include": "#literal-raw-string-dquote" },
+                { "include": "#literal-raw-string-squote" },
                 { "include": "#literal-string-tdquote" },
                 { "include": "#literal-string-tsquote" },
                 { "include": "#literal-string-dquote" },
@@ -167,7 +171,7 @@
         },
         "literal-string-dquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?\"",
+            "begin": "(?<!(?<!\\\\)\\\\)(b|B)?\"",
             "end": "(?<!(?<!\\\\)\\\\)\"",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -178,7 +182,7 @@
         },
         "literal-string-squote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?'",
+            "begin": "(?<!(?<!\\\\)\\\\)(b|B)?'",
             "end": "(?<!(?<!\\\\)\\\\)'",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -189,7 +193,7 @@
         },
         "literal-string-tdquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?\"\"\"",
+            "begin": "(?<!(?<!\\\\)\\\\)(b|B)?\"\"\"",
             "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -200,7 +204,7 @@
         },
         "literal-string-tsquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r|R|b|B)?'''",
+            "begin": "(?<!(?<!\\\\)\\\\)(b|B)?'''",
             "end": "(?<!(?<!\\\\)\\\\)'''",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -208,6 +212,38 @@
             "patterns": [
                 { "include": "#literal-string-escape" }
             ]
+        },
+        "literal-raw-string-dquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R)\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
+        },
+        "literal-raw-string-squote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R)'",
+            "end": "(?<!(?<!\\\\)\\\\)'",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
+        },
+        "literal-raw-string-tdquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R)\"\"\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
+        },
+        "literal-raw-string-tsquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)(r|R)'''",
+            "end": "(?<!(?<!\\\\)\\\\)'''",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
         },
         "literal-format-string-dquote": {
             "name": "electris.source-code.primitive-literal",

@@ -141,6 +141,10 @@
         },
         "literal-string": {
             "patterns": [
+                { "include": "#literal-raw-string-tdquote" },
+                { "include": "#literal-raw-string-tsquote" },
+                { "include": "#literal-raw-string-dquote" },
+                { "include": "#literal-raw-string-squote" },
                 { "include": "#literal-string-tdquote" },
                 { "include": "#literal-string-tsquote" },
                 { "include": "#literal-string-dquote" },
@@ -149,7 +153,7 @@
         },
         "literal-string-dquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r?)\"",
+            "begin": "(?<!(?<!\\\\)\\\\)\"",
             "end": "(?<!(?<!\\\\)\\\\)\"",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -161,7 +165,7 @@
         },
         "literal-string-squote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r?)'",
+            "begin": "(?<!(?<!\\\\)\\\\)'",
             "end": "(?<!(?<!\\\\)\\\\)'",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -173,7 +177,7 @@
         },
         "literal-string-tdquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r?)\"\"\"",
+            "begin": "(?<!(?<!\\\\)\\\\)\"\"\"",
             "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -185,7 +189,7 @@
         },
         "literal-string-tsquote": {
             "name": "electris.source-code.primitive-literal",
-            "begin": "(?<!(?<!\\\\)\\\\)(r?)'''",
+            "begin": "(?<!(?<!\\\\)\\\\)'''",
             "end": "(?<!(?<!\\\\)\\\\)'''",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
@@ -194,6 +198,38 @@
                 { "include": "#extract-operator-dollar" },
                 { "include": "#literal-string-escape" }
             ]
+        },
+        "literal-raw-string-dquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)r\"",
+            "end": "\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
+        },
+        "literal-raw-string-squote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)r'",
+            "end": "'",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
+        },
+        "literal-raw-string-tdquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)r\"\"\"",
+            "end": "\"\"\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
+        },
+        "literal-raw-string-tsquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)r'''",
+            "end": "'''",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
         },
         "literal-keyword": {
             "name": "electris.source-code.primitive-literal",
