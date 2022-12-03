@@ -53,7 +53,10 @@
                 "scopeName": "electris.text.markdown",
                 "language": "markdown",
                 "embeddedLanguages": {
-                    "electris.source.embedded.python": "python"
+                    "electris.source.embedded.dart": "dart",
+                    "electris.source.embedded.python": "python",
+                    "electris.source.embedded.json": "json",
+                    "electris.source.embedded.javascript": "javascript"
                 }
             },
 
