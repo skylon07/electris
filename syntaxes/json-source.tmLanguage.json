@@ -16,6 +16,7 @@
             "patterns": [
                 { "include": "#literal-string" },
                 { "include": "#literal-number" },
+                { "include": "#literal-keyword" },
                 { "include": "#negative-operator" },
                 { "include": "#object-declaration" },
                 { "include": "#array-declaration" },
@@ -38,6 +39,10 @@
         "literal-number": {
             "name": "electris.source-code.primitive-literal",
             "match": "[0-9]+(\\.[0-9]*)?|\\.[0-9]+"
+        },
+        "literal-keyword": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "true|false|null"
         },
         
         "literal-string-escape": {
