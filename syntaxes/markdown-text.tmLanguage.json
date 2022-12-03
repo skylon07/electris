@@ -238,8 +238,56 @@
         },
         "code-block": {
             "patterns": [
+                { "include": "#code-block-dart" },
+                { "include": "#code-block-javascript" },
+                { "include": "#code-block-json" },
                 { "include": "#code-block-python" },
                 { "include": "#code-block-other" }
+            ]
+        },
+        "code-block-dart": {
+            "contentName": "electris.source.embedded.dart",
+            "begin": "(?<!(?<!\\\\)\\\\)(```)\\s*((dart)$)",
+            "end": "(```)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.code-lang" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "electris.source.dart" }
+            ]
+        },
+        "code-block-javascript": {
+            "contentName": "electris.source.embedded.javascript",
+            "begin": "(?<!(?<!\\\\)\\\\)(```)\\s*((javascript|js)$)",
+            "end": "(```)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.code-lang" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "electris.source.javascript" }
+            ]
+        },
+        "code-block-json": {
+            "contentName": "electris.source.embedded.json",
+            "begin": "(?<!(?<!\\\\)\\\\)(```)\\s*((json)$)",
+            "end": "(```)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.code-lang" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "electris.source.json" }
             ]
         },
         "code-block-python": {
