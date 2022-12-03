@@ -63,12 +63,12 @@
         },
 
         "heading-hash": {
-            "match": "(?<!^.*[_a-zA-Z0-9].*)(#+)([^{]*)(\\{#(.*)\\})?",
+            "match": "(?<!^.*[_a-zA-Z0-9].*)(#+)(((?!\\s*\\{.*}).)*)(?:\\s*)(\\{#(.*)\\})?",
             "captures": {
                 "1": { "name": "electris.markdown.heading electris.markdown.style-operator" },
                 "2": { "name": "electris.markdown.heading electris.text" },
-                "3": { "name": "electris.markdown.style-operator" },
-                "4": { "name": "electris.source-code.variable" }
+                "4": { "name": "electris.markdown.extended.style-operator" },
+                "5": { "name": "electris.source-code.variable" }
             }
         },
         "heading-underscored": {
