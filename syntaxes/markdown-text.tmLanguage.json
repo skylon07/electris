@@ -10,10 +10,10 @@
     "repository": {
         "begin-of-line-expression": {
             "patterns": [
+                { "include": "#checkbox-operator" },
                 { "include": "#list-operator" },
                 { "include": "#blockquote-operator" },
                 { "include": "#heading-hash" },
-                { "include": "#heading-underscored" },
                 { "include": "#horizontal-rule" }
             ]
         },
@@ -43,15 +43,28 @@
                 { "include": "#style-emphasized" },
                 { "include": "#extended-style-subscript" },
                 { "include": "#extended-style-superscript" },
-                { "include": "#code-slice" }
+                { "include": "#code-slice" },
+                { "include": "#footnote-def" },
+                { "include": "#footnote-ref" },
+                { "include": "#box-image" },
+                { "include": "#box-link" },
+                { "include": "#box-link-def" },
+                { "include": "#box-link-ref" },
+                { "include": "#quick-link" },
+                { "include": "#definition-operator" }
             ]
         },
 
         "list-operator": {
-            "name": "DEGUG-list",
             "match": "(?<!^.*[_a-zA-Z0-9].*)([0-9]+(\\.|\\))|-|\\+|\\*)\\s",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "checkbox-operator": {
+            "match": "(?<!^.*[_a-zA-Z0-9].*)(([0-9]+(\\.|\\))|-|\\+|\\*)\\s\\[[\\s|x|X]\\])\\s",
+            "captures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
             }
         },
 
@@ -68,17 +81,17 @@
                 "1": { "name": "electris.markdown.heading electris.markdown.style-operator" },
                 "2": { "name": "electris.markdown.heading electris.text" },
                 "4": { "name": "electris.markdown.extended.style-operator" },
-                "5": { "name": "electris.source-code.variable" }
+                "5": { "name": "electris.markdown.link-path" }
             }
         },
-        "heading-underscored": {
+        "heading-underscored-UNUSED-in-favor-of-horizontal-rule": {
             "name": "electris.markdown.horizontal-rule electris.markdown.style-operator",
             "match": "^\\s*(-|=)+\\s*$"
         },
 
         "horizontal-rule": {
-            "name": "electris.markdown.horizontal-rule electris.markdown.style-operator",
-            "match": "(?<!^.*[_a-zA-Z0-9].*)(-|_|\\*)+\\s*$"
+            "name": "electris.markdown.horizontal-rule",
+            "match": "(?<!^.*[_a-zA-Z0-9].*)(-|_|\\*){3}\\s*$"
         },
         
         "style-emphasized": {
@@ -124,7 +137,7 @@
         },
         "style-bold-asterisk": {
             "name": "electris.markdown.bold",
-            "begin": "(\\*\\*)",
+            "begin": "(\\*\\*)(?!\\*|$)",
             "end": "(\\*\\*)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
@@ -168,7 +181,7 @@
 
         "extended-style-highlighted": {
             "name": "electris.markdown.extended.highlighted",
-            "begin": "(==)",
+            "begin": "(==)(?!=|$)",
             "end": "(==)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.extended.style-operator" }
@@ -259,6 +272,89 @@
         "escaped-char": {
             "name": "electris.markdown.escape",
             "match": "\\\\[^a-zA-Z0-9]"
+        },
+
+        "box-link": {
+            "match": "(\\[)([^\\]]+)(\\]\\()([^\\s'\"]+)\\s*(\\s['\"].*['\"])?\\s*(\\))",
+            "captures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "3": { "name": "electris.markdown.style-operator" },
+                "4": { "name": "electris.markdown.link-path" },
+                "5": { "name": "electris.markdown.style-operator" },
+                "6": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "box-image": {
+            "match": "(!\\[)([^\\]]+)(\\]\\()([^\\s'\"]+)\\s*(\\s['\"].*['\"])?\\s*(\\))",
+            "captures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.image-link" },
+                "3": { "name": "electris.markdown.style-operator" },
+                "4": { "name": "electris.markdown.link-path" },
+                "5": { "name": "electris.markdown.image-link" },
+                "6": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "box-link-ref": {
+            "match": "(\\[)([^\\]]+)(\\])(\\[)(.+)(\\])",
+            "captures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "3": { "name": "electris.markdown.style-operator" },
+                "4": { "name": "electris.markdown.style-operator" },
+                "5": { "name": "electris.markdown.link-path" },
+                "6": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "box-link-def": {
+            "match": "^\\s*(\\[)([^\\]]+)(\\]:)\\s*([^\\s'\"]+)(\\s*['\"].*['\"])?",
+            "captures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.link-path" },
+                "3": { "name": "electris.markdown.style-operator" },
+                "4": { "name": "electris.markdown.link-path" },
+                "5": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "quick-link": {
+            "patterns": [
+                { "include": "#quick-link-brackets" },
+                { "include": "#quick-link-inline" }
+            ]
+        },
+        "quick-link-brackets": {
+            "match": "(<)([a-zA-Z0-9.]+(?:://|@)[^>\\s]+)(>)",
+            "captures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.link-path" },
+                "3": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "quick-link-inline": {
+            "name": "electris.markdown.link-path",
+            "match": "(?<=^|\\s)[a-zA-Z0-9.]+(?:://|@)[^\\s]+(?=\\s|$)"
+        },
+        "footnote-ref": {
+            "match": "(\\[\\^)([^\\]]+)(\\])",
+            "captures": {
+                "1": { "name": "electris.markdown.extended.style-operator" },
+                "2": { "name": "electris.markdown.link-path" },
+                "3": { "name": "electris.markdown.extended.style-operator" }
+            }
+        },
+        "footnote-def": {
+            "match": "^\\s*(\\[\\^)([^\\]]+)(\\]:)",
+            "captures": {
+                "1": { "name": "electris.markdown.extended.style-operator" },
+                "2": { "name": "electris.markdown.link-path" },
+                "3": { "name": "electris.markdown.extended.style-operator" }
+            }
+        },
+
+        "definition-operator": {
+            "match": "^\\s*(:)",
+            "captures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            }
         }
     }
 }

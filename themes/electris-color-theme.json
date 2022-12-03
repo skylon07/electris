@@ -292,11 +292,12 @@
 				"fontStyle": "bold underline"
 			}
 		},
-		// bold strikethrough -- horizontal rule
+		// off-white bold -- horizontal rule
 		{
 			"scope": "electris.markdown.horizontal-rule",
 			"settings": {
-				"fontStyle": "italic bold strikethrough"
+				"foreground": "#efefefaa",
+				"fontStyle": "italic bold"
 			}
 		},
 
@@ -349,6 +350,13 @@
 				"foreground": "#efefefaa"
 			}
 		},
+		// off-white -- image links
+		{
+			"scope": "electris.markdown.image-link",
+			"settings": {
+				"foreground": "#efefefaa"
+			}
+		},
 		// turquoise -- code language
 		{
 			"scope": "electris.markdown.code-lang",
@@ -362,6 +370,14 @@
 			"scope": "electris.markdown.escape",
 			"settings": {
 				"foreground": "#d15551"
+			}
+		},
+
+		// light blue -- link path
+		{
+			"scope": "electris.markdown.link-path",
+			"settings": {
+				"foreground": "#9fcff9"
 			}
 		},
 	]
