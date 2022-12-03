@@ -29,10 +29,25 @@ To modify an existing language using injections, use these properties:
     {
         "path": "./syntaxes/{language}-injections.tmLanguage.json",
         "scopeName": "electris.injections.{language}",
-        "injectTo": ["source.{language}"]
+        "injectTo": ["electris.source.{language}"]
     }
 ]
 ```
+
+An alternative method to injections is to define an `embeddedLanguages` property to indicate that the current grammar contains other languages inside itself.
+
+```json
+"grammars": [
+    {
+        ...
+        "embeddedLanguages": {
+            "electris.source.embedded.{language}": "{language}"
+        }
+    }
+]
+```
+
+Using `embeddedLanguages` tells the language recognizer in VSCode to recognize languages in scopes named `"electris.source.embedded.{language}"`. Defining these scopes is covered in [the next section](#configuring-the-grammar-file).
 
 ### Configuring the grammar file
 After `package.json` is updated, create the `syntaxes/{language}-injections.tmLanguage.json` file. This file should initially contain an object with these values:
@@ -44,7 +59,7 @@ After `package.json` is updated, create the `syntaxes/{language}-injections.tmLa
     ],
     // this MUST match `scopeName` in `package.json`
     "scopeName": "electris.{source/injections}.{language}",
-    "injectionSelector": "source.{language}", // delete if not injecting
+    "injectionSelector": "electris.source.{language}", // delete if not injecting
     "patterns": [
         // base rule definitions here
     ],
@@ -55,6 +70,21 @@ After `package.json` is updated, create the `syntaxes/{language}-injections.tmLa
 ```
 
 (where `{language}` is the VSCode-recognized language being used, and `{language file type}` is the file extension used for language source files)
+
+To use any embedded languages added with the `embeddedLanguages` property (in `package.json` -- discussed [here](#adding-the-grammar-file)), create a rule with a scope matching the scope of the embedded language along with including the language's style.
+
+``` json
+"code-block-python": {
+    "contentName": "electris.source.embedded.{language}",
+    "begin": "{matcher for beginning of embedded block}",
+    "end": "{matcher for end of embedded block}",
+    "patterns": [
+        { "include": "electris.source.{language}" }
+    ]
+},
+```
+
+In the example above, `"contentName"` indicates which language server should be used (assuming `package.json` is configured correctly), and `"patters"` provides the actual styling for the language.
 
 
 ## Adding Rules
