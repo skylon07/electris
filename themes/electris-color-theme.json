@@ -270,6 +270,7 @@
 			}
 		},
 
+
 		// blue -- style operators
 		{
 			"scope": "electris.markdown.style-operator",
@@ -336,6 +337,7 @@
 				"foreground": "#f6ff00"
 			}
 		},
+
 		// off-white -- subscript/superscript
 		{
 			"scope": "electris.markdown.extended.subscript, electris.markdown.extended.superscript",
@@ -343,6 +345,7 @@
 				"foreground": "#efefefaa"
 			}
 		},
+
 		// off-white -- code
 		{
 			"scope": "electris.markdown.code",
@@ -350,18 +353,20 @@
 				"foreground": "#efefefaa"
 			}
 		},
-		// off-white -- image links
-		{
-			"scope": "electris.markdown.image-link",
-			"settings": {
-				"foreground": "#efefefaa"
-			}
-		},
+
 		// turquoise -- code language
 		{
 			"scope": "electris.markdown.code-lang",
 			"settings": {
 				"foreground": "#21c5c7"
+			}
+		},
+
+		// off-white -- image links
+		{
+			"scope": "electris.markdown.image-link",
+			"settings": {
+				"foreground": "#efefefaa"
 			}
 		},
 
