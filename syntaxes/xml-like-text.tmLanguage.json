@@ -1,12 +1,61 @@
 {
     "fileTypes": [
-        "xml"
+        "xml",
+        "html"
     ],
     "scopeName": "electris.text.xml",
     "patterns": [
-        
+        { "include": "#tag-declaration" }
     ],
     "repository": {
+        "tag-declaration": {
+            "begin": "(<)(?!/)([_a-zA-Z0-9\\-]*)",
+            "end": "(?<=</[_a-zA-Z0-9\\-]*>|/>)",
+            "beginCaptures": {
+                "1": { "name": "electris.xml.tag-brace" },
+                "2": { "name": "electris.xml.tag-label" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.xml.tag-brace" }
+            },
+            "patterns": [
+                { "include": "#tag-properties" },
+                { "include": "#tag-children" }
+            ]
+        },
 
+        "tag-properties": {
+            "begin": "(?<=<[_a-zA-Z0-9\\-]*)",
+            "end": "(>)|(/>)",
+            "endCaptures": {
+                "1": { "name": "electris.xml.tag-brace" },
+                "2": { "name": "electris.xml.tag-brace" }
+            },
+            "patterns": [
+                { "include": "#tag-property-declaration-literal" }
+            ]
+        },
+
+        "tag-property-declaration-literal": {
+            "match": "([_a-zA-Z0-9\\-]+)(?:(=)(.*))?",
+            "captures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" },
+                "3": { "name": "electris.xml.property-value" }
+            }
+        },
+
+        "tag-children": {
+            "begin": "(?<!/>)(?<=>)",
+            "end": "(</)([_a-zA-Z0-9\\-]*)(>)",
+            "endCaptures": {
+                "1": { "name": "electris.xml.tag-brace" },
+                "2": { "name": "electris.xml.tag-label" },
+                "3": { "name": "electris.xml.tag-brace" }
+            },
+            "patterns": [
+                { "include": "#tag-declaration" }
+            ]
+        }
     }
 }
