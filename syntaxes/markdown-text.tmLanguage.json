@@ -1,0 +1,264 @@
+{
+    "fileTypes": [
+        "md"
+    ],
+    "scopeName": "electris.text.markdown",
+    "patterns": [
+        { "include": "#begin-of-line-expression" },
+        { "include": "#line-expression" }
+    ],
+    "repository": {
+        "begin-of-line-expression": {
+            "patterns": [
+                { "include": "#list-operator" },
+                { "include": "#blockquote-operator" },
+                { "include": "#heading-hash" },
+                { "include": "#heading-underscored" },
+                { "include": "#horizontal-rule" }
+            ]
+        },
+        "line-expression": {
+            "patterns": [
+                { "include": "#triple-syntax-paired-styles" },
+                { "include": "#double-syntax-paired-styles" },
+                { "include": "#single-syntax-paired-styles" },
+                { "include": "#escaped-char" }
+            ]
+        },
+
+        "triple-syntax-paired-styles": {
+            "patterns": [
+                { "include": "#code-block" }
+            ]
+        },
+        "double-syntax-paired-styles": {
+            "patterns": [
+                { "include": "#style-bold" },
+                { "include": "#style-strikethrough" },
+                { "include": "#extended-style-highlighted" }
+            ]
+        },
+        "single-syntax-paired-styles": {
+            "patterns": [
+                { "include": "#style-emphasized" },
+                { "include": "#extended-style-subscript" },
+                { "include": "#extended-style-superscript" },
+                { "include": "#code-slice" }
+            ]
+        },
+
+        "list-operator": {
+            "name": "DEGUG-list",
+            "match": "(?<!^.*[_a-zA-Z0-9].*)([0-9]+(\\.|\\))|-|\\+|\\*)\\s",
+            "captures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            }
+        },
+
+        "blockquote-operator": {
+            "match": "(?<!^.*[_a-zA-Z0-9].*)(>)",
+            "captures": {
+                "1": { "name": "electris.markdown.style-operator" } 
+            }
+        },
+
+        "heading-hash": {
+            "match": "(?<!^.*[_a-zA-Z0-9].*)(#+)([^{]*)(\\{#(.*)\\})?",
+            "captures": {
+                "1": { "name": "electris.markdown.heading electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.heading electris.text" },
+                "3": { "name": "electris.markdown.style-operator" },
+                "4": { "name": "electris.source-code.variable" }
+            }
+        },
+        "heading-underscored": {
+            "name": "electris.markdown.horizontal-rule electris.markdown.style-operator",
+            "match": "^\\s*(-|=)+\\s*$"
+        },
+
+        "horizontal-rule": {
+            "name": "electris.markdown.horizontal-rule electris.markdown.style-operator",
+            "match": "(?<!^.*[_a-zA-Z0-9].*)(-|_|\\*)+\\s*$"
+        },
+        
+        "style-emphasized": {
+            "patterns": [
+                { "include": "#style-emphasized-asterisk" },
+                { "include": "#style-emphasized-underscore" }
+            ]
+        },
+        "style-emphasized-asterisk": {
+            "name": "electris.markdown.emphasized",
+            "begin": "(\\*)(?!\\*|\\s)",
+            "end": "(?<!\\*|\\s)(\\*)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+        "style-emphasized-underscore": {
+            "name": "electris.markdown.emphasized",
+            "begin": "(?<=\\s_*)(_)(?!_)",
+            "end": "(?<!_)(_)(?=\\s|_)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+
+        "style-bold": {
+            "patterns": [
+                { "include": "#style-bold-asterisk" },
+                { "include": "#style-bold-underscore" }
+            ]
+        },
+        "style-bold-asterisk": {
+            "name": "electris.markdown.bold",
+            "begin": "(\\*\\*)",
+            "end": "(\\*\\*)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+        "style-bold-underscore": {
+            "name": "electris.markdown.bold",
+            "begin": "(?<=\\s|_)(__)",
+            "end": "(__)(?=\\s|_)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+
+        "style-strikethrough": {
+            "name": "electris.markdown.strikethrough",
+            "begin": "(~~)",
+            "end": "(~~)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+
+        "extended-style-highlighted": {
+            "name": "electris.markdown.extended.highlighted",
+            "begin": "(==)",
+            "end": "(==)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+
+        "extended-style-subscript": {
+            "name": "electris.markdown.extended.subscript",
+            "begin": "(?<!(?<!\\\\)\\\\|~)(~)",
+            "end": "(~)(?!~)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+
+        "extended-style-superscript": {
+            "name": "electris.markdown.extended.superscript",
+            "begin": "(?<!(?<!\\\\)\\\\)(\\^)",
+            "end": "(\\^)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" }
+            },
+            "patterns": [
+                { "include": "#line-expression" }
+            ]
+        },
+
+        "code-slice": {
+            "contentName": "electris.markdown.code",
+            "begin": "(?<!(?<!\\\\)\\\\)(`)",
+            "end": "(`)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "code-block": {
+            "patterns": [
+                { "include": "#code-block-python" },
+                { "include": "#code-block-other" }
+            ]
+        },
+        "code-block-python": {
+            "contentName": "electris.source.embedded.python",
+            "begin": "(?<!(?<!\\\\)\\\\)(```)\\s*((python|py)$)",
+            "end": "(```)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.code-lang" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "electris.source.python" }
+            ]
+        },
+        "code-block-other": {
+            "contentName": "electris.markdown.code",
+            "begin": "(?<!(?<!\\\\)\\\\)(```)(\\s*.*)?",
+            "end": "(```)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" },
+                "2": { "name": "electris.markdown.code-lang" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            }
+        },
+
+        "escaped-char": {
+            "name": "electris.markdown.escape",
+            "match": "\\\\[^a-zA-Z0-9]"
+        }
+    }
+}

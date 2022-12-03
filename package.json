@@ -42,6 +42,14 @@
                 "path": "./syntaxes/javascript-source.tmLanguage.json",
                 "scopeName": "electris.source.javascript",
                 "language": "javascript"
+            },
+            {
+                "path": "./syntaxes/markdown-text.tmLanguage.json",
+                "scopeName": "electris.text.markdown",
+                "language": "markdown",
+                "embeddedLanguages": {
+                    "electris.source.embedded.python": "python"
+                }
             }
         ]
     }

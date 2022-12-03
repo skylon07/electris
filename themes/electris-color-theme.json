@@ -268,8 +268,101 @@
 			"settings": {
 				"foreground": "#efefef"
 			}
-		}
-		
-		// TODO: markdown tokens
+		},
+
+		// blue -- style operators
+		{
+			"scope": "electris.markdown.style-operator",
+			"settings": {
+				"foreground": "#339ef4"
+			}
+		},
+		// turquoise -- extended style operators
+		{
+			"scope": "electris.markdown.extended.style-operator",
+			"settings": {
+				"foreground": "#21c5c7"
+			}
+		},
+
+		// bold underline -- heading
+		{
+			"scope": "electris.markdown.heading",
+			"settings": {
+				"fontStyle": "bold underline"
+			}
+		},
+		// bold strikethrough -- horizontal rule
+		{
+			"scope": "electris.markdown.horizontal-rule",
+			"settings": {
+				"fontStyle": "italic bold strikethrough"
+			}
+		},
+
+		// bold -- bold style
+		{
+			"scope": "electris.markdown.bold",
+			"settings": {
+				"fontStyle": "bold"
+			}
+		},
+		// italic -- emphasized style
+		{
+			"scope": "electris.markdown.emphasized",
+			"settings": {
+				"fontStyle": "italic"
+			}
+		},
+		// italic bold -- bold and emphasized style
+		{
+			"scope": "electris.markdown.emphasized electris.markdown.bold, electris.markdown.bold electris.markdown.emphasized",
+			"settings": {
+				"fontStyle": "italic bold"
+			}
+		},
+		// strikethrough -- strikethrough style
+		{
+			"scope": "electris.markdown.strikethrough",
+			"settings": {
+				"fontStyle": "strikethrough"
+			}
+		},
+		// highlighted -- highlighted style
+		{
+			"scope": "electris.markdown.extended.highlighted",
+			"settings": {
+				"foreground": "#f6ff00"
+			}
+		},
+		// off-white -- subscript/superscript
+		{
+			"scope": "electris.markdown.extended.subscript, electris.markdown.extended.superscript",
+			"settings": {
+				"foreground": "#efefefaa"
+			}
+		},
+		// off-white -- code
+		{
+			"scope": "electris.markdown.code",
+			"settings": {
+				"foreground": "#efefefaa"
+			}
+		},
+		// turquoise -- code language
+		{
+			"scope": "electris.markdown.code-lang",
+			"settings": {
+				"foreground": "#21c5c7"
+			}
+		},
+
+		// red -- escapes
+		{
+			"scope": "electris.markdown.escape",
+			"settings": {
+				"foreground": "#d15551"
+			}
+		},
 	]
 }
