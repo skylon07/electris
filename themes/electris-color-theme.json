@@ -1,7 +1,7 @@
 {
 	"name": "electris",
 	"colors": {
-		// main editors
+      	// main editors
 		"editor.background": "#181e29",
 		"editor.foreground": "#efefef",
 		"editor.lineHighlightBorder": "#263040",
@@ -136,9 +136,15 @@
 	},
 	"semanticHighlighting": true,
 	"tokenColors": [
-		// ugly yellow -- unconsidered tokens
+		// white -- preview source (and non-electris code)
 		{
-			"scope": "source, electris.source",
+			"scope": "source",
+			"settings": {
+				"foreground": "#efefef"
+			}
+		},
+		{
+			"scope": "electris.source",
 			"settings": {
 				"foreground": "#f6ff00"
 			}
