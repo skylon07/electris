@@ -32,12 +32,21 @@
                 "2": { "name": "electris.xml.tag-brace" }
             },
             "patterns": [
-                { "include": "#tag-property-declaration-literal" }
+                { "include": "#tag-property-declaration-literal" },
+                { "include": "#tag-property-declaration-literal-no-assignment" }
             ]
         },
 
         "tag-property-declaration-literal": {
-            "match": "([_a-zA-Z0-9\\-]+)(?:(=)(.*))?",
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(.*)",
+            "captures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" },
+                "3": { "name": "electris.xml.property-value" }
+            }
+        },
+        "tag-property-declaration-literal-no-assignment": {
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(?!=)",
             "captures": {
                 "1": { "name": "electris.xml.property" },
                 "2": { "name": "electris.xml.property-assignment" },
