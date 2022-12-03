@@ -99,7 +99,7 @@
         },
         "keyword": {
             "name": "electris.source-code.operator",
-            "match": "(abstract|arguments|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|(async )?function|goto|if|implements|import|in|instanceof|interface|let|new|package|private|protected|public|return|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)(?![_a-zA-Z0-9])"
+            "match": "(abstract|arguments|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|export|extends|finally|for|from|function|goto|if|implements|import|in|instanceof|interface|let|new|package|private|protected|public|return|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)(?![_a-zA-Z0-9])"
         },
 
         "literal-number": {
