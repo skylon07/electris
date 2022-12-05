@@ -1,0 +1,165 @@
+{
+    "fileTypes": [
+        "css",
+        "less"
+    ],
+    "scopeName": "electris.text.css",
+    "patterns": [
+        { "include": "#comment" },
+        { "include": "#class-declaration" },
+        { "include": "#class-declaration-unfinished" }
+    ],
+    "repository": {
+        "comment": {
+            "name": "electris.source-code.comment",
+            "begin": "/\\*",
+            "end": "\\*/",
+            "patterns": [{ "include": "#comment" }]
+        },
+
+        "class-declaration": {
+            "begin": "(?=.*\\{)",
+            "end": "(?<=\\})",
+            "patterns": [
+                { "include": "#class-scope-pseudo" },
+                { "include": "#class-scope-name" },
+                { "include": "#class-self-ref-operator" },
+                { "include": "#class-scope-operator" },
+                { "include": "#list-separator" },
+                { "include": "#parameter-punctuation" },
+                { "include": "#class-declaration-block" }
+            ]
+        },
+        "class-declaration-unfinished": {
+            "begin": "(?=&|:|.*\\.|>|\\+|~)",
+            "end": "(?<=$)",
+            "patterns": [
+                { "include": "#class-scope-pseudo" },
+                { "include": "#class-scope-name" },
+                { "include": "#class-self-ref-operator" },
+                { "include": "#class-scope-operator" },
+                { "include": "#list-separator" },
+                { "include": "#parameter-punctuation" },
+                { "include": "#class-declaration-block" }
+            ]
+        },
+
+        "class-scope-name": {
+            "name": "electris.source-code.types.type",
+            "match": "[_a-zA-Z0-9\\-]+"
+        },
+        "class-scope-pseudo": {
+            "name": "electris.source-code.function-call",
+            "match": "(?<=:\\s*)(?!root)[_a-zA-Z0-9\\-\\.]+"
+        },
+        "class-self-ref-operator": {
+            "name": "electris.source-code.operator",
+            "match": "&"
+        },
+        "class-scope-operator": {
+            "name": "electris.source-code.operator",
+            "match": ":|>|\\+|~|\\."
+        },
+
+        "list-separator": {
+            "name": "electris.source-code.punctuation",
+            "match": ","
+        },
+        "parameter-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\(|\\)"
+        },
+
+        "class-declaration-block": {
+            "begin": "(\\{)",
+            "end": "(\\})",
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "patterns": [
+                { "include": "#comment" },
+                { "include": "#class-property" },
+                { "include": "#class-declaration" },
+                { "include": "#class-declaration-unfinished" }
+            ]
+        },
+
+        "class-property": {
+            "begin": "([_a-zA-Z0-9\\-]+)(?!.*\\.)",
+            "end": "(;)",
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.variable" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "patterns": [
+                { "include": "#class-property-value-list" }
+            ]
+        },
+
+        "class-property-value-list": {
+            "begin": "(:)",
+            "end": "(?=;)",
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "patterns": [
+                { "include": "#value-list" }
+            ]
+        },
+        "value-list": {
+            "patterns": [
+                { "include": "#list-separator" },
+                { "include": "#class-property-value" }
+            ]
+        },
+        "class-property-value": {
+            "patterns": [
+                { "include": "#function" },
+                { "include": "#variable" },
+                { "include": "#string" },
+                { "include": "#literal" }
+            ]
+        },
+
+        "function": {
+            "begin": "([_a-zA-Z0-9\\-]+)(?=\\()",
+            "end": "(?<=\\))",
+            "beginCaptures": {
+                "1" : { "name": "electris.source-code.function-call" }
+            },
+            "patterns": [
+                { "include": "#parameter-punctuation" },
+                { "include": "#value-list" }
+            ]
+        },
+        "string": {
+            "patterns": [
+                { "include": "#string-squote" },
+                { "include": "#string-dquote" }
+            ]
+        },
+        "string-squote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "'",
+            "end": "'"
+        },
+        "string-dquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "\"",
+            "end": "\""
+        },
+        "variable": {
+            "name": "electris.source-code.variable",
+            "match": "--[_a-zA-Z0-9\\-]+"
+        },
+        "literal": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "[_a-zA-Z0-9\\-]+"
+        }
+    }
+}

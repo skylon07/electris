@@ -1,0 +1,9 @@
+{
+    "fileTypes": [
+        "less"
+    ],
+    "scopeName": "electris.text.less",
+    "patterns": [
+        { "include": "electris.text.css" }
+    ]
+}

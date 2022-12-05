@@ -88,6 +88,18 @@
                 "embeddedLanguages": {
                     "electris.source.embedded.javascript": "javascript"
                 }
+            },
+
+
+            {
+                "path": "./syntaxes/css-like-text.tmLanguage.json",
+                "scopeName": "electris.text.css",
+                "language": "css"
+            },
+            {
+                "path": "./syntaxes/less-text.tmLanguage.json",
+                "scopeName": "electris.text.less",
+                "language": "less"
             }
         ]
     }
