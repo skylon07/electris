@@ -50,7 +50,7 @@
         },
         "class-scope-pseudo": {
             "name": "electris.source-code.function-call",
-            "match": "(?<=:\\s*)(?!root)[_a-zA-Z0-9\\-\\.]+"
+            "match": "(?<=:\\s*)(?!root)[_a-zA-Z0-9\\-]+"
         },
         "class-self-ref-operator": {
             "name": "electris.source-code.operator",
