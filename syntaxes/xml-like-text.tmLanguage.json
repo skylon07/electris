@@ -38,12 +38,26 @@
         },
 
         "tag-property-declaration-literal": {
-            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*([^\\s>]*)",
-            "captures": {
+            "begin": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(?=['\"])",
+            "end": "(?<=['\"])",
+            "beginCaptures": {
                 "1": { "name": "electris.xml.property" },
-                "2": { "name": "electris.xml.property-assignment" },
-                "3": { "name": "electris.xml.property-value" }
-            }
+                "2": { "name": "electris.xml.property-assignment" }
+            },
+            "patterns": [
+                { "include": "#string-dquote" },
+                { "include": "#string-squote" }
+            ]
+        },
+        "string-dquote": {
+            "name": "electris.xml.property-value",
+            "begin": "\"",
+            "end": "\""
+        },
+        "string-squote": {
+            "name": "electris.xml.property-value",
+            "begin": "'",
+            "end": "'"
         },
         "tag-property-declaration-literal-no-assignment": {
             "match": "([_a-zA-Z0-9\\-]+)\\s*(?!=)",
