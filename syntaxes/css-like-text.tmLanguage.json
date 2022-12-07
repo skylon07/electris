@@ -134,6 +134,7 @@
         "class-property-value": {
             "patterns": [
                 { "include": "#function" },
+                { "include": "#value-operator" },
                 { "include": "#variable" },
                 { "include": "#string" },
                 { "include": "#literal" }
@@ -174,6 +175,10 @@
         "literal": {
             "name": "electris.source-code.primitive-literal",
             "match": "[_a-zA-Z0-9\\-]+"
+        },
+        "value-operator": {
+            "name": "electris.source-code.operator",
+            "match": "\\+|-|\\*|/|%"
         }
     }
 }
