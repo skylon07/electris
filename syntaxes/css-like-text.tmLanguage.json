@@ -7,7 +7,7 @@
     "patterns": [
         { "include": "#comment" },
         { "include": "#class-declaration" },
-        { "include": "#class-declaration-unfinished" }
+        { "include": "#class-declaration-unfinished-top-level" }
     ],
     "repository": {
         "comment": {
@@ -20,6 +20,19 @@
         "class-declaration": {
             "begin": "(?=.*\\{)",
             "end": "(?<=\\})",
+            "patterns": [
+                { "include": "#class-scope-pseudo" },
+                { "include": "#class-scope-name" },
+                { "include": "#class-self-ref-operator" },
+                { "include": "#class-scope-operator" },
+                { "include": "#list-separator" },
+                { "include": "#parameter-punctuation" },
+                { "include": "#class-declaration-block" }
+            ]
+        },
+        "class-declaration-unfinished-top-level": {
+            "begin": "(?=^\\s*.)",
+            "end": "(?<=$)",
             "patterns": [
                 { "include": "#class-scope-pseudo" },
                 { "include": "#class-scope-name" },
