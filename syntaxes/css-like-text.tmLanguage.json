@@ -43,6 +43,7 @@
                 { "include": "#class-declaration-block" }
             ]
         },
+        "TODO: fix . in property value falsely matching this": true,
         "class-declaration-unfinished": {
             "begin": "(?=&|:|.*\\.|>|\\+|~)",
             "end": "(?<=$)",
