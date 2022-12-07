@@ -134,8 +134,8 @@
         "class-property-value": {
             "patterns": [
                 { "include": "#function" },
-                { "include": "#value-operator" },
                 { "include": "#variable" },
+                { "include": "#value-operator" },
                 { "include": "#string" },
                 { "include": "#literal" }
             ]
