@@ -36,6 +36,7 @@
             ]
         },
 
+        "TODO: fix tasg being recognized as property values mid-typing (ex <div> <a </div>": true,
         "tag-property-declaration-expression": {
             "begin": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(?=\\{)",
             "end": "(?<=\\})",
