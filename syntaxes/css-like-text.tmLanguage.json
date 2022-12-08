@@ -71,7 +71,7 @@
         },
         "class-scope-operator": {
             "name": "electris.source-code.operator",
-            "match": ":|>|\\+|~|\\."
+            "match": ":|>|\\+|~|\\.|\\*"
         },
 
         "list-separator": {
