@@ -10,8 +10,8 @@
             "patterns": [
                 {
                     "name": "electris.source-text.embedded.jsx-tags",
-                    "begin": "(?=<([_a-zA-Z0-9]|>))",
-                    "end": "(?<=</[_a-zA-Z0-9]*>|/>)",
+                    "begin": "(?=<([_a-zA-Z0-9\\-\\.]|>))",
+                    "end": "(?<=</[_a-zA-Z0-9\\-\\.]*>|/>)",
                     "patterns": [
                         { "include": "electris.source-text.jsx-tags" }
                     ]
