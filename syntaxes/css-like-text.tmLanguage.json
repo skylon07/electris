@@ -18,7 +18,7 @@
         },
 
         "class-declaration": {
-            "begin": "(?=.*\\{)",
+            "begin": "(?=.+\\{)",
             "end": "(?<=\\})",
             "patterns": [
                 { "include": "#class-scope-pseudo" },
@@ -101,7 +101,7 @@
         },
 
         "class-property": {
-            "begin": "([_a-zA-Z0-9\\-]+)",
+            "begin": "(?:\\s*)([_a-zA-Z0-9\\-]+)",
             "end": "(;)",
             "beginCaptures": {
                 "1": { "name": "electris.source-code.variable" }
