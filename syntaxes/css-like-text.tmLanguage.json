@@ -43,9 +43,8 @@
                 { "include": "#class-declaration-block" }
             ]
         },
-        "TODO: fix . in property value falsely matching this": true,
         "class-declaration-unfinished": {
-            "begin": "(?=&|:|.*\\.|>|\\+|~)",
+            "begin": "(?=&|:|^[_a-zA-Z0-9\\s]*\\.|>|\\+|~)",
             "end": "(?<=$)",
             "patterns": [
                 { "include": "#class-scope-pseudo" },
@@ -102,7 +101,7 @@
         },
 
         "class-property": {
-            "begin": "([_a-zA-Z0-9\\-]+)(?!.*\\.)",
+            "begin": "([_a-zA-Z0-9\\-]+)",
             "end": "(;)",
             "beginCaptures": {
                 "1": { "name": "electris.source-code.variable" }
@@ -174,7 +173,7 @@
         },
         "literal": {
             "name": "electris.source-code.primitive-literal",
-            "match": "[_a-zA-Z0-9\\-]+"
+            "match": "[_a-zA-Z0-9\\-\\.]+"
         },
         "value-operator": {
             "name": "electris.source-code.operator",
