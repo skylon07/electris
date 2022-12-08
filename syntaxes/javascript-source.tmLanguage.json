@@ -45,7 +45,8 @@
                 { "include": "#literal-keyword" },
                 { "include": "#literal-number" },
                 { "include": "#literal-string" },
-                { "include": "#constant-literal" }
+                { "include": "#constant-literal" },
+                { "include": "#object-declaration" }
             ]
         },
         {
@@ -186,7 +187,6 @@
             "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\()"
         },
 
-        "TODO: fix this inside jsx expressions": true,
         "scope-punctuation": {
             "name": "electris.source-code.punctuation",
             "match": "\\{|\\}"
@@ -198,6 +198,20 @@
         "expression-punctuation": {
             "name": "electris.source-code.punctuation",
             "match": "\\.|,|;|\\(|\\)"
+        },
+
+        "object-declaration": {
+            "begin": "(\\{)",
+            "end": "(\\})",
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "patterns": [
+                { "include": "$self" }
+            ]
         }
     }
 }
