@@ -85,7 +85,7 @@
 
         "first-string-object-key": {
             "name": "electris.source-code.variable",
-            "match": "(?<=(^|{)[\\s{]*)(\"[^\"]*\")"
+            "match": "(?<=(^|{|,)[\\s{]*)(\"[^\"]*\")"
         }
     }
 }
