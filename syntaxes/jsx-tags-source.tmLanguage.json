@@ -31,6 +31,7 @@
                 { "include": "#tag-property-declaration-expression" },
                 { "include": "#tag-property-declaration-tag" },
                 { "include": "#tag-property-declaration-literal" },
+                { "include": "#javascript-block", "for": "cases like <div {...props} />"},
                 { "include": "#tag-property-declaration-bad-literal" },
                 { "include": "#tag-property-declaration-literal-no-assignment" }
             ]
