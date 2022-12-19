@@ -30,10 +30,11 @@
                     ]
                 },
                 {
-                    "precedenceGroup": "keywords",
+                    "precedenceGroup": "builtins",
                     "patterns": [
                         { "include": "#keyword" },
-                        { "include": "#self-keyword" }
+                        { "include": "#self-keyword" },
+                        { "include": "#builtin-type" }
                     ]
                 },
                 {
@@ -58,8 +59,7 @@
                 {
                     "precedenceGroup": "non-typedef-type-references",
                     "patterns": [
-                        { "include": "#type-reference" },
-                        { "include": "#builtin-type" }
+                        { "include": "#type-reference" }
                     ]
                 },
                 {
