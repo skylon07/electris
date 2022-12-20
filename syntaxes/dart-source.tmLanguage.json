@@ -267,7 +267,7 @@
         },
         "builtin-type": {
             "name": "electris.source-code.types.type",
-            "match": "(num|int|double|bool)(?![_a-zA-Z0-9])"
+            "match": "(?<![_a-zA-Z0-9.])(num|int|double|bool)(?![_a-zA-Z0-9])"
         },
 
         "type-args-list": {

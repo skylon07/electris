@@ -347,7 +347,7 @@
         },
         "builtin-type": {
             "name": "electris.source-code.types.type",
-            "match": "(type|int|float|complex|list|tuple|range|str|bool|bytes|bytearray|memoryview|set|frozenset|dict|object|ABC)(?![_a-zA-Z0-9])"
+            "match": "(?<![_a-zA-Z0-9.]|def )(type|int|float|complex|list|tuple|range|str|bool|bytes|bytearray|memoryview|set|frozenset|dict|object|ABC)(?![_a-zA-Z0-9])"
         },
         "typedef-type-reference": {
             "patterns": [

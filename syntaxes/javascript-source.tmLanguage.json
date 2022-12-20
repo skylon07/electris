@@ -28,7 +28,6 @@
         {
             "precedenceGroup": "builtin-keywords",
             "patterns": [
-                { "include": "#builtin-type" },
                 { "include": "#keyword" },
                 { "include": "#keyword-operator" }
             ]
