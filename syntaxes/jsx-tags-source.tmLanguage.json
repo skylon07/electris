@@ -22,10 +22,11 @@
 
         "tag-properties": {
             "begin": "(?<=<[_a-zA-Z0-9\\-\\.]*)",
-            "end": "(>)|(/>)",
+            "end": "(>)|(/>)|(/(?=\\s*$))",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
-                "2": { "name": "electris.xml.tag-brace" }
+                "2": { "name": "electris.xml.tag-brace" },
+                "3": { "name": "electris.xml.tag-brace" }
             },
             "patterns": [
                 { "include": "#tag-property-declaration-expression" },
