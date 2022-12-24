@@ -30,11 +30,10 @@
                     ]
                 },
                 {
-                    "precedenceGroup": "builtins",
+                    "precedenceGroup": "keywords",
                     "patterns": [
                         { "include": "#keyword" },
-                        { "include": "#self-keyword" },
-                        { "include": "#builtin-type" }
+                        { "include": "#self-keyword" }
                     ]
                 },
                 {
@@ -48,6 +47,12 @@
         },
         "self-below-typedefs": {
             "patterns": [
+                {
+                    "precedenceGroup": "non-typedef-builtin-types",
+                    "patterns": [
+                        { "include": "#builtin-type"}
+                    ]
+                },
                 {
                     "precedenceGroup": "non-keyword-literals",
                     "patterns": [
