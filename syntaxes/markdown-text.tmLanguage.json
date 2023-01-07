@@ -320,7 +320,7 @@
         },
 
         "html-block": {
-            "contentName": "electris.source.embedded.html",
+            "contentName": "electris.text.embedded.html",
             "begin": "(?=<[a-zA-Z])",
             "end": "(?<=</.*>|/>)",
             "patterns": [
