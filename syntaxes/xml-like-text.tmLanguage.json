@@ -39,15 +39,16 @@
         },
 
         "tag-property-declaration-literal": {
-            "begin": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(?=['\"])",
-            "end": "(?<=['\"])",
+            "begin": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(?=['\"0-9\\.])",
+            "end": "(?<=['\"0-9\\.])",
             "beginCaptures": {
                 "1": { "name": "electris.xml.property" },
                 "2": { "name": "electris.xml.property-assignment" }
             },
             "patterns": [
                 { "include": "#string-dquote" },
-                { "include": "#string-squote" }
+                { "include": "#string-squote" },
+                { "include": "#number" }
             ]
         },
         "string-dquote": {
@@ -59,6 +60,10 @@
             "name": "electris.xml.property-value",
             "begin": "'",
             "end": "'"
+        },
+        "number": {
+            "name": "electris.xml.property-value",
+            "match": "[0-9.]+"
         },
         "tag-property-declaration-literal-no-assignment": {
             "match": "([_a-zA-Z0-9\\-]+)\\s*(?!=)",
