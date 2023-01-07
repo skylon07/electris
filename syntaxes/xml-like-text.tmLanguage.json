@@ -26,13 +26,14 @@
 
         "tag-properties": {
             "begin": "(?<=<[_a-zA-Z0-9\\-]*)",
-            "end": "(>)|(/>)",
+            "end": "(>)|(/>)|(/(?=\\s*$))",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
                 "2": { "name": "electris.xml.tag-brace" }
             },
             "patterns": [
                 { "include": "#tag-property-declaration-literal" },
+                { "include": "#tag-property-declaration-bad-literal" },
                 { "include": "#tag-property-declaration-literal-no-assignment" }
             ]
         },
@@ -67,10 +68,18 @@
                 "3": { "name": "electris.xml.property-value" }
             }
         },
+        "tag-property-declaration-bad-literal": {
+            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*([^\\s>]*)",
+            "captures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" },
+                "3": { "name": "electris.text" }
+            }
+        },
 
         "tag-children": {
             "begin": "(?<!/>)(?<=>)",
-            "end": "(</)([_a-zA-Z0-9\\-]*)(>)",
+            "end": "(</)([_a-zA-Z0-9\\-]*)?(>)?",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
                 "2": { "name": "electris.xml.tag-label" },
