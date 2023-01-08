@@ -50,7 +50,8 @@
                 {
                     "precedenceGroup": "non-typedef-builtin-types",
                     "patterns": [
-                        { "include": "#builtin-type"}
+                        { "include": "#builtin-type"},
+                        { "include": "#3rd-party-builtin-type"}
                     ]
                 },
                 {
@@ -352,7 +353,11 @@
         },
         "builtin-type": {
             "name": "electris.source-code.types.type",
-            "match": "(?<![_a-zA-Z0-9.]|def )(type|int|float|complex|list|tuple|range|str|bool|bytes|bytearray|memoryview|set|frozenset|dict|object|ABC)(?![_a-zA-Z0-9])"
+            "match": "(?<![_a-zA-Z0-9.]|def )(type|int|float|complex|list|tuple|range|str|bool|bytes|bytearray|memoryview|set|frozenset|dict|object)(?![_a-zA-Z0-9])"
+        },
+        "3rd-party-builtin-type": {
+            "name": "electris.source-code.types.type",
+            "match": "(?<![_a-zA-Z0-9.]|def )(ABC)(?![_a-zA-Z0-9])"
         },
         "typedef-type-reference": {
             "patterns": [
