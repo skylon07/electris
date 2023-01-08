@@ -362,11 +362,11 @@
         },
         "typedef-type-reference-first": {
             "name": "electris.source-code.types.type",
-            "match": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))['\"_a-zA-Z0-9.]+"
+            "match": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))(?!\\.)['\"_a-zA-Z0-9.]+"
         },
         "typedef-type-reference-first-brackets": {
             "name": "electris.source-code.types.type",
-            "begin": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))['\"_a-zA-Z0-9.]+(?=\\[)",
+            "begin": "((?<!lambda[^,]*)(?<=[_a-zA-Z0-9]:\\s*)|(?<=->\\s*))(?!\\.)['\"_a-zA-Z0-9.]+(?=\\[)",
             "end": "(?<=\\])",
             "patterns": [
                 { "include": "#typedef-type-reference-recursive-brackets" },
