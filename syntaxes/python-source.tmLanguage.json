@@ -85,6 +85,7 @@
                     "patterns": [
                         { "include": "#math-operator" },
                         { "include": "#condition-operator" },
+                        { "include": "#operator-incomplete" },
                         { "include": "#assignment-operator" },
                         { "include": "#decorator" },
                         { "include": "#scope-punctuation" },
@@ -137,6 +138,10 @@
         "condition-operator": {
             "name": "electris.source-code.operator",
             "match": ">|>=|<|<=|==|!="
+        },
+        "operator-incomplete": {
+            "name": "electris.source-code.operator",
+            "match": "!"
         },
         "assignment-operator": {
             "name": "electris.source-code.operator",
