@@ -58,27 +58,27 @@
         },
 
         "list-operator": {
-            "match": "(?<=^\\s*|[^_a-zA-Z0-9]*\\s+)([0-9]+(\\.|\\))|-|\\+|\\*)\\s",
+            "match": "(?<=^\\s*|^[^_a-zA-Z0-9]*\\s+)([0-9]+(\\.|\\))|-|\\+|\\*)\\s",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" }
             }
         },
         "checkbox-operator": {
-            "match": "(?<=^\\s*|[^_a-zA-Z0-9]*\\s+)(([0-9]+(\\.|\\))|-|\\+|\\*)\\s\\[[\\s|x|X]\\])\\s",
+            "match": "(?<=^\\s*|^[^_a-zA-Z0-9]*\\s+)(([0-9]+(\\.|\\))|-|\\+|\\*)\\s\\[[\\s|x|X]\\])\\s",
             "captures": {
                 "1": { "name": "electris.markdown.extended.style-operator" }
             }
         },
 
         "blockquote-operator": {
-            "match": "(?<=^\\s*|[^_a-zA-Z0-9]*\\s+)(>)",
+            "match": "(?<=^\\s*|^[^_a-zA-Z0-9]*\\s+)(>)",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" } 
             }
         },
 
         "heading-hash": {
-            "match": "(?<=^\\s*|[^_a-zA-Z0-9]*\\s+)(#+)(((?!\\s*\\{.*}).)*)(?:\\s*)(\\{#(.*)\\})?",
+            "match": "(?<=^\\s*|^[^_a-zA-Z0-9]*\\s+)(#+)(((?!\\s*\\{.*}).)*)(?:\\s*)(\\{#(.*)\\})?",
             "captures": {
                 "1": { "name": "electris.markdown.heading electris.markdown.style-operator" },
                 "2": { "name": "electris.markdown.heading electris.text" },
@@ -93,7 +93,7 @@
 
         "horizontal-rule": {
             "name": "electris.markdown.horizontal-rule",
-            "match": "(?<=^\\s*|[^_a-zA-Z0-9]*\\s+)(-|_|\\*){3,}\\s*$"
+            "match": "(?<=^\\s*|^[^_a-zA-Z0-9]*\\s+)(-|_|\\*){3,}\\s*$"
         },
         
         "style-emphasized": {
