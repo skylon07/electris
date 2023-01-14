@@ -310,7 +310,7 @@
 		{
 			"scope": "electris.markdown.horizontal-rule",
 			"settings": {
-				"foreground": "#efefefaa",
+				"foreground": "#efefef90",
 				"fontStyle": "italic bold"
 			}
 		},
@@ -355,7 +355,7 @@
 		{
 			"scope": "electris.markdown.extended.subscript, electris.markdown.extended.superscript",
 			"settings": {
-				"foreground": "#efefefaa"
+				"foreground": "#efefef90"
 			}
 		},
 
@@ -363,7 +363,7 @@
 		{
 			"scope": "electris.markdown.code",
 			"settings": {
-				"foreground": "#efefefaa"
+				"foreground": "#efefef90"
 			}
 		},
 
@@ -379,7 +379,7 @@
 		{
 			"scope": "electris.markdown.image-link",
 			"settings": {
-				"foreground": "#efefefaa"
+				"foreground": "#efefef90"
 			}
 		},
 
