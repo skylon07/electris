@@ -117,12 +117,8 @@
             ]
         },
         "escaped-format-operator": {
-            "begin": "\\{\\{",
-            "end": "\\}\\}",
-            "patterns": [
-                { "include": "#escaped-format-operator" },
-                { "include": "#non-escaped-format-operator" }
-            ]
+            "name": "electris.source-code.escape",
+            "match": "\\{\\{|\\}\\}"
         },
         "non-escaped-format-operator": {
             "begin": "(\\{)",
