@@ -260,10 +260,17 @@
             "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
         "type-reference-generic": {
-            "name": "electris.source-code.types.type",
-            "begin": "_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*(?=<)",
+            "begin": "(_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*)(?=<)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
-            "patterns": [{ "include": "#type-args-list" }]
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.types.type" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.source-code.types.type" }
+            },
+            "patterns": [
+                { "include": "#type-args-list" }
+            ]
         },
         "builtin-type": {
             "name": "electris.source-code.types.type",
@@ -275,8 +282,14 @@
             "begin": "(?<=[_a-zA-Z0-9]<*)<|<(?=<*[_a-zA-Z0-9])",
             "end": ">",
             "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" }
+                { "include": "#type-reference-generic" },
+                { "include": "#type-reference" },
+                { "include": "#type-args-keywords" },
+                { "include": "#type-args-regular-punctuation" },
+                { "include": "#builtin-type" },
+                { "include": "#literal-keyword" },
+                { "include": "#constant-literal" },
+                { "include": "#variable-reference" }
             ]
         },
         "type-args-keywords": {
@@ -284,6 +297,10 @@
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
             }
+        },
+        "type-args-regular-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "[.]"
         },
 
         "function-call": {

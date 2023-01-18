@@ -360,41 +360,59 @@
             "name": "electris.source-code.types.type",
             "match": "(?<![_a-zA-Z0-9.]|def )(ABC)(?![_a-zA-Z0-9])"
         },
+        "typedef-type-reference-first": {
+            "begin": "((?<=[_a-zA-Z0-9]:\\s*)(?<!lambda [^:]*:\\s*|lambda:\\s*)|(?<=->\\s*))(?!\\.)",
+            "end": "(?![_a-zA-Z0-9.\\[\\]\\s'\"])",
+            "patterns": [
+                { "include": "#typedef-type-reference" }
+            ]
+        },
         "typedef-type-reference": {
             "patterns": [
-                { "include": "#typedef-type-reference-first-brackets" },
-                { "include": "#typedef-type-reference-first" }
+                { "include": "#typedef-type-reference-brackets" },
+                { "include": "#typedef-type-reference-string" },
+                { "include": "#typedef-type-reference-regular-punctuation" },
+                { "include": "#builtin-type" },
+                { "include": "#3rd-party-builtin-type" },
+                { "include": "#literal-keyword" },
+                { "include": "#constant-literal" },
+                { "include": "#type-reference" },
+                { "include": "#variable-reference" }
             ]
         },
-        "typedef-type-reference-first": {
-            "name": "electris.source-code.types.type",
-            "match": "((?<=[_a-zA-Z0-9]:\\s*)(?<!lambda [^:]*:\\s*|lambda:\\s*)|(?<=->\\s*))(?!\\.)['\"_a-zA-Z0-9.]+"
-        },
-        "typedef-type-reference-first-brackets": {
-            "name": "electris.source-code.types.type",
-            "begin": "((?<=[_a-zA-Z0-9]:\\s*)(?<!lambda [^:]*:\\s*|lambda:\\s*)|(?<=->\\s*))(?!\\.)['\"_a-zA-Z0-9.]+(?=\\[)",
-            "end": "(?<=\\])",
-            "patterns": [
-                { "include": "#typedef-type-reference-recursive-brackets" },
-                { "include": "#typedef-type-reference-recursive" },
-                { "include": "#typedef-type-punctuation-recursive" }
-            ]
-        },
-        "typedef-type-reference-recursive": {
-            "match": "['\"_a-zA-Z0-9.]+"
-        },
-        "typedef-type-punctuation-recursive": {
-            "match": "[,\\s]+"
-        },
-        "typedef-type-reference-recursive-brackets": {
+        "typedef-type-reference-brackets": {
             "name": "electris.source-code.types.type-args",
             "begin": "\\[",
             "end": "\\]",
             "patterns": [
-                { "include": "#typedef-type-reference-recursive-brackets" },
-                { "include": "#typedef-type-reference-recursive" },
-                { "include": "#typedef-type-punctuation-recursive" }
+                { "include": "#typedef-type-reference" }
             ]
+        },
+        "typedef-type-reference-string": {
+            "patterns": [
+                { "include": "#typedef-type-reference-string-squote" },
+                { "include": "#typedef-type-reference-string-dquote" }
+            ]
+        },
+        "typedef-type-reference-string-dquote": {
+            "name": "electris.source-code.types.type",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                { "include": "#typedef-type-reference" }
+            ]
+        },
+        "typedef-type-reference-string-squote": {
+            "name": "electris.source-code.types.type",
+            "begin": "'",
+            "end": "'",
+            "patterns": [
+                { "include": "#typedef-type-reference" }
+            ]
+        },
+        "typedef-type-reference-regular-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "[.]"
         },
 
         "function-call": {
