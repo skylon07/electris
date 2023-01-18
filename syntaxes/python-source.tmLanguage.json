@@ -14,7 +14,7 @@
                     "precedenceGroup": "typedef-type-references",
                     "patterns": [
                         { "include": "#typedef-punctuation" },
-                        { "include": "#typedef-type-reference" }
+                        { "include": "#typedef-type-reference-first" }
                     ]
                 },
                 { "include": "#self-below-typedefs" }
@@ -361,7 +361,7 @@
             "match": "(?<![_a-zA-Z0-9.]|def )(ABC)(?![_a-zA-Z0-9])"
         },
         "typedef-type-reference-first": {
-            "begin": "((?<=[_a-zA-Z0-9]:\\s*)(?<!lambda [^:]*:\\s*|lambda:\\s*)|(?<=->\\s*))(?!\\.)",
+            "begin": "((?<=[_a-zA-Z0-9]:\\s*)(?<![^_a-zA-Z0-9]lambda [^:]*:\\s*|[^_a-zA-Z0-9]lambda:\\s*)(?!\\s*$)|(?<=->\\s*))(?!\\.)",
             "end": "(?![_a-zA-Z0-9.\\[\\]\\s'\"])",
             "patterns": [
                 { "include": "#typedef-type-reference" }
