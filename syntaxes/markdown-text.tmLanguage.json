@@ -426,7 +426,7 @@
         },
         "table-row-col-def": {
             "name": "electris.markdown.extended.style-operator",
-            "match": "^\\|?(\\s*:?-+:?\\s*\\|)*\\s*:?-+:?\\s*\\|?$"
+            "match": "^\\s*\\|?(\\s*:?-+:?\\s*\\|)*\\s*:?-+:?\\s*\\|?\\s*$"
         },
         "table-row-first": {
             "begin": "^\\s*(\\|)?",
