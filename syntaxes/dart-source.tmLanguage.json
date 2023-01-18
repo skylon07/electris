@@ -38,6 +38,8 @@
         {
             "precedenceGroup": "type-references",
             "patterns": [
+                { "include": "#type-definition-generic" },
+                { "include": "#type-definition" },
                 { "include": "#type-reference-generic" },
                 { "include": "#type-reference" },
                 { "include": "#type-args-list" }
@@ -254,7 +256,19 @@
             "end": "\\*/",
             "patterns": [{ "include": "#multi-line-comment" }]
         },
-
+        
+        "type-definition": {
+            "name": "electris.source-code.types.type",
+            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+\\.[_a-zA-Z0-9.?]+(?=\\s+[_a-zA-Z0-9])"
+        },
+        "type-definition-generic": {
+            "name": "electris.source-code.types.type",
+            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+\\.[_a-zA-Z0-9.?]+(?=<)",
+            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
+            "patterns": [
+                { "include": "#type-args-list" }
+            ]
+        },
         "type-reference": {
             "name": "electris.source-code.types.type",
             "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
