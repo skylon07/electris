@@ -104,8 +104,8 @@
         },
         "style-emphasized-asterisk": {
             "name": "electris.markdown.emphasized",
-            "begin": "(\\*)(?!\\*|\\s)",
-            "end": "(?<!\\*|\\s)(\\*)",
+            "begin": "(\\*)(?=[^*\\s])",
+            "end": "(?<!\\s)(\\*)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
@@ -118,8 +118,8 @@
         },
         "style-emphasized-underscore": {
             "name": "electris.markdown.emphasized",
-            "begin": "(?<=\\s_*)(_)(?!_)",
-            "end": "(?<!_)(_)(?=\\s|_)",
+            "begin": "(_)(?=[^_\\s])",
+            "end": "(?<!\\s)(_)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
@@ -139,8 +139,8 @@
         },
         "style-bold-asterisk": {
             "name": "electris.markdown.bold",
-            "begin": "(\\*\\*)(?!\\*|$)",
-            "end": "(\\*\\*)",
+            "begin": "(\\*\\*)(?!\\s|$)",
+            "end": "(?<!\\s)(\\*\\*)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
@@ -153,8 +153,8 @@
         },
         "style-bold-underscore": {
             "name": "electris.markdown.bold",
-            "begin": "(?<=\\s|_)(__)",
-            "end": "(__)(?=\\s|_)",
+            "begin": "(__)(?!\\s|$)",
+            "end": "(?<!\\s)(__)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
