@@ -40,7 +40,8 @@
                     "precedenceGroup": "non-typedef-literals",
                     "patterns": [
                         { "include": "#literal-keyword" },
-                        { "include": "#literal-dictionary-set" }
+                        { "include": "#literal-dictionary-set" },
+                        { "include": "#key-access-literal" }
                     ]
                 }
             ]
@@ -315,6 +316,20 @@
         "literal-dictionary-set": {
             "begin": "(\\{)",
             "end": "(\\})",
+            "beginCaptures": {
+                "1": {"name": "electris.source-code.punctuation"}
+            },
+            "endCaptures": {
+                "1": {"name": "electris.source-code.punctuation"}
+            },
+            "patterns": [
+                { "include": "#self-above-typedefs" },
+                { "include": "#self-below-typedefs" }
+            ]
+        },
+        "key-access-literal": {
+            "begin": "(?<=[_a-zA-Z0-9]+\\s*)(\\[)",
+            "end": "(\\])",
             "beginCaptures": {
                 "1": {"name": "electris.source-code.punctuation"}
             },
