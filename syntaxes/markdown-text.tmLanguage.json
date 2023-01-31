@@ -420,33 +420,33 @@
             "begin": "(?=^\\s*([^|\\s]+\\s*\\||\\|\\s*[^|\\s]+))",
             "end": "(?=^[^|-]*$)",
             "patterns": [
-                { "include": "#table-row-col-def" },
-                { "include": "#table-row-first" }
+                { "include": "#table-col-align-def" },
+                { "include": "#table-col-first" }
             ]
         },
-        "table-row-col-def": {
+        "table-col-align-def": {
             "name": "electris.markdown.extended.style-operator",
             "match": "^\\s*\\|?(\\s*:?-+:?\\s*\\|)*\\s*:?-+:?\\s*\\|?\\s*$"
         },
-        "table-row-first": {
+        "table-col-first": {
             "begin": "^\\s*(\\|)?",
             "end": "(?=$)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.extended.style-operator" }
             },
             "patterns": [
-                { "include": "#table-row" },
+                { "include": "#table-col" },
                 { "include": "#line-expression" }
             ]
         },
-        "table-row": {
+        "table-col": {
             "begin": "(\\|)",
             "end": "(?=$)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.extended.style-operator" }
             },
             "patterns": [
-                { "include": "#table-row" },
+                { "include": "#table-col" },
                 { "include": "#line-expression" }
             ]
         }
