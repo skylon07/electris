@@ -432,5 +432,13 @@
 				"foreground": "#eea760"
 			}
 		},
+
+		// gray -- comments
+		{
+			"scope": "electris.xml.comment",
+			"settings": {
+				"foreground": "#717a8dde"
+			}
+		},
 	]
 }

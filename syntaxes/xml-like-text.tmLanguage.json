@@ -5,9 +5,16 @@
     ],
     "scopeName": "electris.text.xml",
     "patterns": [
+        { "include": "#comment-tag" },
         { "include": "#tag-declaration" }
     ],
     "repository": {
+        "comment-tag": {
+            "name": "electris.xml.comment",
+            "begin": "<!--",
+            "end": "-->"
+        },
+
         "tag-declaration": {
             "begin": "(<)(?!/)([_a-zA-Z0-9\\-]*)",
             "end": "(?<=</[_a-zA-Z0-9\\-]*>|/>)",
@@ -91,7 +98,7 @@
                 "3": { "name": "electris.xml.tag-brace" }
             },
             "patterns": [
-                { "include": "#tag-declaration" }
+                { "include": "$self" }
             ]
         }
     }
