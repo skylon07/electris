@@ -16,8 +16,8 @@
         },
 
         "tag-declaration": {
-            "begin": "(<)(?!/)([_a-zA-Z0-9\\-]*)",
-            "end": "(?<=</[_a-zA-Z0-9\\-]*>|/>)",
+            "begin": "(<)(?!/)([_a-zA-Z0-9\\-.:]*)",
+            "end": "(?<=</[_a-zA-Z0-9\\-.:]*>|/>)",
             "beginCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
                 "2": { "name": "electris.xml.tag-label" }
@@ -32,7 +32,7 @@
         },
 
         "tag-properties": {
-            "begin": "(?<=<[_a-zA-Z0-9\\-]*)",
+            "begin": "(?<=<[_a-zA-Z0-9\\-.:]*)",
             "end": "(>)|(/>)|(/(?=\\s*$))",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
@@ -47,7 +47,7 @@
         },
 
         "tag-property-declaration-literal": {
-            "begin": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*(?=['\"0-9\\.])",
+            "begin": "([_a-zA-Z0-9\\-.:]+)\\s*(=)\\s*(?=['\"0-9\\.])",
             "end": "(?<=['\"0-9\\.])",
             "beginCaptures": {
                 "1": { "name": "electris.xml.property" },
@@ -74,7 +74,7 @@
             "match": "[0-9.]+"
         },
         "tag-property-declaration-literal-no-assignment": {
-            "match": "([_a-zA-Z0-9\\-]+)\\s*(?!=)",
+            "match": "([_a-zA-Z0-9\\-.:]+)\\s*(?!=)",
             "captures": {
                 "1": { "name": "electris.xml.property" },
                 "2": { "name": "electris.xml.property-assignment" },
@@ -82,7 +82,7 @@
             }
         },
         "tag-property-declaration-bad-literal": {
-            "match": "([_a-zA-Z0-9\\-]+)\\s*(=)\\s*([^\\s>]*)",
+            "match": "([_a-zA-Z0-9\\-.:]+)\\s*(=)\\s*([^\\s>]*)",
             "captures": {
                 "1": { "name": "electris.xml.property" },
                 "2": { "name": "electris.xml.property-assignment" },
@@ -92,7 +92,7 @@
 
         "tag-children": {
             "begin": "(?<!/>)(?<=>)",
-            "end": "(</)([_a-zA-Z0-9\\-]*)?(>)?",
+            "end": "(</)([_a-zA-Z0-9\\-.:]*)?(>)?",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
                 "2": { "name": "electris.xml.tag-label" },
