@@ -39,6 +39,7 @@
                 "2": { "name": "electris.xml.tag-brace" }
             },
             "patterns": [
+                { "include": "#comment-tag" },
                 { "include": "#tag-property-declaration-literal" },
                 { "include": "#tag-property-declaration-bad-literal" },
                 { "include": "#tag-property-declaration-literal-no-assignment" }
@@ -98,7 +99,8 @@
                 "3": { "name": "electris.xml.tag-brace" }
             },
             "patterns": [
-                { "include": "$self" }
+                { "include": "#comment-tag" },
+                { "include": "#tag-declaration" }
             ]
         }
     }
