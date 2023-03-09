@@ -320,11 +320,11 @@
         },
 
         "html-block": {
-            "contentName": "electris.text.embedded.html",
+            "contentName": "electris.markdown.embedded.custom.html",
             "begin": "(?=<[a-zA-Z])",
             "end": "(?<=</.*>|/>)",
             "patterns": [
-                { "include": "electris.text.html" }
+                { "include": "#markdown-html" }
             ]
         },
 
@@ -448,6 +448,117 @@
             "patterns": [
                 { "include": "#table-col" },
                 { "include": "#line-expression" }
+            ]
+        },
+
+        
+        "markdown-html": {
+            "copied-from": "xml-like-text",
+            "copy instructions": [
+                "1. copy xml-like-text patterns to this object's patterns array",
+                "2. copy xml-like-text repository and paste below",
+                "3. insert $self as first pattern in patterns array of the 'child recognizer' (tag-children)"
+            ],
+            "patterns": [
+                { "include": "#comment-tag" },
+                { "include": "#tag-declaration" }
+            ]
+        },
+
+
+        "comment-tag": {
+            "name": "electris.xml.comment",
+            "begin": "<!--",
+            "end": "-->"
+        },
+
+        "tag-declaration": {
+            "begin": "(<)(?!/)([_a-zA-Z0-9\\-.:]*)",
+            "end": "(?<=</[_a-zA-Z0-9\\-.:]*>|/>)",
+            "beginCaptures": {
+                "1": { "name": "electris.xml.tag-brace" },
+                "2": { "name": "electris.xml.tag-label" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.xml.tag-brace" }
+            },
+            "patterns": [
+                { "include": "#tag-properties" },
+                { "include": "#tag-children" }
+            ]
+        },
+
+        "tag-properties": {
+            "begin": "(?<=<[_a-zA-Z0-9\\-.:]*)",
+            "end": "(>)|(/>)|(/(?=\\s*$))",
+            "endCaptures": {
+                "1": { "name": "electris.xml.tag-brace" },
+                "2": { "name": "electris.xml.tag-brace" }
+            },
+            "patterns": [
+                { "include": "#comment-tag" },
+                { "include": "#tag-property-declaration-literal" },
+                { "include": "#tag-property-declaration-bad-literal" },
+                { "include": "#tag-property-declaration-literal-no-assignment" }
+            ]
+        },
+
+        "tag-property-declaration-literal": {
+            "begin": "([_a-zA-Z0-9\\-.:]+)\\s*(=)\\s*(?=['\"0-9\\.])",
+            "end": "(?<=['\"0-9\\.])",
+            "beginCaptures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" }
+            },
+            "patterns": [
+                { "include": "#string-dquote" },
+                { "include": "#string-squote" },
+                { "include": "#number" }
+            ]
+        },
+        "string-dquote": {
+            "name": "electris.xml.property-value",
+            "begin": "\"",
+            "end": "\""
+        },
+        "string-squote": {
+            "name": "electris.xml.property-value",
+            "begin": "'",
+            "end": "'"
+        },
+        "number": {
+            "name": "electris.xml.property-value",
+            "match": "[0-9.]+"
+        },
+        "tag-property-declaration-literal-no-assignment": {
+            "match": "([_a-zA-Z0-9\\-.:]+)\\s*(?!=)",
+            "captures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" },
+                "3": { "name": "electris.xml.property-value" }
+            }
+        },
+        "tag-property-declaration-bad-literal": {
+            "match": "([_a-zA-Z0-9\\-.:]+)\\s*(=)\\s*([^\\s>]*)",
+            "captures": {
+                "1": { "name": "electris.xml.property" },
+                "2": { "name": "electris.xml.property-assignment" },
+                "3": { "name": "electris.text" }
+            }
+        },
+
+        "tag-children": {
+            "begin": "(?<!/>)(?<=>)",
+            "end": "(</)([_a-zA-Z0-9\\-.:]*)?(>)?",
+            "endCaptures": {
+                "1": { "name": "electris.xml.tag-brace" },
+                "2": { "name": "electris.xml.tag-label" },
+                "3": { "name": "electris.xml.tag-brace" }
+            },
+            "patterns": [
+                { "include": "$self" },
+                { "include": "#comment-tag" },
+                { "include": "#tag-declaration" }
             ]
         }
     }
