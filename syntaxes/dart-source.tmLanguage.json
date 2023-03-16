@@ -302,7 +302,7 @@
 
         "function-call": {
             "name": "electris.source-code.function-call",
-            "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\()"
+            "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\()|(?<=get )[_a-zA-Z0-9]+"
         },
 
         "scope-punctuation": {
