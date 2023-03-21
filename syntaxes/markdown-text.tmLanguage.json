@@ -334,7 +334,7 @@
         },
 
         "box-link": {
-            "match": "(\\[)([^\\]]+)(\\]\\()([^\\s'\"]+)\\s*(\\s['\"].*['\"])?\\s*(\\))",
+            "match": "(\\[)([^\\]]*)(\\]\\()([^\\s'\"]*)\\s*(\\s['\"].*['\"])?\\s*(\\))",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" },
                 "3": { "name": "electris.markdown.style-operator" },
@@ -344,7 +344,7 @@
             }
         },
         "box-image": {
-            "match": "(!\\[)([^\\]]+)(\\]\\()([^\\s'\"]+)\\s*(\\s['\"].*['\"])?\\s*(\\))",
+            "match": "(!\\[)([^\\]]*)(\\]\\()([^\\s'\"]*)\\s*(\\s['\"].*['\"])?\\s*(\\))",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" },
                 "2": { "name": "electris.markdown.image-link" },
@@ -355,7 +355,7 @@
             }
         },
         "box-link-ref": {
-            "match": "(\\[)([^\\]]+)(\\])(\\[)(.+)(\\])",
+            "match": "(\\[)([^\\]]*)(\\])(\\[)(.+)(\\])",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" },
                 "3": { "name": "electris.markdown.style-operator" },
@@ -365,7 +365,7 @@
             }
         },
         "box-link-def": {
-            "match": "^\\s*(\\[)([^\\]]+)(\\]:)\\s*([^\\s'\"]+)(\\s*['\"].*['\"])?",
+            "match": "^\\s*(\\[)([^\\]]*)(\\]:)\\s*([^\\s'\"]*)(\\s*['\"].*['\"])?",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" },
                 "2": { "name": "electris.markdown.link-path" },
@@ -393,7 +393,7 @@
             "match": "(?<=^|\\s)[a-zA-Z0-9.]+(?:://|@)[^\\s]+(?=\\s|$)"
         },
         "footnote-ref": {
-            "match": "(\\[\\^)([^\\]]+)(\\])",
+            "match": "(\\[\\^)([^\\]]*)(\\])",
             "captures": {
                 "1": { "name": "electris.markdown.extended.style-operator" },
                 "2": { "name": "electris.markdown.link-path" },
@@ -401,7 +401,7 @@
             }
         },
         "footnote-def": {
-            "match": "^\\s*(\\[\\^)([^\\]]+)(\\]:)",
+            "match": "^\\s*(\\[\\^)([^\\]]*)(\\]:)",
             "captures": {
                 "1": { "name": "electris.markdown.extended.style-operator" },
                 "2": { "name": "electris.markdown.link-path" },
