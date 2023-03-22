@@ -6,6 +6,7 @@
     "scopeName": "electris.text.xml",
     "patterns": [
         { "include": "#comment-tag" },
+        { "include": "#prologue-declaration" },
         { "include": "#tag-declaration" }
     ],
     "repository": {
@@ -30,10 +31,24 @@
                 { "include": "#tag-children" }
             ]
         },
+        "prologue-declaration": {
+            "begin": "(<\\?)(?!/)([_a-zA-Z0-9\\-.:]+)",
+            "end": "(?<=\\?>)",
+            "beginCaptures": {
+                "1": { "name": "electris.xml.tag-brace" },
+                "2": { "name": "electris.xml.tag-label" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.xml.tag-brace" }
+            },
+            "patterns": [
+                { "include": "#tag-properties" }
+            ]
+        },
 
         "tag-properties": {
-            "begin": "(?<=<[_a-zA-Z0-9\\-.:]*)",
-            "end": "(>)|(/>)|(/(?=\\s*$))",
+            "begin": "(?<=<\\??[_a-zA-Z0-9\\-.:]*)",
+            "end": "(\\??>)|(/>)|(/(?=\\s*$))",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
                 "2": { "name": "electris.xml.tag-brace" },
