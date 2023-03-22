@@ -36,7 +36,8 @@
             "end": "(>)|(/>)|(/(?=\\s*$))",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
-                "2": { "name": "electris.xml.tag-brace" }
+                "2": { "name": "electris.xml.tag-brace" },
+                "3": { "name": "electris.xml.tag-brace" }
             },
             "patterns": [
                 { "include": "#comment-tag" },
