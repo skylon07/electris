@@ -334,17 +334,18 @@
         },
 
         "box-link": {
-            "match": "(\\[)([^\\]]*)(\\]\\()([^\\s'\"]*)\\s*(\\s['\"].*['\"])?\\s*(\\))",
+            "match": "(\\[)([^\\]]*)(\\]\\()([^\\s'\")]*)\\s*((\\s['\"])(.*)(['\"]))?\\s*(\\))",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" },
                 "3": { "name": "electris.markdown.style-operator" },
                 "4": { "name": "electris.markdown.link-path" },
-                "5": { "name": "electris.markdown.style-operator" },
-                "6": { "name": "electris.markdown.style-operator" }
+                "6": { "name": "electris.markdown.style-operator" },
+                "8": { "name": "electris.markdown.style-operator" },
+                "9": { "name": "electris.markdown.style-operator" }
             }
         },
         "box-image": {
-            "match": "(!\\[)([^\\]]*)(\\]\\()([^\\s'\"]*)\\s*(\\s['\"].*['\"])?\\s*(\\))",
+            "match": "(!\\[)([^\\]]*)(\\]\\()([^\\s'\")]*)\\s*(\\s['\"].*['\"])?\\s*(\\))",
             "captures": {
                 "1": { "name": "electris.markdown.style-operator" },
                 "2": { "name": "electris.markdown.image-link" },
