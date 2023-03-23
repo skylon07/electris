@@ -340,6 +340,7 @@
                 "3": { "name": "electris.markdown.style-operator" },
                 "4": { "name": "electris.markdown.link-path" },
                 "6": { "name": "electris.markdown.style-operator" },
+                "7": { "name": "electris.markdown.link-hover-title" },
                 "8": { "name": "electris.markdown.style-operator" },
                 "9": { "name": "electris.markdown.style-operator" }
             }

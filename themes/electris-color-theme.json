@@ -399,6 +399,14 @@
 			}
 		},
 
+		// off-white -- link hover title
+		{
+			"scope": "electris.markdown.link-hover-title",
+			"settings": {
+				"foreground": "#efefef90"
+			}
+		},
+
 
 		// blue -- tag braces/assignment
 		{
