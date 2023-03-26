@@ -334,16 +334,22 @@
         },
 
         "box-link": {
-            "match": "(\\[)([^\\]]*)(\\]\\()([^\\s'\")]*)\\s*((\\s['\"])(.*)(['\"]))?\\s*(\\))",
-            "captures": {
+            "begin": "(\\[)(?=[^\\]]*\\]\\(.*\\))",
+            "end": "(\\]\\()([^\\s'\")]*)\\s*((\\s['\"])([^'\"]*)(['\"])?)?\\s*(\\))",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
                 "1": { "name": "electris.markdown.style-operator" },
-                "3": { "name": "electris.markdown.style-operator" },
-                "4": { "name": "electris.markdown.link-path" },
+                "2": { "name": "electris.markdown.link-path" },
+                "4": { "name": "electris.markdown.style-operator" },
+                "5": { "name": "electris.markdown.link-hover-title" },
                 "6": { "name": "electris.markdown.style-operator" },
-                "7": { "name": "electris.markdown.link-hover-title" },
-                "8": { "name": "electris.markdown.style-operator" },
-                "9": { "name": "electris.markdown.style-operator" }
-            }
+                "7": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "$self" }
+            ]
         },
         "box-image": {
             "match": "(!\\[)([^\\]]*)(\\]\\()([^\\s'\")]*)\\s*((\\s['\"])([^'\"]*)(['\"])?)?\\s*(\\))",
@@ -359,14 +365,20 @@
             }
         },
         "box-link-ref": {
-            "match": "(\\[)([^\\]]*)(\\])(\\[)(.+)(\\])",
-            "captures": {
+            "begin": "(\\[)(?=[^\\]]*\\]\\[.*\\])",
+            "end": "(\\])(\\[)(.*)(\\])",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
                 "1": { "name": "electris.markdown.style-operator" },
-                "3": { "name": "electris.markdown.style-operator" },
-                "4": { "name": "electris.markdown.style-operator" },
-                "5": { "name": "electris.markdown.link-path" },
-                "6": { "name": "electris.markdown.style-operator" }
-            }
+                "2": { "name": "electris.markdown.style-operator" },
+                "3": { "name": "electris.markdown.link-path" },
+                "4": { "name": "electris.markdown.style-operator" }
+            },
+            "patterns": [
+                { "include": "$self" }
+            ]
         },
         "box-link-def": {
             "match": "^\\s*(\\[)([^\\]]*)(\\]:)\\s*([^\\s'\"]*)(\\s*['\"].*['\"])?",
