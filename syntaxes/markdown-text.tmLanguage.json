@@ -167,7 +167,7 @@
         },
 
         "style-strikethrough": {
-            "name": "electris.markdown.strikethrough",
+            "contentName": "electris.markdown.strikethrough",
             "begin": "(~~)",
             "end": "(~~)",
             "beginCaptures": {
