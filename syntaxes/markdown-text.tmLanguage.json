@@ -103,7 +103,7 @@
             ]
         },
         "style-emphasized-asterisk": {
-            "name": "electris.markdown.emphasized",
+            "contentName": "electris.markdown.emphasized",
             "begin": "(\\*)(?=[^*\\s])",
             "end": "(?<!\\s)(\\*)",
             "beginCaptures": {
@@ -117,7 +117,7 @@
             ]
         },
         "style-emphasized-underscore": {
-            "name": "electris.markdown.emphasized",
+            "contentName": "electris.markdown.emphasized",
             "begin": "(?<=^|\\s)(_)(?=[^_\\s])",
             "end": "(?<!\\s)(_)",
             "beginCaptures": {
@@ -138,7 +138,7 @@
             ]
         },
         "style-bold-asterisk": {
-            "name": "electris.markdown.bold",
+            "contentName": "electris.markdown.bold",
             "begin": "(\\*\\*)(?!\\s|$)",
             "end": "(?<!\\s)(\\*\\*)",
             "beginCaptures": {
@@ -152,7 +152,7 @@
             ]
         },
         "style-bold-underscore": {
-            "name": "electris.markdown.bold",
+            "contentName": "electris.markdown.bold",
             "begin": "(?<=^|\\s)(__)(?!\\s|$)",
             "end": "(?<!\\s)(__)",
             "beginCaptures": {
@@ -182,7 +182,7 @@
         },
 
         "extended-style-highlighted": {
-            "name": "electris.markdown.extended.highlighted",
+            "contentName": "electris.markdown.extended.highlighted",
             "begin": "(==)(?!=|$)",
             "end": "(==)",
             "beginCaptures": {
@@ -197,7 +197,7 @@
         },
 
         "extended-style-subscript": {
-            "name": "electris.markdown.extended.subscript",
+            "contentName": "electris.markdown.extended.subscript",
             "begin": "(?<!(?<!\\\\)\\\\|~)(~)",
             "end": "(~)(?!~)",
             "beginCaptures": {
@@ -212,7 +212,7 @@
         },
 
         "extended-style-superscript": {
-            "name": "electris.markdown.extended.superscript",
+            "contentName": "electris.markdown.extended.superscript",
             "begin": "(?<!(?<!\\\\)\\\\)(\\^)",
             "end": "(\\^)",
             "beginCaptures": {
