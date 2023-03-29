@@ -78,13 +78,19 @@
         },
 
         "heading-hash": {
-            "match": "(?<=^\\s*|^[^_a-zA-Z0-9]*\\s+)(#+)\\s(((?!\\s*\\{.*}).)*)(?:\\s*)(\\{#(.*)\\})?",
-            "captures": {
-                "1": { "name": "electris.markdown.heading electris.markdown.style-operator" },
-                "2": { "name": "electris.markdown.heading electris.text" },
-                "4": { "name": "electris.markdown.extended.style-operator" },
-                "5": { "name": "electris.markdown.link-path" }
-            }
+            "contentName": "electris.markdown.heading electris.text",
+            "begin": "(?<=^\\s*|^[^_a-zA-Z0-9]*\\s+)(#+)\\s",
+            "end": "(\\{#(.*)\\})?\\s*$",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.heading electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.extended.style-operator" },
+                "2": { "name": "electris.markdown.link-path" }
+            },
+            "patterns": [
+                { "include": "$self" }
+            ]
         },
         "heading-underscored-UNUSED-in-favor-of-horizontal-rule": {
             "name": "electris.markdown.horizontal-rule electris.markdown.style-operator",
