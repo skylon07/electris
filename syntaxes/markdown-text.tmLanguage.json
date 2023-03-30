@@ -89,7 +89,7 @@
                 "2": { "name": "electris.markdown.link-path" }
             },
             "patterns": [
-                { "include": "$self" }
+                { "include": "#line-expression" }
             ]
         },
         "heading-underscored-UNUSED-in-favor-of-horizontal-rule": {
@@ -354,7 +354,7 @@
                 "7": { "name": "electris.markdown.style-operator" }
             },
             "patterns": [
-                { "include": "$self" }
+                { "include": "#line-expression" }
             ]
         },
         "box-image": {
@@ -383,7 +383,7 @@
                 "4": { "name": "electris.markdown.style-operator" }
             },
             "patterns": [
-                { "include": "$self" }
+                { "include": "#line-expression" }
             ]
         },
         "box-link-def": {
