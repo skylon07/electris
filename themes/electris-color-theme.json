@@ -352,28 +352,28 @@
 		},
 		// bold bold underline -- bold style (in heading)
 		{
-			"scope": "electris.markdown.bold",
+			"scope": "electris.markdown.heading electris.markdown.bold",
 			"settings": {
 				"fontStyle": "bold bold underline"
 			}
 		},
 		// italic bold underline -- emphasized style (in heading)
 		{
-			"scope": "electris.markdown.emphasized",
+			"scope": "electris.markdown.heading electris.markdown.emphasized",
 			"settings": {
 				"fontStyle": "italic bold underline"
 			}
 		},
 		// italic bold bold underline -- bold and emphasized style (in heading)
 		{
-			"scope": "electris.markdown.emphasized electris.markdown.bold, electris.markdown.bold electris.markdown.emphasized",
+			"scope": "electris.markdown.heading electris.markdown.emphasized electris.markdown.bold, electris.markdown.heading electris.markdown.bold electris.markdown.emphasized",
 			"settings": {
 				"fontStyle": "italic bold bold underline"
 			}
 		},
 		// strikethrough bold underline -- strikethrough style (in heading)
 		{
-			"scope": "electris.markdown.strikethrough",
+			"scope": "electris.markdown.heading electris.markdown.strikethrough",
 			"settings": {
 				"fontStyle": "strikethrough bold underline"
 			}
