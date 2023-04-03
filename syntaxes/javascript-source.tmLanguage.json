@@ -162,7 +162,7 @@
         },
         "constant-literal": {
             "name": "electris.source-code.primitive-literal",
-            "match": "_*[A-Z]{2}[_A-Z0-9]*(?![_a-zA-Z0-9])"
+            "match": "_*[A-Z][_A-Z][_A-Z0-9]*(?![_a-zA-Z0-9])"
         },
 
         "single-line-comment": {
