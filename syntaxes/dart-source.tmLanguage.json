@@ -275,7 +275,7 @@
         },
         "type-reference-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*(?=<)",
+            "begin": "_*[A-Z][_a-zA-Z0-9]*[_a-zA-Z0-9]*(?=<)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
             "patterns": [{ "include": "#type-args-list" }]
         },
