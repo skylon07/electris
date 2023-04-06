@@ -2,7 +2,7 @@
     "fileTypes": [
         "gitignore"
     ],
-    "scopeName": "electris.source.gitignore",
+    "scopeName": "electris.text.gitignore",
     "patterns": [
         { "include": "#comment" },
         { "include": "#operators" },
@@ -11,22 +11,22 @@
     ],
     "repository": {
         "comment": {
-            "name": "electris.source-code.comment",
+            "name": "electris.gitignore.comment",
             "match": "^#.*"
         },
 
         "file-word": {
-            "name": "electris.source-code.variable",
+            "name": "electris.gitignore.file",
             "match": "[_.\\-a-zA-Z0-9]+"
         },
 
         "directory-punctuation": {
-            "name": "electris.source-code.punctuation",
+            "name": "electris.gitignore.punctuation",
             "match": "[~/]"
         },
 
         "operators": {
-            "name": "electris.source-code.operator",
+            "name": "electris.gitignore.operator",
             "match": "^!|\\*"
         }
     }

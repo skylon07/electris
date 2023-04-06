@@ -476,5 +476,38 @@
 				"foreground": "#717a8dde"
 			}
 		},
+
+
+		// gray -- comments
+		{
+			"scope": "electris.gitignore.comment",
+			"settings": {
+				"foreground": "#717a8dde"
+			}
+		},
+
+		// light blue -- filenames (directory words)
+		{
+			"scope": "electris.gitignore.file",
+			"settings": {
+				"foreground": "#9fcff9"
+			}
+		},
+
+		// white -- directory punctuation
+		{
+			"scope": "electris.gitignore.punctuation",
+			"settings": {
+				"foreground": "#efefef"
+			}
+		},
+
+		// blue -- logical operations
+		{
+			"scope": "electris.gitignore.operator",
+			"settings": {
+				"foreground": "#339ef4"
+			}
+		},
 	]
 }

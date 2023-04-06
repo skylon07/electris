@@ -91,7 +91,6 @@
                 }
             },
 
-
             {
                 "path": "./syntaxes/css-like-text.tmLanguage.json",
                 "scopeName": "electris.text.css",
@@ -104,8 +103,8 @@
             },
 
             {
-                "path": "./syntaxes/gitignore-source.tmLanguage.json",
-                "scopeName": "electris.source.gitignore",
+                "path": "./syntaxes/gitignore-text.tmLanguage.json",
+                "scopeName": "electris.text.gitignore",
                 "language": "ignore"
             }
         ]
