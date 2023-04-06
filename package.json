@@ -106,6 +106,12 @@
                 "path": "./syntaxes/gitignore-text.tmLanguage.json",
                 "scopeName": "electris.text.gitignore",
                 "language": "ignore"
+            },
+            
+            {
+                "path": "./syntaxes/yaml-source.tmLanguage.json",
+                "scopeName": "electris.source.yaml",
+                "language": "yaml"
             }
         ]
     }
