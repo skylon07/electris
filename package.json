@@ -101,6 +101,12 @@
                 "path": "./syntaxes/less-text.tmLanguage.json",
                 "scopeName": "electris.text.less",
                 "language": "less"
+            },
+
+            {
+                "path": "./syntaxes/gitignore-source.tmLanguage.json",
+                "scopeName": "electris.source.gitignore",
+                "language": "ignore"
             }
         ]
     }
