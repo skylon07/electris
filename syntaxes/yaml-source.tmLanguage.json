@@ -91,7 +91,7 @@
         },
         "array-item-declaration": {
             "name": "electris.source-code.operator",
-            "match": "-(?=\\s*[_\\-a-zA-Z0-9])"
+            "match": "^\\s*-"
         },
         "separator-punctuation": {
             "name": "electris.source-code.punctuation",
