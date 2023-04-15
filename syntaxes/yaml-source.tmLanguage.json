@@ -100,7 +100,7 @@
 
         "item-value": {
             "name": "electris.source-code.primitive-literal",
-            "match": "([_\\-a-zA-Z0-9\\.]+\\s*)+"
+            "match": "([^\\s]+\\s*)+"
         }
     }
 }
