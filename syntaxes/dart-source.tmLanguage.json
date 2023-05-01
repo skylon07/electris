@@ -261,11 +261,11 @@
         
         "type-definition": {
             "name": "electris.source-code.types.type",
-            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+\\.[_a-zA-Z0-9.?]+(?!\\sas\\s)(?=\\s+[_a-zA-Z0-9])"
+            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+\\.[_a-zA-Z0-9.?]+(?=\\s+[_a-zA-Z0-9])(?!\\sas\\s)"
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+\\.[_a-zA-Z0-9.?]+(?=<)",
+            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+\\.[_a-zA-Z0-9.?]+(?=<(?!.*>\\())",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
             "patterns": [
                 { "include": "#type-args-list" }
