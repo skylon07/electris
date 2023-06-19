@@ -125,7 +125,7 @@
         },
         "keyword": {
             "name": "electris.source-code.operator",
-            "match": "(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9])"
+            "match": "(?<!\\.)(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9])"
         },
         "keyword-operator": {
             "name": "electris.source-code.operator",
