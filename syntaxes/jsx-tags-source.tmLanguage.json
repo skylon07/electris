@@ -5,8 +5,8 @@
     ],
     "repository": {
         "tag-declaration": {
-            "begin": "(<)(?!/)([_a-zA-Z0-9\\-\\.]*)",
-            "end": "(?<=</[_a-zA-Z0-9\\-\\.]*>|/>)",
+            "begin": "(<)(?!/)([_a-zA-Z0-9\\-.]*)",
+            "end": "(?<=</[_a-zA-Z0-9\\-.]*>|/>)",
             "beginCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
                 "2": { "name": "electris.xml.tag-label" }
@@ -21,7 +21,7 @@
         },
 
         "tag-properties": {
-            "begin": "(?<=<[_a-zA-Z0-9\\-\\.]*)",
+            "begin": "(?<=<[_a-zA-Z0-9\\-.]*)",
             "end": "(>)|(/>)|(/(?=\\s*$))",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
@@ -107,7 +107,7 @@
 
         "tag-children": {
             "begin": "(?<!/>)(?<=>)",
-            "end": "(</)([_a-zA-Z0-9\\-\\.]*)?(>)?",
+            "end": "(</)([_a-zA-Z0-9\\-.]*)?(>)?",
             "endCaptures": {
                 "1": { "name": "electris.xml.tag-brace" },
                 "2": { "name": "electris.xml.tag-label" },
