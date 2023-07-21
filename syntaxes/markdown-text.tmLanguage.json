@@ -328,7 +328,7 @@
         "html-block": {
             "contentName": "electris.text.embedded.html",
             "begin": "(?=<([_a-zA-Z0-9\\-.:]|>))",
-            "end": "(?<=</[_a-zA-Z0-9\\-.:]*>|/>)(?!<)",
+            "end": "(?<=</[_a-zA-Z0-9\\-.:]*>|/>)(?!<(?!!))",
             "patterns": [
                 { "include": "electris.text.html" }
             ]
