@@ -227,7 +227,10 @@
             "end": "(?<!(?<!\\\\)\\\\)\"",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
-            }
+            },
+            "patterns": [
+                { "include": "#literal-r-string-escape" }
+            ]
         },
         "literal-raw-string-squote": {
             "name": "electris.source-code.primitive-literal",
@@ -235,7 +238,10 @@
             "end": "(?<!(?<!\\\\)\\\\)'",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
-            }
+            },
+            "patterns": [
+                { "include": "#literal-r-string-escape" }
+            ]
         },
         "literal-raw-string-tdquote": {
             "name": "electris.source-code.primitive-literal",
@@ -243,7 +249,10 @@
             "end": "(?<!(?<!\\\\)\\\\)\"\"\"",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
-            }
+            },
+            "patterns": [
+                { "include": "#literal-r-string-escape" }
+            ]
         },
         "literal-raw-string-tsquote": {
             "name": "electris.source-code.primitive-literal",
@@ -251,7 +260,10 @@
             "end": "(?<!(?<!\\\\)\\\\)'''",
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
-            }
+            },
+            "patterns": [
+                { "include": "#literal-r-string-escape" }
+            ]
         },
         "literal-format-string-dquote": {
             "name": "electris.source-code.primitive-literal",
@@ -308,6 +320,9 @@
         "literal-string-escape": {
             "name": "electris.source-code.escape",
             "match": "\\\\x[0-9a-fA-F]{0,2}|\\\\u[0-9a-fA-F]{0,4}|\\\\$|\\\\[^{]"
+        },
+        "literal-r-string-escape": {
+            "match": "\\\\."
         },
         "constant-literal": {
             "name": "electris.source-code.primitive-literal",
