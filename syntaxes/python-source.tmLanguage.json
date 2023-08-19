@@ -39,7 +39,6 @@
                 {
                     "precedenceGroup": "non-typedef-literals",
                     "patterns": [
-                        { "include": "#literal-keyword" },
                         { "include": "#literal-dictionary-set" },
                         { "include": "#key-access-literal" }
                     ]
@@ -51,6 +50,7 @@
                 {
                     "precedenceGroup": "non-typedef-builtin-types",
                     "patterns": [
+                        { "include": "#literal-keyword" , "why": "not included in 'non-typedef-literals' to allow None to be used as a type"},
                         { "include": "#builtin-type"},
                         { "include": "#3rd-party-builtin-type"}
                     ]
@@ -391,19 +391,9 @@
             "match": "(?<![_a-zA-Z0-9.]|def )(ABC)(?![_a-zA-Z0-9])"
         },
         "typedef-type-reference": {
-            "patterns": [
-                { "include": "#typedef-type-reference-first-brackets" },
-                { "include": "#typedef-type-reference-first" }
-            ]
-        },
-        "typedef-type-reference-first": {
             "name": "electris.source-code.types.type",
-            "match": "((?<=[_a-zA-Z0-9]:\\s*)(?<![^_a-zA-Z0-9]lambda [^:]*:\\s*|[^_a-zA-Z0-9]lambda:\\s*)|(?<=->\\s*))(?!\\.)['\"_a-zA-Z0-9.]+"
-        },
-        "typedef-type-reference-first-brackets": {
-            "name": "electris.source-code.types.type",
-            "begin": "((?<=[_a-zA-Z0-9]:\\s*)(?<![^_a-zA-Z0-9]lambda [^:]*:\\s*|[^_a-zA-Z0-9]lambda:\\s*)|(?<=->\\s*))(?!\\.)['\"_a-zA-Z0-9.]+(?=\\[)",
-            "end": "(?<=\\])",
+            "begin": "((?<=[_a-zA-Z0-9]:\\s*)(?<![^_a-zA-Z0-9]lambda [^:]*:\\s*|[^_a-zA-Z0-9]lambda:\\s*)|(?<=->\\s*))(?!\\.)(?=['\"_a-zA-Z0-9.]+)",
+            "end": "(?=[,=():])|$|(?=(and|as|assert|break|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|super|try|while|with|yield)(?![_a-zA-Z0-9]))",
             "patterns": [
                 { "include": "#typedef-type-reference-recursive-brackets" },
                 { "include": "#typedef-type-reference-recursive" },
@@ -414,7 +404,7 @@
             "match": "['\"_a-zA-Z0-9.]+"
         },
         "typedef-type-punctuation-recursive": {
-            "match": "[,\\s]+"
+            "match": "[,\\s|]+"
         },
         "typedef-type-reference-recursive-brackets": {
             "name": "electris.source-code.types.type-args",
