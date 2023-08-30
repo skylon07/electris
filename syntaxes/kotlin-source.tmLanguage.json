@@ -1,0 +1,145 @@
+{
+    "fileTypes": [
+        "kotlin"
+    ],
+    "scopeName": "electris.source.kotlin",
+    "patterns": [
+        {
+            "precedenceGroup": "comments",
+            "patterns": [
+                { "include": "#single-line-comment" },
+                { "include": "#multi-line-comment" }
+            ]
+        },
+        {
+            "precedenceGroup": "builtin-keywords",
+            "patterns": [
+                { "include": "#builtin-type" },
+                { "include": "#keyword" },
+                { "include": "#keyword-soft" }
+            ]
+        },
+        {
+            "precedenceGroup": "literals",
+            "patterns": [
+                { "include": "#literal-keyword" },
+                { "include": "#literal-number" },
+                { "include": "#literal-string" },
+                { "include": "#constant-literal" }
+            ]
+        },
+        {
+            "precedenceGroup": "type-references",
+            "patterns": [
+                
+            ]
+        },
+        {
+            "precedenceGroup": "function-calls",
+            "patterns": [
+                
+            ]
+        },
+        {
+            "precedenceGroup": "rest",
+            "patterns": [
+                { "include": "#variable-reference" },
+                { "include": "#annotation" },
+                { "include": "#operator-symbols" }
+            ]
+        }
+    ],
+    "repository": {
+        "variable-reference": {
+            "name": "electris.source-code.variable",
+            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*|(_|__|___|____)(?![_A-Z])"
+        },
+
+        "single-line-comment": {
+            "name": "electris.source-code.comment",
+            "match": "//.*"
+        },
+        "multi-line-comment": {
+            "name": "electris.source-code.comment",
+            "begin": "/\\*",
+            "end": "\\*/",
+            "patterns": [{ "include": "#multi-line-comment" }]
+        },
+
+        "builtin-type": {
+
+        },
+
+        "keyword": {
+            "name": "electris.source-code.operator",
+            "match": "(as|as\\?|break|class|continue|do|else|false|for|fun|if|in|!in|interface|is|!is|null|object|package|return|super|this|throw|true|try|typealias|typeof|val|var|when|while)(?![_a-zA-Z0-9])"
+        },
+        "keyword-soft": {
+            "patterns": [
+                { "include": "#keyword-soft-surrounded-by-words" },
+                { "include": "#keyword-soft-function-like" },
+                { "include": "#keyword-soft-block-like" },
+                { "include": "#keyword-soft-type-like" },
+                { "include": "#keyword-soft-getter-setter" },
+                { "include": "#keyword-soft-packaging" },
+                { "include": "#keyword-soft-but-treated-hard" },
+                { "include": "#keyword-soft-modifier" }
+            ]
+        },
+        "keyword-soft-surrounded-by-words": {
+            "name": "electris.source-code.operator",
+            "match": "(?<=[_a-zA-Z0-9]+\\s+)by(?=\\s+[_a-zA-Z0-9]+|\\s*$)(?!\\s+by)"
+        },
+        "keyword-soft-function-like": {
+            "name": "electris.source-code.operator",
+            "match": "(catch|constructor|get|set)(?=\\s*\\()"
+        },
+        "keyword-soft-block-like": {
+            "name": "electris.source-code.operator",
+            "match": "(init)(?=\\s*\\{)"
+        },
+        "keyword-soft-type-like": {
+            "name": "electris.source-code.operator",
+            "match": "(?<=:\\s*)dynamic"
+        },
+        "keyword-soft-getter-setter": {
+            "name": "electris.source-code.operator",
+            "match": "(?<=(private|public|protected|internal|@[_a-zA-Z0-9.]*)\\s+)(get|set)"
+        },
+        "keyword-soft-packaging": {
+            "name": "electris.source-code.operator",
+            "match": "(import|package)(?=\\s+[_a-zA-Z.]+)"
+        },
+        "keyword-soft-but-treated-hard": {
+            "name": "electris.source-code.operator",
+            "match": "finally|where|it|field"
+        },
+        "keyword-soft-modifier": {
+            "name": "electris.source-code.operator",
+            "match": "(abstract|actual|annotation|companion|const|crossinline|data|enum|expect|external|final|infix|inline|inner|internal|lateinit|noinline|open|operator|out|override|private|protected|public|reified|sealed|suspend|tailrec|vararg)(?=[_a-zA-Z0-9\\s]*\\s+(class|fun|constructor|var|val|object|[_a-zA-Z0-9]+[:,)>]))(?![_a-zA-Z0-9])"
+        },
+
+        "literal-keyword": {
+
+        },
+        "literal-number": {
+
+        },
+        "literal-string": {
+
+        },
+        "constant-literal": {
+
+        },
+
+        "annotation": {
+            "name": "electris.source-code.operator",
+            "match": "@[_a-zA-Z0-9.]*"
+        },
+
+        "operator-symbols": {
+            "name": "electris.source-code.operator",
+            "match": "\\+|\\-|\\*|/|%|=|\\+=|\\-=|\\*=|/=|%=||\\+\\+|\\-\\-|&&|\\|\\||!|==|!=|===|!===|<|>|<=|>=|!!|\\?\\.|\\?:"
+        }
+    }
+}

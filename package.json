@@ -90,6 +90,11 @@
                     "electris.source.embedded.javascript": "javascript"
                 }
             },
+            {
+                "path": "./syntaxes/kotlin-source.tmLanguage.json",
+                "scopeName": "electris.source.kotlin",
+                "language": "kotlin"
+            },
 
             {
                 "path": "./syntaxes/css-like-text.tmLanguage.json",
