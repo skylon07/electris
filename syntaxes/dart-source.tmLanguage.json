@@ -316,7 +316,7 @@
 
         "function-call": {
             "name": "electris.source-code.function-call",
-            "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\()|(?<=[^_a-zA-Z0-9]get )[_a-zA-Z0-9]+"
+            "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\()|(?<=[^_a-zA-Z0-9](get|set) )[_a-zA-Z0-9]+"
         },
 
         "scope-punctuation": {
