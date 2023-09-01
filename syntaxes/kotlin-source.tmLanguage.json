@@ -238,7 +238,7 @@
         "type-definition": {
             "name": "electris.source-code.types.type",
             "begin": "(?<=[_)a-zA-Z0-9]\\s*:\\s*)(?!\\.)(?=[_a-zA-Z0-9.]+)",
-            "end": "(?=[,=(){}:])|(?<=\\?)|$|(?=(as|as\\?|break|class|continue|do|else|for|fun|if|in|!in|interface|is|!is|object|package|return|super|this|throw|try|typealias|typeof|val|var|when|while)(?![_a-zA-Z0-9]))",
+            "end": "(?=[,=(){}:])|(?<=\\?)|$|(?=(as|as\\?|break|by|class|continue|do|else|for|fun|if|in|!in|interface|is|!is|object|package|return|super|this|throw|try|typealias|typeof|val|var|when|while)(?![_a-zA-Z0-9]))",
             "patterns": [
                 { "include": "#type-args-list" }
             ]
