@@ -78,7 +78,7 @@
 		"button.foreground": "#efefef",
 		"inputOption.activeBorder": "#399ef4", // ⌘+F -> border for buttons like regex
 		"editorWidget.background": "#1c2431", // for popups like ⌘+F
-		"editorHoverWidget.background": "#1c2431", // for boxes when hovering over variables
+		"editorHoverWidget.background": "#212a39", // for boxes when hovering over variables
 		"peekView.border": "#399ef4",
 		"peekViewEditor.background": "#13182080",
 		"peekViewResult.background": "#1c2431", // background of list on right side
