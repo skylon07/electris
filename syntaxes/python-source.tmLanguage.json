@@ -104,7 +104,7 @@
         },
         "module-reference": {
             "name": "electris.source-code.variable",
-            "match": "(?<=(from|import)\\s*)[_.a-zA-Z0-9]+"
+            "match": "(?<=^\\s*(from|import)\\s*)[_.a-zA-Z0-9]+"
         },
 
         "math-operator": {
