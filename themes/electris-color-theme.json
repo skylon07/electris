@@ -463,6 +463,22 @@
 			}
 		},
 
+		// white -- tag property punctuation
+		{
+			"scope": "electris.xml.property-punctuation",
+			"settings": {
+				"foreground": "#efefef"
+			}
+		},
+
+		// red -- invalid tag property
+		{
+			"scope": "electris.xml.property-invalid",
+			"settings": {
+				"foreground": "#d15551"
+			}
+		},
+
 		// orange -- tag property values
 		{
 			"scope": "electris.xml.property-value",
