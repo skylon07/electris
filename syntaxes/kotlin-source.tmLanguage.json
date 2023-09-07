@@ -1,6 +1,7 @@
 {
     "fileTypes": [
-        "kotlin"
+        "kt",
+        "kts"
     ],
     "scopeName": "electris.source.kotlin",
     "patterns": [
