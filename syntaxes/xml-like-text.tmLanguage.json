@@ -110,7 +110,7 @@
         },
         "tag-property-declaration-bad-literal": {
             "begin": "(?=([_a-zA-Z0-9\\-.:]+)\\s*(=)\\s*([^\\s>]*))",
-            "end": "\\s|$",
+            "end": "(?=\\s|>|/>|$)",
             "patterns": [
                 { "include": "#tag-property-name" },
                 { "include": "#tag-property-punctuation" },
@@ -121,7 +121,7 @@
             ]
         },
         "tag-property-assignment-bad-literal": {
-            "match": "(=)\\s*([^\\s>]*)",
+            "match": "(=)\\s*([^\\s/>]*)",
             "captures": {
                 "1": { "name": "electris.xml.property-assignment" },
                 "2": { "name": "electris.xml.property-invalid" }
