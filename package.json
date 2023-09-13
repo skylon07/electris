@@ -68,6 +68,11 @@
                 "scopeName": "electris.source.kotlin",
                 "language": "kotlinscript"
             },
+            {
+                "path": "./syntaxes/java-source.tmLanguage.json",
+                "scopeName": "electris.source.java",
+                "language": "java"
+            },
 
             {
                 "path": "./syntaxes/markdown-text.tmLanguage.json",

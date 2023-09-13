@@ -1,0 +1,211 @@
+{
+    "fileTypes": [
+        "java"
+    ],
+    "scopeName": "electris.source.java",
+    "patterns": [
+        {
+            "precedenceGroup": "comments",
+            "patterns": [
+                { "include": "#single-line-comment" },
+                { "include": "#multi-line-comment" }
+            ]
+        },
+        {
+            "precedenceGroup": "builtin-keywords",
+            "patterns": [
+                { "include": "#builtin-type" },
+                { "include": "#keyword" },
+                { "include": "#keyword-soft" }
+            ]
+        },
+        {
+            "precedenceGroup": "literals",
+            "patterns": [
+                { "include": "#literal-keyword" },
+                { "include": "#literal-number" },
+                { "include": "#literal-string" },
+                { "include": "#constant-literal" }
+            ]
+        },
+        {
+            "precedenceGroup": "type-references",
+            "patterns": [
+                { "include": "#type-definition" },
+                { "include": "#type-reference-generic" },
+                { "include": "#type-reference" },
+                { "include": "#type-args-list" }
+            ]
+        },
+        {
+            "precedenceGroup": "function-calls",
+            "patterns": [
+                { "include": "#function-call" }
+            ]
+        },
+        {
+            "precedenceGroup": "rest",
+            "patterns": [
+                { "include": "#variable-reference" },
+                { "include": "#annotation" },
+                { "include": "#scope-punctuation" },
+                { "include": "#index-punctuation" },
+                { "include": "#expression-punctuation" },
+                { "include": "#operator-symbols" }
+            ]
+        }
+    ],
+    "repository": {
+        "variable-reference": {
+            "name": "electris.source-code.variable",
+            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*|(_|__|___|____)(?![_A-Z])"
+        },
+
+        "single-line-comment": {
+            "name": "electris.source-code.comment",
+            "match": "//.*"
+        },
+        "multi-line-comment": {
+            "name": "electris.source-code.comment",
+            "begin": "/\\*",
+            "end": "\\*/",
+            "patterns": [{ "include": "#multi-line-comment" }]
+        },
+
+        "builtin-type": {
+            "name": "electris.source-code.types.type",
+            "match": "(?<![_a-zA-Z0-9.])(boolean|byte|char|double|float|int|long|short)(?![_a-zA-Z0-9])"
+        },
+
+        "keyword": {
+            "name": "electris.source-code.operator",
+            "match": "(abstract|assert|break|case|catch|class|continue|const|default|do|else|enum|exports|extends|final|finally|for|goto|if|implements|import|instanceof|interface|module|native|new|package|private|protected|public|requires|return|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|var|void|volatile|while)(?![_a-zA-Z0-9])"
+        },
+
+        "literal-string": {
+            "patterns": [
+                { "include": "#literal-string-dquote" },
+                { "include": "#literal-string-squote" }
+            ]
+        },
+        "literal-string-dquote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)\"",
+            "end": "(?<!(?<!\\\\)\\\\)\"",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+        "literal-string-squote": {
+            "name": "electris.source-code.primitive-literal",
+            "begin": "(?<!(?<!\\\\)\\\\)'",
+            "end": "(?<!(?<!\\\\)\\\\)'",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [
+                { "include": "#literal-string-escape" }
+            ]
+        },
+
+        "literal-keyword": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "(true|false|null)(?![_a-zA-Z0-9])"
+        },
+        "literal-string-escape": {
+            "name": "electris.source-code.escape",
+            "match": "\\\\."
+        },
+        "constant-literal": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "_*[A-Z][_A-Z][_A-Z0-9]*(?![_a-zA-Z0-9])"
+        },
+
+        "literal-number": {
+            "name": "electris.source-code.primitive-literal",
+            "match": "0[xX][0-9a-fA-F_]*(?<!_)|0[bB][01_]*|(?!_)[0-9_]+(?<!_)(\\.(?!_)[0-9_]*(?<!_))?([eE][+-]?(?!_)[0-9_]*(?<!_))?[Lfd]?|\\.(?!_)[0-9_]+(?<!_)([eE][+-]?(?!_)[0-9_]*(?<!_))?[Lfd]?"
+        },
+
+        "annotation": {
+            "name": "electris.source-code.operator",
+            "match": "@[_a-zA-Z0-9.]*"
+        },
+
+        "operator-symbols": {
+            "name": "electris.source-code.operator",
+            "match": "\\+|\\-|\\*|/|%|=|\\+=|\\-=|\\*=|/=|%=|\\+\\+|\\-\\-|&|\\||\\^|&=|\\|=|\\^=|<<|>>|<<=|>>=|&&|\\|\\||!|==|!=|===|!===|<|>|<=|>=|!!|\\?:|\\?"
+        },
+
+        "scope-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\{|\\}"
+        },
+        "index-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\[|\\]"
+        },
+        "expression-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\.|,|:|;|\\(|\\)"
+        },
+
+        "type-definition": {
+            "name": "electris.source-code.types.type",
+            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*(?=\\s+[_a-zA-Z0-9])(?!\\sas\\s)"
+        },
+        "type-definition-generic": {
+            "name": "electris.source-code.types.type",
+            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*(?=<(?!.*>\\())",
+            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
+            "patterns": [
+                { "include": "#type-args-list" }
+            ]
+        },
+        "type-definition-in-class-headers": {
+            "name": "electris.source-code.types.type",
+            "match": "(?<=[^_a-zA-Z0-9](extends |implements |with |on ))[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*"
+        },
+        "type-definition-generic-in-class-headers": {
+            "name": "electris.source-code.types.type",
+            "begin": "(?<=[^_a-zA-Z0-9](extends |implements |with |on ))[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*(?=<)",
+            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
+            "patterns": [
+                { "include": "#type-args-list" }
+            ]
+        },
+        "type-reference": {
+            "name": "electris.source-code.types.type",
+            "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+        },
+        "type-reference-generic": {
+            "name": "electris.source-code.types.type",
+            "begin": "_*[A-Z][_a-zA-Z0-9]*[_a-zA-Z0-9]*(?=<)",
+            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
+            "patterns": [{ "include": "#type-args-list" }]
+        },
+
+        "type-args-list": {
+            "name": "electris.source-code.types.type-args",
+            "begin": "(?<=[_a-zA-Z0-9]<*)<|<(?=<*[_a-zA-Z0-9])",
+            "end": ">",
+            "patterns": [
+                { "include": "#type-args-list" },
+                { "include": "#type-args-keywords" }
+            ]
+        },
+        "type-args-keywords": {
+            "match": "(extends|implements)",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" }
+            }
+        },
+
+        "function-call": {
+            "name": "electris.source-code.function-call",
+            "match": "[_a-zA-Z0-9]+(?=\\s*?[!?]?(<.*>)?\\s*(\\(|\\{))"
+        }
+    }
+}
