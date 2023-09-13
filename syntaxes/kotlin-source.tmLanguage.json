@@ -15,7 +15,6 @@
         {
             "precedenceGroup": "builtin-keywords",
             "patterns": [
-                { "include": "#builtin-type" },
                 { "include": "#keyword" },
                 { "include": "#keyword-soft" }
             ]
@@ -186,7 +185,7 @@
 
         "literal-number": {
             "name": "electris.source-code.primitive-literal",
-            "match": "0[xX][0-9a-fA-F_]*(?<!_)|(?!_)[0-9_]+(?<!_)(\\.(?!_)[0-9_]*(?<!_))?([eE][+-]?(?!_)[0-9_]*(?<!_))?|\\.(?!_)[0-9_]+(?<!_)([eE][+-]?(?!_)[0-9_]*(?<!_))?"
+            "match": "0[xX][0-9a-fA-F_]*(?<!_)|0[bB][01_]*(?<!_)|(?!_)[0-9_]+(?<!_)(\\.(?!_)[0-9_]*(?<!_))?([eE][+-]?(?!_)[0-9_]*(?<!_))?|\\.(?!_)[0-9_]+(?<!_)([eE][+-]?(?!_)[0-9_]*(?<!_))?"
         },
 
         "annotation": {
