@@ -392,10 +392,11 @@
         },
         "typedef-type-reference": {
             "name": "electris.source-code.types.type",
-            "begin": "((?<=[_a-zA-Z0-9]\\s*:\\s*)(?<![^_a-zA-Z0-9]lambda [^:]*:\\s*|[^_a-zA-Z0-9]lambda:\\s*)|(?<=->\\s*))(?!\\.)(?=['\"_a-zA-Z0-9.]+)",
-            "end": "(?=[,=():])|$|(?=(and|as|assert|break|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|super|try|while|with|yield)(?![_a-zA-Z0-9]))",
+            "begin": "((?<=[_a-zA-Z0-9]\\s*:\\s*)(?<![^_a-zA-Z0-9]lambda [^:]*:\\s*|[^_a-zA-Z0-9]lambda:\\s*)|(?<=->\\s*))(?!\\.)(?=['\"_a-zA-Z0-9.()]+)",
+            "end": "(?=[,=):])|$|(?=(and|as|assert|break|class|continue|def|del|elif|else|except|finally|for|from|global|if|import|in|is|lambda|nonlocal|not|or|pass|raise|return|super|try|while|with|yield)(?![_a-zA-Z0-9]))",
             "patterns": [
                 { "include": "#typedef-type-reference-recursive-brackets" },
+                { "include": "#typedef-type-reference-recursive-parens" },
                 { "include": "#typedef-type-reference-recursive" },
                 { "include": "#typedef-type-punctuation-recursive" }
             ]
@@ -412,6 +413,17 @@
             "end": "\\]",
             "patterns": [
                 { "include": "#typedef-type-reference-recursive-brackets" },
+                { "include": "#typedef-type-reference-recursive-parens" },
+                { "include": "#typedef-type-reference-recursive" },
+                { "include": "#typedef-type-punctuation-recursive" }
+            ]
+        },
+        "typedef-type-reference-recursive-parens": {
+            "begin": "\\(",
+            "end": "\\)",
+            "patterns": [
+                { "include": "#typedef-type-reference-recursive-brackets" },
+                { "include": "#typedef-type-reference-recursive-parens" },
                 { "include": "#typedef-type-reference-recursive" },
                 { "include": "#typedef-type-punctuation-recursive" }
             ]
