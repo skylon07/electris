@@ -154,11 +154,11 @@
 
         "type-definition": {
             "name": "electris.source-code.types.type",
-            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*(?=\\s+[_a-zA-Z0-9])(?!\\sas\\s)"
+            "match": "(?<=(^|\\(|,|(abstract|assert|break|case|catch|class|continue|const|default|do|else|enum|exports|extends|final|finally|for|goto|if|implements|import|instanceof|interface|module|native|new|package|private|protected|public|requires|return|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|var|void|volatile|while)\\s)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*(?=\\s+[_a-zA-Z0-9])(?!\\sas\\s)"
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*(?=<(?!.*>\\())",
+            "begin": "(?<=(^|\\(|,|(abstract|assert|break|case|catch|class|continue|const|default|do|else|enum|exports|extends|final|finally|for|goto|if|implements|import|instanceof|interface|module|native|new|package|private|protected|public|requires|return|static|strictfp|super|switch|synchronized|this|throw|throws|transient|try|var|void|volatile|while)\\s)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.?]*(?=<(?!.*>\\())",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
             "patterns": [
                 { "include": "#type-args-list" }
