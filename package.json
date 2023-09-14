@@ -10,6 +10,9 @@
         "Themes"
     ],
     "contributes": {
+        "markdown.previewStyles": [
+            "./themes/vscode-markdown-overrides.css"
+        ],
         "themes": [
             {
                 "label": "electris",

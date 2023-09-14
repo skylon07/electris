@@ -1,0 +1,3 @@
+strong:not(._something_to_ignore) {
+    font-weight: 800;
+}
