@@ -43,7 +43,8 @@
                 { "include": "#type-definition-generic" },
                 { "include": "#type-definition" },
                 { "include": "#type-reference-generic" },
-                { "include": "#type-reference" }
+                { "include": "#type-reference" },
+                { "include": "#type-args-list-single-line" }
             ]
         },
         {
@@ -298,6 +299,13 @@
             "match": "(?<![_a-zA-Z0-9.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9])"
         },
 
+        "type-args-list-single-line": {
+            "begin": "(?=<.*>)",
+            "end": "(?<=>)",
+            "patterns": [
+                { "include": "#type-args-list" }
+            ]
+        },
         "type-args-list": {
             "name": "electris.source-code.types.type-args",
             "begin": "(?<=[_a-zA-Z0-9]<*)<|<(?=<*[_a-zA-Z0-9])",
