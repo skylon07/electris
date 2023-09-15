@@ -129,7 +129,7 @@
         },
         "keyword-operator": {
             "name": "electris.source-code.operator",
-            "match": "operator\\s*(>|>=|<|<=|==|\\+|\\-|\\*|/|~/|%|<<|>>|\\^|&|\\||~|>>>|\\[\\]|\\[\\]=)(?=\\s*\\()|operator\\s*([^\\(]*)",
+            "match": "operator\\s*(>|>=|<|<=|==|\\+|\\-|\\*|/|~/|%|<<|>>|\\^|&|\\||~|>>>|\\[\\]|\\[\\]=)(?=\\s*\\(|\\s*$)|operator\\s*([^\\(]*)",
             "captures": {
                 "2": { "name": "electris.source-code.punctuation" }
             }
