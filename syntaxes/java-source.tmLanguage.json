@@ -33,8 +33,7 @@
             "patterns": [
                 { "include": "#type-definition" },
                 { "include": "#type-reference-generic" },
-                { "include": "#type-reference" },
-                { "include": "#type-args-list" }
+                { "include": "#type-reference" }
             ]
         },
         {
