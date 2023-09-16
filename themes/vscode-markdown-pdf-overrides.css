@@ -5,3 +5,7 @@ code:not(._something_to_ignore_) {
     background-color: lightgray;
     color: dimgray !important;
 }
+
+pre code:not(._something_to_ignore_) {
+    background-color: rgba(0, 0, 0, 0);
+}
