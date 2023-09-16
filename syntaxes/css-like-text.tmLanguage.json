@@ -132,6 +132,7 @@
         },
         "class-property-value": {
             "patterns": [
+                { "include": "#keyword-important" },
                 { "include": "#function" },
                 { "include": "#variable" },
                 { "include": "#value-operator" },
@@ -178,6 +179,11 @@
         "value-operator": {
             "name": "electris.source-code.operator",
             "match": "\\+|-|\\*|/|%"
+        },
+
+        "keyword-important": {
+            "name": "electris.source-code.operator",
+            "match": "!important"
         }
     }
 }
