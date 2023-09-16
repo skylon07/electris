@@ -1,0 +1,7 @@
+code:not(._something_to_ignore_) {
+    border: 2px lightslategray;
+    border-radius: 4px;
+    padding: 3px;
+    background-color: lightgray;
+    color: dimgray !important;
+}
