@@ -262,7 +262,7 @@
         
         "type-definition": {
             "name": "electris.source-code.types.type",
-            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=\\s+[_a-zA-Z0-9])(?!\\sas\\s)"
+            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=\\s+[_a-zA-Z0-9]{2})(?! (import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9]))"
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
