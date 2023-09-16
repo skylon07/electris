@@ -170,25 +170,25 @@
 
 		// blue fading -- operators in generic lists
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef4d8"
 			}
 		},
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef4b0"
 			}
 		},
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef488"
 			}
 		},
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef460"
 			}
@@ -231,35 +231,35 @@
 
 		// green italicized fading -- generic type lists
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-args",
 			"settings": {
 				"foreground": "#4eb071d8",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args",
 			"settings": {
 				"foreground": "#4eb071b0",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args",
 			"settings": {
 				"foreground": "#4eb07188",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args",
 			"settings": {
 				"foreground": "#4eb07160",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
 			"settings": {
 				"foreground": "#b04e4e50",
 				"fontStyle": "italic"
