@@ -300,7 +300,7 @@
         },
 
         "type-args-list-single-line": {
-            "begin": "(?=<.*>)",
+            "begin": "(?=<[^()]*>)",
             "end": "(?<=>)",
             "patterns": [
                 { "include": "#type-args-list" }
