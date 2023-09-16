@@ -266,8 +266,8 @@
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=<(?!.*>\\())",
-            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
+            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=\\s*<.*>(?=\\s*[^>])(?!\\s*\\())",
+            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
             ]
@@ -278,8 +278,8 @@
         },
         "type-definition-generic-in-class-headers": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=[^_a-zA-Z0-9](extends |implements |with |on ))[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=<)",
-            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
+            "begin": "(?<=[^_a-zA-Z0-9](extends |implements |with |on ))[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=\\s*<(.*>)?)",
+            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
             ]
@@ -290,7 +290,7 @@
         },
         "type-reference-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "_*[A-Z][_a-zA-Z0-9]*[_a-zA-Z0-9]*(?=<)",
+            "begin": "_*[A-Z][_a-zA-Z0-9]*[_a-zA-Z0-9]*(?=\\s*<.*>)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
             "patterns": [{ "include": "#type-args-list" }]
         },
@@ -308,8 +308,8 @@
         },
         "type-args-list": {
             "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[_a-zA-Z0-9]<*)<|<(?=<*[_a-zA-Z0-9])",
-            "end": ">",
+            "begin": "(?<=[_a-zA-Z0-9]\\s*(<\\s*)*)<|<(?=(\\s*<)*\\s*[_a-zA-Z0-9<>])",
+            "end": ">|$",
             "patterns": [
                 { "include": "#type-args-list" },
                 { "include": "#type-args-keywords" }
@@ -329,7 +329,7 @@
         "function-call-generic": {
             "name": "electris.source-code.function-call",
             "begin": "[_a-zA-Z0-9]+(?=\\s*[!?]?\\s*<.*>\\s*\\()",
-            "end": "(?<=>)(?=\\s*\\()",
+            "end": "(?<=>)(?=\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
             ]
