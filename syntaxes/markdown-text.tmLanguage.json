@@ -314,7 +314,7 @@
         },
         "code-block-other": {
             "contentName": "electris.markdown.code",
-            "begin": "(?<!(?<!\\\\)\\\\)(```)(\\s*.*)?",
+            "begin": "(?<!(?<!\\\\)\\\\)(```)(\\s*[^`]*)?",
             "end": "(```)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" },
