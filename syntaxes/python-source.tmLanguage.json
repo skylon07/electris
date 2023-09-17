@@ -369,12 +369,12 @@
         },
         "multi-line-comment-tdquote": {
             "name": "electris.source-code.comment",
-            "begin": "(?<=^\\s*)\"\"\"",
+            "begin": "(?<=^\\s*)r?\"\"\"",
             "end": "\"\"\""
         },
         "multi-line-comment-tsquote": {
             "name": "electris.source-code.comment",
-            "begin": "(?<=^\\s*)'''",
+            "begin": "(?<=^\\s*)r?'''",
             "end": "'''"
         },
 
