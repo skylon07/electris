@@ -21,6 +21,7 @@
         {
             "precedenceGroup": "comments",
             "patterns": [
+                { "include": "#multi-line-doc-comment" },
                 { "include": "#single-line-comment" },
                 { "include": "#multi-line-comment" }
             ]
@@ -174,6 +175,15 @@
             "begin": "/\\*",
             "end": "\\*/",
             "patterns": [{ "include": "#multi-line-comment" }]
+        },
+        "multi-line-doc-comment": {
+            "name": "electris.source-code.documentation",
+            "begin": "/\\*\\*",
+            "end": "\\*/",
+            "patterns": [
+                { "include": "#multi-line-comment" },
+                { "include": "#multi-line-doc-comment" }
+            ]
         },
 
         "type-reference": {

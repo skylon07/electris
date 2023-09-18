@@ -7,6 +7,7 @@
         {
             "precedenceGroup": "comments",
             "patterns": [
+                { "include": "#single-line-doc-comment" },
                 { "include": "#single-line-comment" },
                 { "include": "#multi-line-comment" }
             ]
@@ -251,7 +252,11 @@
 
         "single-line-comment": {
             "name": "electris.source-code.comment",
-            "match": "//.*|///.*"
+            "match": "//.*"
+        },
+        "single-line-doc-comment": {
+            "name": "electris.source-code.documentation",
+            "match": "///.*"
         },
         "multi-line-comment": {
             "name": "electris.source-code.comment",

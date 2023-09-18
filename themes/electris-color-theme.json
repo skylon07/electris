@@ -218,6 +218,14 @@
 			}
 		},
 
+		// gray tinted orange -- documentation
+		{
+			"scope": "electris.source-code.documentation",
+			"settings": {
+				"foreground": "#af9076de"
+			}
+		},
+
 		// green italicized -- types
 		{
 			// semantic: "support.class"

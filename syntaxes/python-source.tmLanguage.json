@@ -25,6 +25,7 @@
                 {
                     "precedenceGroup": "comments",
                     "patterns": [
+                        { "include": "#multi-line-docstring" },
                         { "include": "#single-line-comment" },
                         { "include": "#multi-line-comment" }
                     ]
@@ -363,17 +364,17 @@
         },
         "multi-line-comment": {
             "patterns": [
-                { "include": "#multi-line-comment-tdquote" },
-                { "include": "#multi-line-comment-tsquote" }
+                { "include": "#multi-line-docstring-tdquote" },
+                { "include": "#multi-line-docstring-tsquote" }
             ]
         },
-        "multi-line-comment-tdquote": {
-            "name": "electris.source-code.comment",
+        "multi-line-docstring-tdquote": {
+            "name": "electris.source-code.documentation",
             "begin": "(?<=^\\s*)r?\"\"\"",
             "end": "\"\"\""
         },
-        "multi-line-comment-tsquote": {
-            "name": "electris.source-code.comment",
+        "multi-line-docstring-tsquote": {
+            "name": "electris.source-code.documentation",
             "begin": "(?<=^\\s*)r?'''",
             "end": "'''"
         },
