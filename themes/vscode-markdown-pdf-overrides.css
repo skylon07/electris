@@ -4,6 +4,7 @@ code:not(._something_to_ignore_) {
     padding: 3px;
     background-color: lightgray;
     color: dimgray !important;
+    white-space: nowrap;
 }
 
 pre code:not(._something_to_ignore_) {
