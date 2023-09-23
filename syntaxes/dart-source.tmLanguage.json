@@ -58,6 +58,7 @@
                 { "include": "#math-operator" },
                 { "include": "#symbol-operator" },
                 { "include": "#lambda-operator" },
+                { "include": "#case-punctuation" },
                 { "include": "#condition-operator" },
                 { "include": "#condition-operator-ternary" },
                 { "include": "#assignment-operator" },
@@ -380,6 +381,10 @@
         "expression-punctuation": {
             "name": "electris.source-code.punctuation",
             "match": "\\.|,|;|\\(|\\)"
+        },
+        "case-punctuation": {
+            "name": "electris.source-code.punctuation",
+            "match": "(?<=case.*):"
         }
     }
 }
