@@ -52,9 +52,12 @@
         {
             "precedenceGroup": "rest",
             "patterns": [
+                { "include": "#spread-operator" },
                 { "include": "#cascade-chain" },
                 { "include": "#variable-reference" },
                 { "include": "#math-operator" },
+                { "include": "#symbol-operator" },
+                { "include": "#lambda-operator" },
                 { "include": "#condition-operator" },
                 { "include": "#condition-operator-ternary" },
                 { "include": "#assignment-operator" },
@@ -79,9 +82,17 @@
             "name": "electris.source-code.operator",
             "match": "\\+|\\-|\\+\\+|\\-\\-|\\*|/|~/|%|!|<<|>>|>>>|\\^|&|\\||~"
         },
-        "extract-operator": {
+        "symbol-operator": {
             "name": "electris.source-code.operator",
-            "match": "#|\\.\\.\\.|=>"
+            "match": "#"
+        },
+        "spread-operator": {
+            "name": "electris.source-code.operator",
+            "match": "\\.\\.\\."
+        },
+        "lambda-operator": {
+            "name": "electris.source-code.operator",
+            "match": "=>"
         },
         "extract-operator-dollar": {
             "patterns": [
