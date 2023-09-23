@@ -35,7 +35,7 @@
                 { "include": "#type-definition-generic-in-class-headers" },
                 { "include": "#type-definition-in-class-headers" },
                 { "include": "#type-definition-generic" },
-                { "include": "#type-definition-pattern" },
+                { "include": "#type-definition-record" },
                 { "include": "#type-definition" },
                 { "include": "#type-reference-generic" },
                 { "include": "#type-reference" },
@@ -271,16 +271,16 @@
                 { "include": "#type-args-list" }
             ]
         },
-        "type-definition-pattern": {
+        "type-definition-record": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)\\((?=.*\\)\\??\\s*[_a-zA-Z0-9$]{2})(?! (import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))",
+            "begin": "(?<=(^|\\(|,)\\s*)\\((?=.*\\)\\??\\s*[_a-zA-Z0-9$]{2})(?! (import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)\\(",
             "end": "\\)\\??|$",
             "patterns": [
-                { "include": "#type-definition-pattern-identifier" },
-                { "include": "#type-definition-pattern" }
+                { "include": "#type-definition-record-identifier" },
+                { "include": "#type-definition-record" }
             ]
         },
-        "type-definition-pattern-identifier": {
+        "type-definition-record-identifier": {
             "name": "electris.source-code.variable",
             "match": "(?<=[_a-zA-Z0-9$]\\s|\\))\\s*[_a-zA-Z0-9$]+"
         },
