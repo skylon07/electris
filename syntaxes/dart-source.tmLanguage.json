@@ -313,7 +313,7 @@
 
         "type-args-list-single-line": {
             "begin": "(?=<[^()]*>)",
-            "end": "(?<=>)",
+            "end": "(?<=>|$)",
             "patterns": [
                 { "include": "#type-args-list" }
             ]
