@@ -78,7 +78,7 @@
         },
         "variable-reference": {
             "name": "electris.source-code.variable",
-            "match": "_*[a-zA-Z0-9][_a-zA-Z0-9]*|(_|__|___|____)(?![_A-Z])"
+            "match": "_*[a-zA-Z0-9$][_a-zA-Z0-9$]*|(_|__|___|____)(?![_A-Z])"
         },
 
         "math-operator": {
@@ -127,7 +127,7 @@
         },
         "keyword": {
             "name": "electris.source-code.operator",
-            "match": "(?<!\\.)(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9])"
+            "match": "(?<!\\.)(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$])"
         },
         "keyword-operator": {
             "name": "electris.source-code.operator",
@@ -138,7 +138,7 @@
         },
         "annotation": {
             "name": "electris.source-code.operator",
-            "match": "@[_a-zA-Z0-9.]*"
+            "match": "@[_a-zA-Z0-9$.]*"
         },
 
         "literal-number": {
@@ -239,7 +239,7 @@
         },
         "literal-keyword": {
             "name": "electris.source-code.primitive-literal",
-            "match": "(true|false|null)(?![_a-zA-Z0-9])"
+            "match": "(true|false|null)(?![_a-zA-Z0-9$])"
         },
         "literal-string-escape": {
             "name": "electris.source-code.escape",
@@ -247,7 +247,7 @@
         },
         "constant-literal": {
             "name": "electris.source-code.primitive-literal",
-            "match": "_*[A-Z][_A-Z][_A-Z0-9]*(?![_a-zA-Z0-9])"
+            "match": "_*[A-Z][_A-Z][_A-Z0-9]*(?![_a-zA-Z0-9$])"
         },
 
         "single-line-comment": {
@@ -267,11 +267,11 @@
         
         "type-definition": {
             "name": "electris.source-code.types.type",
-            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=\\s+[_a-zA-Z0-9]{2})(?! (import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9]))"
+            "match": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s+[_a-zA-Z0-9$]{2})(?! (import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))"
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=\\s*<.*>(?=\\s*[^>])(?!\\s*\\())",
+            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<.*>(?=\\s*[^>])(?!\\s*\\())",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
@@ -279,11 +279,11 @@
         },
         "type-definition-in-class-headers": {
             "name": "electris.source-code.types.type",
-            "match": "(?<=[^_a-zA-Z0-9](extends |implements |with |on ))[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??"
+            "match": "(?<=[^_a-zA-Z0-9$](extends |implements |with |on ))[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??"
         },
         "type-definition-generic-in-class-headers": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=[^_a-zA-Z0-9](extends |implements |with |on ))[_a-zA-Z0-9]+[_a-zA-Z0-9.]*\\??(?=\\s*<(.*>)?)",
+            "begin": "(?<=[^_a-zA-Z0-9$](extends |implements |with |on ))[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<(.*>)?)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
@@ -291,17 +291,17 @@
         },
         "type-reference": {
             "name": "electris.source-code.types.type",
-            "match": "_*[A-Z][_a-zA-Z0-9]*(\\?(?!\\.))?(?<!\\s*\\()"
+            "match": "_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?(?<!\\s*\\()"
         },
         "type-reference-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "_*[A-Z][_a-zA-Z0-9]*[_a-zA-Z0-9]*(?=\\s*<.*>)",
+            "begin": "_*[A-Z][_a-zA-Z0-9$]*[_a-zA-Z0-9$]*(?=\\s*<.*>)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
             "patterns": [{ "include": "#type-args-list" }]
         },
         "builtin-type": {
             "name": "electris.source-code.types.type",
-            "match": "(?<![_a-zA-Z0-9.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9])"
+            "match": "(?<![_a-zA-Z0-9$.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9$])"
         },
 
         "type-args-list-single-line": {
@@ -313,7 +313,7 @@
         },
         "type-args-list": {
             "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[_a-zA-Z0-9]\\s*(<\\s*)*)<|<(?=(\\s*<)*\\s*[_a-zA-Z0-9<>])",
+            "begin": "(?<=[_a-zA-Z0-9$]\\s*(<\\s*)*)<|<(?=(\\s*<)*\\s*[_a-zA-Z0-9$<>])",
             "end": ">|$",
             "patterns": [
                 { "include": "#type-args-list" },
@@ -329,11 +329,11 @@
 
         "function-call": {
             "name": "electris.source-code.function-call",
-            "match": "[_a-zA-Z0-9]+(?=\\s*[!?]?\\s*\\()|(?<=[^_a-zA-Z0-9](get|set) )[_a-zA-Z0-9]+"
+            "match": "[_a-zA-Z0-9$]+(?=\\s*[!?]?\\s*\\()|(?<=[^_a-zA-Z0-9$](get|set) )[_a-zA-Z0-9$]+"
         },
         "function-call-generic": {
             "name": "electris.source-code.function-call",
-            "begin": "[_a-zA-Z0-9]+(?=\\s*[!?]?\\s*<.*>\\s*\\()",
+            "begin": "[_a-zA-Z0-9$]+(?=\\s*[!?]?\\s*<.*>\\s*\\()",
             "end": "(?<=>)(?=\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
