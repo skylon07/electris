@@ -64,6 +64,7 @@
                 { "include": "#assignment-operator" },
                 { "include": "#annotation" },
                 { "include": "#scope-punctuation" },
+                { "include": "#scope-punctuation-leftover" },
                 { "include": "#index-punctuation" },
                 { "include": "#expression-punctuation" }
             ]
@@ -405,6 +406,10 @@
             "patterns": [
                 { "include": "$self" }
             ]
+        },
+        "scope-punctuation-leftover": {
+            "name": "electris.source-code.punctuation",
+            "match": "\\}"
         },
         "index-punctuation": {
             "name": "electris.source-code.punctuation",
