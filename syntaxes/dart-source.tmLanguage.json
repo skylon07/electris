@@ -350,7 +350,8 @@
             "end": ">|$",
             "patterns": [
                 { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" }
+                { "include": "#type-args-keywords" },
+                { "include": "#type-args-record" }
             ]
         },
         "type-args-keywords": {
@@ -358,6 +359,25 @@
             "captures": {
                 "1": { "name": "electris.source-code.operator" }
             }
+        },
+        "type-args-record": {
+            "begin": "\\(",
+            "end": "\\)|$|(?=>)",
+            "patterns": [
+                { "include": "#type-args-list" },
+                { "include": "#type-definition-record-variable" },
+                { "include": "#type-args-record-recursive" }
+            ]
+        },
+        "type-args-record-recursive": {
+            "name": "electris.source-code.types.type-args",
+            "begin": "\\(",
+            "end": "\\)|$|(?=>)",
+            "patterns": [
+                { "include": "#type-args-list" },
+                { "include": "#type-definition-record-variable" },
+                { "include": "#type-args-record-recursive" }
+            ]
         },
 
         "function-call": {

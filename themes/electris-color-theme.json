@@ -160,6 +160,32 @@
 			}
 		},
 
+		// light blue fading -- variables in generic lists
+		{
+			"scope": "electris.source-code.types.type-args electris.source-code.variable",
+			"settings": {
+				"foreground": "#9fcff9d8"
+			}
+		},
+		{
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
+			"settings": {
+				"foreground": "#9fcff9b0"
+			}
+		},
+		{
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
+			"settings": {
+				"foreground": "#9fcff988"
+			}
+		},
+		{
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
+			"settings": {
+				"foreground": "#9fcff960"
+			}
+		},
+
 		// blue -- operators/keywords
 		{
 			"scope": "electris.source-code.operator",
@@ -267,7 +293,7 @@
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
 			"settings": {
 				"foreground": "#b04e4e50",
 				"fontStyle": "italic"
