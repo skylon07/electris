@@ -117,7 +117,10 @@
             "endCaptures": { 
                 "1": { "name": "electris.source-code.operator" }
             },
-            "patterns": [{ "include": "$self" }]
+            "patterns": [
+                { "include": "#scope-punctuation" },
+                { "include": "$self" }
+            ]
         },
         "condition-operator": {
             "name": "electris.source-code.operator",
@@ -371,8 +374,17 @@
         },
         
         "scope-punctuation": {
-            "name": "electris.source-code.punctuation",
-            "match": "\\{|\\}"
+            "begin": "(\\{)",
+            "end": "(\\})",
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "patterns": [
+                { "include": "$self" }
+            ]
         },
         "index-punctuation": {
             "name": "electris.source-code.punctuation",
