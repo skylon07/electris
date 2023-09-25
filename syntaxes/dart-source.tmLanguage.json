@@ -5,72 +5,84 @@
     "scopeName": "electris.source.dart",
     "patterns": [
         {
-            "precedenceGroup": "comments",
+            "precedenceGroup": "parentheses-for-functions-that-arent-record-types",
             "patterns": [
-                { "include": "#single-line-doc-comment" },
-                { "include": "#single-line-comment" },
-                { "include": "#multi-line-comment" }
+                { "include": "#expression-punctuation-parentheses-not-record" }
             ]
         },
-        {
-            "precedenceGroup": "builtin-keywords",
-            "patterns": [
-                { "include": "#builtin-type" },
-                { "include": "#keyword" },
-                { "include": "#keyword-operator" }
-            ]
-        },
-        {
-            "precedenceGroup": "literals",
-            "patterns": [
-                { "include": "#literal-keyword" },
-                { "include": "#literal-number" },
-                { "include": "#literal-string" },
-                { "include": "#constant-literal" }
-            ]
-        },
-        {
-            "precedenceGroup": "type-references",
-            "patterns": [
-                { "include": "#type-definition-generic-in-class-headers" },
-                { "include": "#type-definition-in-class-headers" },
-                { "include": "#type-definition-generic" },
-                { "include": "#type-definition-record" },
-                { "include": "#type-definition" },
-                { "include": "#type-reference-generic" },
-                { "include": "#type-reference" },
-                { "include": "#type-args-list-single-line" }
-            ]
-        },
-        {
-            "precedenceGroup": "function-calls",
-            "patterns": [
-                { "include": "#function-call" },
-                { "include": "#function-call-generic" }
-            ]
-        },
-        {
-            "precedenceGroup": "rest",
-            "patterns": [
-                { "include": "#spread-operator" },
-                { "include": "#cascade-chain" },
-                { "include": "#variable-reference" },
-                { "include": "#math-operator" },
-                { "include": "#symbol-operator" },
-                { "include": "#lambda-operator" },
-                { "include": "#case-punctuation" },
-                { "include": "#condition-operator" },
-                { "include": "#condition-operator-ternary" },
-                { "include": "#assignment-operator" },
-                { "include": "#annotation" },
-                { "include": "#scope-punctuation" },
-                { "include": "#scope-punctuation-leftover" },
-                { "include": "#index-punctuation" },
-                { "include": "#expression-punctuation" }
-            ]
-        }
+        { "include": "#self-no-parentheses-for-functions-that-arent-record-types" }
     ],
     "repository": {
+        "self-no-parentheses-for-functions-that-arent-record-types": {
+            "patterns": [
+                {
+                    "precedenceGroup": "comments",
+                    "patterns": [
+                        { "include": "#single-line-doc-comment" },
+                        { "include": "#single-line-comment" },
+                        { "include": "#multi-line-comment" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "builtin-keywords",
+                    "patterns": [
+                        { "include": "#builtin-type" },
+                        { "include": "#keyword" },
+                        { "include": "#keyword-operator" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "literals",
+                    "patterns": [
+                        { "include": "#literal-keyword" },
+                        { "include": "#literal-number" },
+                        { "include": "#literal-string" },
+                        { "include": "#constant-literal" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "type-references",
+                    "patterns": [
+                        { "include": "#type-definition-generic-in-class-headers" },
+                        { "include": "#type-definition-in-class-headers" },
+                        { "include": "#type-definition-generic" },
+                        { "include": "#type-definition-record" },
+                        { "include": "#type-definition" },
+                        { "include": "#type-reference-generic" },
+                        { "include": "#type-reference" },
+                        { "include": "#type-args-list-single-line" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "function-calls",
+                    "patterns": [
+                        { "include": "#function-call" },
+                        { "include": "#function-call-generic" }
+                    ]
+                },
+                {
+                    "precedenceGroup": "rest",
+                    "patterns": [
+                        { "include": "#spread-operator" },
+                        { "include": "#cascade-chain" },
+                        { "include": "#variable-reference" },
+                        { "include": "#math-operator" },
+                        { "include": "#symbol-operator" },
+                        { "include": "#lambda-operator" },
+                        { "include": "#case-punctuation" },
+                        { "include": "#condition-operator" },
+                        { "include": "#condition-operator-ternary" },
+                        { "include": "#assignment-operator" },
+                        { "include": "#annotation" },
+                        { "include": "#scope-punctuation" },
+                        { "include": "#scope-punctuation-leftover" },
+                        { "include": "#index-punctuation" },
+                        { "include": "#expression-punctuation" }
+                    ]
+                }
+            ]
+        },
+
         "cascade-chain": {
             "name": "electris.source-code.variable",
             "match": "\\.\\."
@@ -418,6 +430,22 @@
         "expression-punctuation": {
             "name": "electris.source-code.punctuation",
             "match": "\\.|,|;|\\(|\\)"
+        },
+        "expression-punctuation-parentheses-not-record": {
+            "comment": "tries to detect non-record pairs of parentheses, aka (...) {} expressions (should be evaluated before records)",
+            "comment2": "this is a hack because (?=.*\\)) will prematurely detect close parentesis that isn't paired with the first; aka ((num, num*)* test)",
+            "name": "DEBUG",
+            "begin": "(\\()(?=.*\\)\\s*([a-zA-Z\\*]*\\s*\\{|,|$))",
+            "end": "(\\))",
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.source-code.punctuation" }
+            },
+            "patterns": [
+                { "include": "#self-no-parentheses-for-functions-that-arent-record-types" }
+            ]
         },
         "case-punctuation": {
             "name": "electris.source-code.punctuation",
