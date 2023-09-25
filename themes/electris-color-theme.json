@@ -160,29 +160,35 @@
 			}
 		},
 
-		// light blue fading -- variables in generic lists
+		// light blue/green fading -- variables in generic lists
+		{
+			"scope": "electris.source-code.types.type electris.source-code.variable",
+			"settings": {
+				"foreground": "#76c0b5"
+			}
+		},
 		{
 			"scope": "electris.source-code.types.type-args electris.source-code.variable",
 			"settings": {
-				"foreground": "#9fcff9d8"
+				"foreground": "#76c0b5d8"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
 			"settings": {
-				"foreground": "#9fcff9b0"
+				"foreground": "#76c0b5b0"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
 			"settings": {
-				"foreground": "#9fcff988"
+				"foreground": "#76c0b588"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
 			"settings": {
-				"foreground": "#9fcff960"
+				"foreground": "#76c0b560"
 			}
 		},
 
