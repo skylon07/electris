@@ -293,7 +293,7 @@
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<.*>(?=\\s*[^>])(?!\\s*\\())",
+            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=<)(?!\\s*<.*>\\s*\\()",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
