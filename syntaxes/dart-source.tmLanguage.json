@@ -434,7 +434,6 @@
         "expression-punctuation-parentheses-not-record": {
             "comment": "tries to detect non-record pairs of parentheses, aka (...) {} expressions (should be evaluated before records)",
             "comment2": "this is a hack because (?=.*\\)) will prematurely detect close parentesis that isn't paired with the first; aka ((num, num*)* test)",
-            "name": "DEBUG",
             "begin": "(\\()(?=.*\\)\\s*([a-zA-Z\\*]*\\s*\\{|,|$))",
             "end": "(\\))",
             "beginCaptures": {
