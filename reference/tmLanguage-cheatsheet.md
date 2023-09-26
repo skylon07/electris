@@ -11,13 +11,15 @@ Two things must happen when defining new grammars for a language. First, the fil
 To add a new grammer in `package.json`, simply add an object with these properties:
 
 ``` json
-"grammars": [
-    {
-        "path": "./syntaxes/{language}-source.tmLanguage.json",
-        "scopeName": "electris.source.{language}",
-        "language": "{language}"
-    }
-]
+{
+    "grammars": [
+        {
+            "path": "./syntaxes/{language}-source.tmLanguage.json",
+            "scopeName": "electris.source.{language}",
+            "language": "{language}"
+        }
+    ]
+}
 ```
 
 (where `{language}` is the VSCode-recognized language being used)
@@ -25,10 +27,12 @@ To add a new grammer in `package.json`, simply add an object with these properti
 If adding support for a new language, it's also helpful to turn off semantic tokens:
 
 ``` json
-"contributes": {
-    "configurationDefaults": {
-        "[{language}]": {
-            "editor.semanticHighlighting.enabled": false
+{
+    "contributes": {
+        "configurationDefaults": {
+            "[{language}]": {
+                "editor.semanticHighlighting.enabled": false
+            }
         }
     }
 }
@@ -37,26 +41,30 @@ If adding support for a new language, it's also helpful to turn off semantic tok
 To modify an existing language using injections, use these properties:
 
 ``` json
-"grammars": [
-    {
-        "path": "./syntaxes/{language}-injections.tmLanguage.json",
-        "scopeName": "electris.injections.{language}",
-        "injectTo": ["electris.source.{language}"]
-    }
-]
+{
+    "grammars": [
+        {
+            "path": "./syntaxes/{language}-injections.tmLanguage.json",
+            "scopeName": "electris.injections.{language}",
+            "injectTo": ["electris.source.{language}"]
+        }
+    ]
+}
 ```
 
 An alternative method to injections is to define an `embeddedLanguages` property to indicate that the current grammar contains other languages inside itself.
 
 ```json
-"grammars": [
-    {
-        ...
-        "embeddedLanguages": {
-            "electris.source.embedded.{language}": "{language}"
+{
+    "grammars": [
+        {
+            ...
+            "embeddedLanguages": {
+                "electris.source.embedded.{language}": "{language}"
+            }
         }
-    }
-]
+    ]
+}
 ```
 
 Using `embeddedLanguages` tells the language recognizer in VSCode to recognize languages in scopes named `"electris.source.embedded.{language}"`. Defining these scopes is covered in [the next section](#configuring-the-grammar-file).
@@ -86,14 +94,16 @@ After `package.json` is updated, create the `syntaxes/{language}-injections.tmLa
 To use any embedded languages added with the `embeddedLanguages` property (in `package.json` -- discussed [here](#adding-the-grammar-file)), create a rule with a scope matching the scope of the embedded language along with including the language's style.
 
 ``` json
-"code-block-python": {
-    "contentName": "electris.source.embedded.{language}",
-    "begin": "{matcher for beginning of embedded block}",
-    "end": "{matcher for end of embedded block}",
-    "patterns": [
-        { "include": "electris.source.{language}" }
-    ]
-},
+{
+    "code-block-python": {
+        "contentName": "electris.source.embedded.{language}",
+        "begin": "{matcher for beginning of embedded block}",
+        "end": "{matcher for end of embedded block}",
+        "patterns": [
+            { "include": "electris.source.{language}" }
+        ]
+    },
+}
 ```
 
 In the example above, `"contentName"` indicates which language server should be used (assuming `package.json` is configured correctly), and `"patters"` provides the actual styling for the language.
