@@ -22,6 +22,18 @@ To add a new grammer in `package.json`, simply add an object with these properti
 
 (where `{language}` is the VSCode-recognized language being used)
 
+If adding support for a new language, it's also helpful to turn off semantic tokens:
+
+``` json
+"contributes": {
+    "configurationDefaults": {
+        "[{language}]": {
+            "editor.semanticHighlighting.enabled": false
+        }
+    }
+}
+```
+
 To modify an existing language using injections, use these properties:
 
 ``` json

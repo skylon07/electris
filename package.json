@@ -20,6 +20,59 @@
                 "path": "./themes/electris-color-theme.json"
             }
         ],
+        "configurationDefaults": {
+            "[dart]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[python]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[json]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[jsonc]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[javascript]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[javascriptreact]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[kotlin]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[kotlinscript]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[java]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[markdown]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[xml]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[html]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[jsx-tags]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[css]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[less]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[ignore]": {
+                "editor.semanticHighlighting.enabled": false
+            },
+            "[yaml]": {
+                "editor.semanticHighlighting.enabled": false
+            }
+        },
         "grammars": [
             {
                 "path": "./syntaxes/dart-source.tmLanguage.json",
