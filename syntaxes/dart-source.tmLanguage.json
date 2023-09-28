@@ -293,7 +293,7 @@
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=<)(?!\\s*<.*>\\s*\\()|(?<=\\s+as\\s+)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=<)",
+            "begin": "(?<=(^|\\(|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=<)(?!\\s*<[^+\\-*/^|&~=]*>\\s*\\()|(?<=\\s+as\\s+)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=<)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
@@ -341,7 +341,7 @@
         },
         "type-reference-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "_*[A-Z][_a-zA-Z0-9$]*[_a-zA-Z0-9$]*(?=\\s*<.*>)",
+            "begin": "_*[A-Z][_a-zA-Z0-9$]*[_a-zA-Z0-9$]*(?=\\s*<[^+\\-*/^|&~=]*>)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*\\()",
             "patterns": [{ "include": "#type-args-list" }]
         },
@@ -351,7 +351,7 @@
         },
 
         "type-args-list-single-line": {
-            "begin": "(?=<.*>(?<!=>)\\s*(\\(|\\{|\\[))",
+            "begin": "(?=<[^+\\-*/^|&~=]*>(?<!=>)\\s*(\\(|\\{|\\[))",
             "end": "(?<=>|$)",
             "patterns": [
                 { "include": "#type-args-list" }
@@ -399,7 +399,7 @@
         },
         "function-call-generic": {
             "name": "electris.source-code.function-call",
-            "begin": "[_a-zA-Z0-9$]+(?=\\s*[!?]?\\s*<.*>\\s*\\()",
+            "begin": "[_a-zA-Z0-9$]+(?=\\s*[!?]?\\s*<[^+\\-*/^|&~=]*>\\s*\\()",
             "end": "(?<=>)(?=\\s*\\()|$",
             "patterns": [
                 { "include": "#type-args-list" }
