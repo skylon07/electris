@@ -165,7 +165,7 @@
 
         "literal-number": {
             "name": "electris.source-code.primitive-literal",
-            "match": "0[xX][0-9a-fA-F]*|[0-9]+(\\.[0-9]+)?(e[0-9]+)?|\\.[0-9]+(e[0-9]+)?"
+            "match": "0[xX][0-9a-fA-F]*|[0-9]+(\\.[0-9]+)?([eE][+-]?[0-9]+)?|\\.[0-9]+([eE][+-]?[0-9]+)?"
         },
         "literal-string": {
             "patterns": [
