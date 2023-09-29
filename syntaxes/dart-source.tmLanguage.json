@@ -448,7 +448,7 @@
         },
         "case-punctuation": {
             "name": "electris.source-code.punctuation",
-            "match": "(?<=case.*):"
+            "match": "(?<=(case|default)\\s.*):"
         }
     }
 }
