@@ -359,7 +359,7 @@
         },
         "type-args-list": {
             "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[_a-zA-Z0-9$]\\s*(<\\s*)*)<|<(?=(\\s*<)*\\s*[_a-zA-Z0-9$<>(])",
+            "begin": "(?<=[_a-zA-Z0-9$]\\s*(<\\s*)*)<|<(?=(\\s*<)*\\s*[_a-zA-Z0-9$<>,(])",
             "end": ">|$",
             "patterns": [
                 { "include": "#type-args-list" },
