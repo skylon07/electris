@@ -166,7 +166,7 @@
             "name": "electris.source-code.operator",
             "match": "operator\\s*(>|>=|<|<=|==|\\+|\\-|\\*|/|~/|%|<<|>>|\\^|&|\\||~|>>>|\\[\\]|\\[\\]=)(?=\\s*\\(|\\s*$)|operator\\s*([^\\(\\s]+)",
             "captures": {
-                "2": { "name": "electris.source-code.punctuation" }
+                "2": { "name": "electris.source-code.escape" }
             }
         },
         "annotation": {
