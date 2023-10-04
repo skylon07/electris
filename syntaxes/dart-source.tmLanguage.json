@@ -406,7 +406,7 @@
 
         "function-call": {
             "name": "electris.source-code.function-call",
-            "match": "[_a-zA-Z0-9$]+(?=\\s*[!?]?\\s*\\()|(?<=[^_a-zA-Z0-9$](get|set) )[_a-zA-Z0-9$]+"
+            "match": "(?<![^_a-zA-Z0-9$]get\\s+)(?<![^_a-zA-Z0-9$]set\\s+)[_a-zA-Z0-9$]+(?=\\s*[!?]?\\s*\\()"
         },
         "function-call-generic": {
             "name": "electris.source-code.function-call",
