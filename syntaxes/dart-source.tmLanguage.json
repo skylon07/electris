@@ -416,7 +416,7 @@
         },
         "type-args-record": {
             "begin": "[(]",
-            "end": "[)]|$|(?=>)",
+            "end": "[)]\\??|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
                 { "include": "#type-args-keywords" },
@@ -429,7 +429,7 @@
         "type-args-record-recursive": {
             "name": "electris.source-code.types.type-args",
             "begin": "[(]",
-            "end": "[)]|$|(?=>)",
+            "end": "[)]\\??|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
                 { "include": "#type-args-keywords" },
@@ -441,7 +441,7 @@
         },
         "type-args-function": {
             "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(])",
-            "end": "(?<=[)])|$|(?=>)",
+            "end": "(?<=[)]\\??)|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
                 { "include": "#type-args-keywords" },
@@ -452,7 +452,7 @@
         "type-args-function-recursive": {
             "name": "electris.source-code.types.type-args",
             "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(])",
-            "end": "(?<=[)])|$|(?=>)",
+            "end": "(?<=[)]\\??)|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
                 { "include": "#type-args-keywords" },
