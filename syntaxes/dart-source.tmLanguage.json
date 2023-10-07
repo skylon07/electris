@@ -413,7 +413,8 @@
             "begin": "[_a-zA-Z0-9$]+(?=\\s*!?\\s*<[^+\\-*/^|&~=]*>\\s*\\()",
             "end": "(?<=>)(?=\\s*\\()|$",
             "patterns": [
-                { "include": "#type-args-list" }
+                { "include": "#type-args-list" },
+                { "match": "!", "name": "electris.source-code.operator" }
             ]
         },
         
