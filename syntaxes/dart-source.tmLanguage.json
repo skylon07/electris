@@ -312,7 +312,7 @@
         },
         "type-definition-record": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|\\(|,)\\s*)\\((?=.*\\)\\??\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+)|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)\\(|(?<=\\s+as\\s+)(?<!import .* as )\\(",
+            "begin": "(?<=(^|\\(|,)\\s*)\\((?=.*\\)\\??(?=\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)\\(|(?<=\\s+as\\s+)(?<!import .* as )\\(",
             "end": "\\)\\??|$",
             "patterns": [
                 { "include": "#type-args-list" },
@@ -322,7 +322,7 @@
         },
         "type-definition-record-recursive": {
             "name": "electris.source-code.types.type-args",
-            "begin": "(?<=(^|\\(|,)\\s*)\\((?=.*\\)\\??\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+)|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)\\(",
+            "begin": "(?<=(^|\\(|,)\\s*)\\((?=.*\\)\\??(?=\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|get|set|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)\\(",
             "end": "\\)\\??|$",
             "patterns": [
                 { "include": "#type-args-list" },
