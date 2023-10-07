@@ -316,6 +316,7 @@
             "end": "\\)\\??|$",
             "patterns": [
                 { "include": "#type-args-list" },
+                { "include": "#type-args-keywords" },
                 { "include": "#type-definition-record-variable" },
                 { "include": "#type-definition-record-recursive" }
             ]
@@ -326,6 +327,7 @@
             "end": "\\)\\??|$",
             "patterns": [
                 { "include": "#type-args-list" },
+                { "include": "#type-args-keywords" },
                 { "include": "#type-definition-record-variable" },
                 { "include": "#type-definition-record-recursive" }
             ]
@@ -389,6 +391,7 @@
             "end": "\\)|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
+                { "include": "#type-args-keywords" },
                 { "include": "#type-definition-record-variable" },
                 { "include": "#type-args-record-recursive" }
             ]
@@ -399,6 +402,7 @@
             "end": "\\)|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
+                { "include": "#type-args-keywords" },
                 { "include": "#type-definition-record-variable" },
                 { "include": "#type-args-record-recursive" }
             ]
