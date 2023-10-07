@@ -9,4 +9,5 @@ code:not(._something_to_ignore_) {
 
 pre code:not(._something_to_ignore_) {
     background-color: rgba(0, 0, 0, 0);
+    white-space: pre-wrap;
 }

@@ -1,3 +1,11 @@
 strong:not(._something_to_ignore_) {
     font-weight: 800;
 }
+
+code:not(._something_to_ignore_) {
+    white-space: nowrap;
+}
+
+pre code:not(._something_to_ignore_) {
+    white-space: pre-wrap;
+}
