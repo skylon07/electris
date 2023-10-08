@@ -409,7 +409,7 @@
             "match": "[,\\s|]+"
         },
         "typedef-type-reference-recursive-brackets": {
-            "name": "electris.source-code.types.type-args",
+            "name": "electris.source-code.types.type-recursive",
             "begin": "\\[",
             "end": "\\]",
             "patterns": [

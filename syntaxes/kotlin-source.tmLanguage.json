@@ -264,7 +264,7 @@
         },
 
         "type-args-list": {
-            "name": "electris.source-code.types.type-args",
+            "name": "electris.source-code.types.type-recursive",
             "begin": "(?<=[_a-zA-Z0-9]<*)<|<(?=<*[_a-zA-Z0-9])",
             "end": ">",
             "patterns": [

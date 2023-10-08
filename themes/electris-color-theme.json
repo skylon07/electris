@@ -168,25 +168,25 @@
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.variable",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
 				"foreground": "#76c0b5d8"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
 				"foreground": "#76c0b5b0"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
 				"foreground": "#76c0b588"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
 				"foreground": "#76c0b560"
 			}
@@ -202,25 +202,25 @@
 
 		// blue fading -- operators in generic lists
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef4d8"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef4b0"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef488"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
 				"foreground": "#339ef460"
 			}
@@ -262,7 +262,7 @@
 		{
 			// semantic: "support.class"
 			// (also includes first layer of non-generic type arguments)
-			"scope": "electris.source-code.types.type, support.class, electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type, support.class, electris.source-code.types.type-recursive",
 			"settings": {
 				"foreground": "#4eb071",
 				"fontStyle": "italic"
@@ -271,35 +271,35 @@
 
 		// green italicized fading -- generic type lists
 		{
-			"scope": "electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-recursive",
 			"settings": {
 				"foreground": "#4eb071d8",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive",
 			"settings": {
 				"foreground": "#4eb071b0",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive",
 			"settings": {
 				"foreground": "#4eb07188",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive",
 			"settings": {
 				"foreground": "#4eb07160",
 				"fontStyle": "italic"
 			}
 		},
 		{
-			"scope": "electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.operator, electris.source-code.types electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.types.type-args electris.source-code.variable",
+			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive, electris.source-code.types electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator, electris.source-code.types electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
 				"foreground": "#b04e4e50",
 				"fontStyle": "italic"
