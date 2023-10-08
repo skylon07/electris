@@ -377,11 +377,11 @@
         },
         "type-reference": {
             "name": "electris.source-code.types.type",
-            "match": "(_*[A-Z][_a-zA-Z0-9$]*|(?<=[^_a-zA-Z0-9$]new\\s+)[_a-zA-Z0-9$]+)(\\?(?!\\.))?(?<!\\s*[(])"
+            "match": "_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?|(?<=[^_a-zA-Z0-9$]new\\s+([_a-zA-Z0-9$]*\\.)*)(?![_a-zA-Z0-9$]+\\.)[_a-zA-Z0-9$]+"
         },
         "type-reference-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(_*[A-Z][_a-zA-Z0-9$]*|(?<=[^_a-zA-Z0-9$]new\\s+)[_a-zA-Z0-9$]+)(?=\\s*<[^+\\-*/^|&~=]*>)",
+            "begin": "(_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?|(?<=[^_a-zA-Z0-9$]new\\s+([_a-zA-Z0-9$]*\\.)*)(?![_a-zA-Z0-9$]+\\.)[_a-zA-Z0-9$]+)(?=\\s*<[^+\\-*/^|&~=]*>)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*[(])",
             "patterns": [{ "include": "#type-args-list" }]
         },
