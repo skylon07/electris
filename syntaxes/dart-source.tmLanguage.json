@@ -305,7 +305,7 @@
         },
         "type-definition-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|[(]|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<[^+\\-*/^|&~=]*>)(?!\\s*<[^+\\-*/^|&~=]*>\\s*[(])|(?<=\\s+as\\s+)(?<!import .* as )[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<)",
+            "begin": "(?<=(^|[(]|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<[^+\\-*\\/^|&~=]*>)(?!\\s*<[^+\\-*\\/^|&~=]*>\\s*[(])|(?<=\\s+as\\s+)(?<!import .* as )[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*[(])|$",
             "patterns": [
                 { "include": "#type-args-list" }
@@ -343,7 +343,7 @@
         },
         "type-definition-function": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(].*[)]\\??(?=\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(].*[)]\\??)|(?<=\\s+as\\s+)(?<!import .* as )(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(].*[)]\\??)",
+            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??(?=\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)|(?<=\\s+as\\s+)(?<!import .* as )(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
             "end": "(?<=[)]\\??)|$",
             "patterns": [
                 { "include": "#type-args-list" },
@@ -354,7 +354,7 @@
         },
         "type-definition-function-recursive": {
             "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(].*[)]\\??)(?=.*[)]\\??\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+)|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(].*[)]\\??)",
+            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)(?=.*[)]\\??\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+)|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
             "end": "(?<=[)]\\??)|$",
             "patterns": [
                 { "include": "#type-args-list" },
@@ -381,7 +381,7 @@
         },
         "type-reference-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "(_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?|(?<=[^_a-zA-Z0-9$]new\\s+([_a-zA-Z0-9$]*\\.)*)(?![_a-zA-Z0-9$]+\\.)[_a-zA-Z0-9$]+)(?=\\s*<[^+\\-*/^|&~=]*>)",
+            "begin": "(_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?|(?<=[^_a-zA-Z0-9$]new\\s+([_a-zA-Z0-9$]*\\.)*)(?![_a-zA-Z0-9$]+\\.)[_a-zA-Z0-9$]+)(?=\\s*<[^+\\-*\\/^|&~=]*>)",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*[(])",
             "patterns": [{ "include": "#type-args-list" }]
         },
@@ -391,7 +391,7 @@
         },
 
         "type-args-list-single-line": {
-            "begin": "(?=<[^+\\-*/^|&~=]*>(?<!=>)\\s*([(]|\\{|\\[))",
+            "begin": "(?=<[^+\\-*\\/^|&~=]*>(?<!=>)\\s*([(]|\\{|\\[))",
             "end": "(?<=>|$)",
             "patterns": [
                 { "include": "#type-args-list" }
@@ -440,7 +440,7 @@
             "copiedBy": "type-args-function-recursive"
         },
         "type-args-function": {
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(])",
+            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
             "end": "(?<=[)]\\??)|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
@@ -451,7 +451,7 @@
         },
         "type-args-function-recursive": {
             "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*/^|&~=]*>)?\\s*[(])",
+            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
             "end": "(?<=[)]\\??)|$|(?=>)",
             "patterns": [
                 { "include": "#type-args-list" },
@@ -467,7 +467,7 @@
         },
         "function-call-generic": {
             "name": "electris.source-code.function-call",
-            "begin": "[_a-zA-Z0-9$]+(?=\\s*!?\\s*<[^+\\-*/^|&~=]*>\\s*[(])",
+            "begin": "[_a-zA-Z0-9$]+(?=\\s*!?\\s*<[^+\\-*\\/^|&~=]*>\\s*[(])",
             "end": "(?<=>)(?=\\s*[(])|$",
             "patterns": [
                 { "include": "#type-args-list" },
