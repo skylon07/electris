@@ -269,7 +269,7 @@
 			}
 		},
 
-		// green italicized fading -- generic type lists
+		// green italicized fading -- generic type lists and other "recursive"/"depth-ful" type syntax
 		{
 			"scope": "electris.source-code.types.type-recursive",
 			"settings": {
