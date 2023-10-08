@@ -145,10 +145,21 @@
 				"foreground": "#efefef"
 			}
 		},
+
+		// yellow - unrecognized source
 		{
 			"scope": "electris.source",
 			"settings": {
 				"foreground": "#f6ff00"
+			}
+		},
+
+		// purple bold strikethrough - debugging scope
+		{
+			"scope": "electris.debug-tokens",
+			"settings": {
+				"foreground": "#c050ff",
+				"fontStyle": "strikethrough"
 			}
 		},
 
@@ -164,7 +175,7 @@
 		{
 			"scope": "electris.source-code.types.type electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b5"
+				"foreground": "#76c0b5",
 			}
 		},
 		{
