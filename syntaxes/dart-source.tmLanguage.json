@@ -43,15 +43,14 @@
                 {
                     "precedenceGroup": "type-references",
                     "patterns": [
-                        { "include": "#type-definition-generic-in-class-headers" },
+                        { "include": "#type-definition-collection-cast" },
                         { "include": "#type-definition-in-class-headers" },
-                        { "include": "#type-definition-function" },
-                        { "include": "#type-definition-generic" },
-                        { "include": "#type-definition-record" },
-                        { "include": "#type-definition" },
-                        { "include": "#type-reference-generic" },
-                        { "include": "#type-reference" },
-                        { "include": "#type-args-list-single-line" }
+                        { "include": "#type-definition-with-typedef" },
+                        { "include": "#type-definition-after-as-or-is" },
+                        { "include": "#type-definition-before-variable" },
+                        { "include": "#type-identifier-after-new" },
+                        { "include": "#type-identifier-generic" },
+                        { "include": "#type-identifier" }
                     ]
                 },
                 {
@@ -298,179 +297,218 @@
             "end": "\\*/",
             "patterns": [{ "include": "#multi-line-comment" }]
         },
-        
-        "type-definition": {
+
+        "builtin-type": {
             "name": "electris.source-code.types.type",
-            "match": "(?<=(^|[(]|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s+(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]{2})|(?<=\\s+as\\s+)(?<!import .* as )[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??"
+            "match": "(?<![_a-zA-Z0-9$.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9$])"
         },
-        "type-definition-generic": {
+        "type-identifier": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|[(]|,)\\s*)[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<[^+\\-*\\/^|&~=]*>)(?!\\s*<[^+\\-*\\/^|&~=]*>\\s*[(])|(?<=\\s+as\\s+)(?<!import .* as )[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<)",
+            "match": "_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?",
+            "copiedBy": "#type-definition-identifier"
+        },
+        "type-identifier-generic": {
+            "name": "electris.source-code.types.type",
+            "begin": "_*[A-Z][_a-zA-Z0-9$]*(?=\\s*<[^+\\-*\\/^|&~=]*>)(?!\\s*<[^+\\-*\\/^|&~=]*>\\s*[(])",
             "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*[(])|$",
             "patterns": [
-                { "include": "#type-args-list" }
+                { "include": "#type-recursive-generic-params" }
+            ],
+            "copiedBy": "#type-definition-identifier-generic"
+        },
+        "type-identifier-after-new": {
+            "name": "electris.source-code.types.type",
+            "begin": "(?<=[^_a-zA-Z0-9$]new\\s+([_a-zA-Z0-9$]*\\.)*)(?=[_a-zA-Z0-9$])(?![_a-zA-Z0-9$]+\\.)",
+            "end": "(?<=[_a-zA-Z0-9$])(?![_a-zA-Z0-9$]|<)|(?<=>)|$",
+            "patterns": [
+                { "include": "#type-recursive-generic-params" }
+            ]
+        },
+
+        "type-definition-before-variable": {
+            "name": "electris.source-code.types.type",
+            "patterns": [
+                {
+                    "begin": "(?<=(^|[(]|,)\\s*)(?=[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??(?=\\s*(?<=(\\?|\\s))(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]{2}))",
+                    "beginBasedOn": "#type-definition-identifier:match",
+                    "end": "(?<=[_a-zA-Z0-9$]|\\.)(?=\\s)|(?<=\\?)|$",
+                    "patterns": [ { "include": "#type-definition-identifier" } ]
+                },
+                {
+                    "begin": "(?<=(^|[(]|,)\\s*)(?=[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*(?=\\s*<[^+\\-*\\/^|&~=]*>\\??\\s*[_a-zA-Z0-9$])(?!\\s*<[^+\\-*\\/^|&~=]*>\\s*[_a-zA-Z0-9$]*\\s*([)]|[+\\-*\\/^|&~=])))",
+                    "beginBasedOn": "#type-definition-identifier-generic:begin",
+                    "end": "(?<=>|\\?)|$",
+                    "patterns": [ { "include": "#type-definition-identifier-generic" } ]
+                },
+                {
+                    "begin": "(?<=(^|[(]|,)\\s*)(?=[(](?=[^+\\-*\\/^|&~=]*[)]\\??\\s*[_a-zA-Z0-9$]))",
+                    "beginBasedOn": "#type-definition-record:begin",
+                    "end": "(?<=[)]|\\?)|$",
+                    "patterns": [ { "include": "#type-definition-record-top" } ]
+                },
+                {
+                    "beginNote": "restrictions on 'begin' are different so you can chain `void Function(...) Function(...) ...`",
+                    "begin": "(?<=(^|[(]|,|([_a-zA-Z0-9$]|[)]|>)(\\.|\\?)?)\\s*)(?=(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??\\s*[_a-zA-Z0-9$]))",
+                    "beginBasedOn": "#type-definition-function:begin",
+                    "end": "(?<=[)]|\\?)|$",
+                    "patterns": [ { "include": "#type-definition-function-top" } ]
+                }
+            ]
+        },
+        "type-definition-after-as-or-is": {
+            "begin": "((?<=(^|[^_a-zA-Z0-9$])as\\s+)(?<!import\\s+.*\\s+as\\s)|(?<=(^|[^_a-zA-Z0-9$])is\\s+))(?!\\s*(;|$))",
+            "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
+            "patterns": [
+                { "include": "#type-definition" }
+            ]
+        },
+        "type-definition-with-typedef": {
+            "patterns": [
+                { "include": "#type-definition-with-typedef-left-hand-side" },
+                { "include": "#type-definition-with-typedef-right-hand-side" }
+            ]
+        },
+        "type-definition-with-typedef-left-hand-side": {
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+)(?!\\s*(=|;|$))",
+            "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
+            "patterns": [
+                { "include": "#type-definition" }
+            ]
+        },
+        "type-definition-with-typedef-right-hand-side": {
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+([_a-zA-Z0-9$]|<|>)*\\s*=\\s*)(?!\\s*(;|$))",
+            "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
+            "patterns": [
+                { "include": "#type-definition" }
+            ]
+        },
+        "type-definition-in-class-headers": {
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])(class\\s|extends\\s|implements\\s|with\\s|on\\s))",
+            "end": "(?<=\\{)\\s*$|(?=\\{)|(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
+            "patterns": [
+                { "include": "#type-definition" }
+            ]
+        },
+        "type-definition-collection-cast": {
+            "begin": "(?=<[^+\\-*\\/^|&~=]*>(?<!=>)\\s*(\\{|\\[))",
+            "end": "(?<=>)|$",
+            "patterns": [
+                { "include": "#type-recursive-generic-params" }
+            ]
+        },
+
+        "type-definition": {
+            "patterns": [
+                { "include": "#type-definition-function-top" },
+                { "include": "#type-definition-record-top" },
+                { "include": "#type-definition-identifier-generic" },
+                { "include": "#type-definition-identifier" }
+            ]
+        },
+        "type-definition-identifier": {
+            "name": "electris.source-code.types.type",
+            "match": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??",
+            "matchDependedBy": "#type-definition-before-variable",
+            "copiedFrom": "#type-identifier"
+        },
+        "type-definition-identifier-generic": {
+            "name": "electris.source-code.types.type",
+            "begin": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*(?=\\s*<[^+\\-*\\/^|&~=]*>\\??)",
+            "beginDependedBy": "#type-definition-before-variable",
+            "end": "(?<=>)\\??|$",
+            "patterns": [
+                { "include": "#type-recursive-generic-params" }
+            ],
+            "copiedFrom": "#type-identifier-generic"
+        },
+        "type-definition-record-top" : {
+            "name": "electris.source-code.types.type",
+            "begin": "(?=[(])",
+            "end": "(?<=[)]|\\?)|$",
+            "begin-end-sameAs": "#type-recursive-definition-record",
+            "patterns": [
+                { "include": "#type-definition-record" }
             ]
         },
         "type-definition-record": {
-            "name": "electris.source-code.types.type",
-            "begin": "(?<=(^|[(]|,)\\s*)[(](?=.*[)]\\??(?=\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)[(]|(?<=\\s+as\\s+)(?<!import .* as )[(]",
+            "no-name": "to allow both regular and recursive `name`s",
+            "begin": "[(](?=[^+\\-*\\/^|&~=]*[)]\\??)",
+            "beginDependedBy": "#type-definition-before-variable",
             "end": "[)]\\??|$",
             "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
                 { "include": "#type-definition-record-variable" },
-                { "include": "#type-definition-record-recursive" },
-                { "include": "#type-args-function-recursive" }
-            ],
-            "copiedBy": "type-definition-function"
-        },
-        "type-definition-record-recursive": {
-            "name": "electris.source-code.types.type-args",
-            "begin": "(?<=(^|[(]|,)\\s*)[(](?=.*[)]\\??(?=\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)[(]",
-            "end": "[)]\\??|$",
-            "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-definition-record-variable" },
-                { "include": "#type-definition-record-recursive" },
-                { "include": "#type-args-function-recursive" }
-            ],
-            "copiedBy": "type-definition-function-recursive"
+                { "include": "#type-recursive" }
+            ]
         },
         "type-definition-record-variable": {
             "name": "electris.source-code.variable",
             "match": "(?<=[_a-zA-Z0-9$]\\s|[)]|>)\\s*(?!Function)[_a-zA-Z0-9$]+"
         },
-        "type-definition-function": {
+        "type-definition-function-top" : {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??(?=\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+))|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)|(?<=\\s+as\\s+)(?<!import .* as )(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
-            "end": "(?<=[)]\\??)|$",
+            "begin": "(?<=[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?[(])",
+            "end": "(?<=[)]|\\?|>|Function)|$",
+            "begin-end-sameAs": "#type-recursive-definition-function",
             "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-args-record", "reason": "not recursive because fn args are same level as `Function`" }
-            ],
-            "copiedFrom": "type-definition-record"
-        },
-        "type-definition-function-recursive": {
-            "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)(?=.*[)]\\??\\s*(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]+)|(?<=typedef\\s+[_a-zA-Z0-9$]*\\s*=\\s*)(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
-            "end": "(?<=[)]\\??)|$",
-            "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-args-record", "reason": "not recursive because fn args are same level as `Function`" }
-            ],
-            "copiedFrom": "type-definition-record-recursive"
-        },
-        "type-definition-in-class-headers": {
-            "name": "electris.source-code.types.type",
-            "match": "(?<=[^_a-zA-Z0-9$](extends |implements |with |on ))[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??"
-        },
-        "type-definition-generic-in-class-headers": {
-            "name": "electris.source-code.types.type",
-            "begin": "(?<=[^_a-zA-Z0-9$](extends |implements |with |on ))[_a-zA-Z0-9$]+[_a-zA-Z0-9$.]*\\??(?=\\s*<(.*>)?)",
-            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*[(])|$",
-            "patterns": [
-                { "include": "#type-args-list" }
+                { "include": "#type-definition-function" }
             ]
         },
-        "type-reference": {
-            "name": "electris.source-code.types.type",
-            "match": "_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?|(?<=[^_a-zA-Z0-9$]new\\s+([_a-zA-Z0-9$]*\\.)*)(?![_a-zA-Z0-9$]+\\.)[_a-zA-Z0-9$]+"
-        },
-        "type-reference-generic": {
-            "name": "electris.source-code.types.type",
-            "begin": "(_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?|(?<=[^_a-zA-Z0-9$]new\\s+([_a-zA-Z0-9$]*\\.)*)(?![_a-zA-Z0-9$]+\\.)[_a-zA-Z0-9$]+)(?=\\s*<[^+\\-*\\/^|&~=]*>)",
-            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*[(])",
-            "patterns": [{ "include": "#type-args-list" }]
-        },
-        "builtin-type": {
-            "name": "electris.source-code.types.type",
-            "match": "(?<![_a-zA-Z0-9$.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9$])"
+        "type-definition-function" : {
+            "no-name": "to allow both regular and recursive `name`s",
+            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
+            "beginDependedBy": "#type-definition-before-variable",
+            "end": "(?<=[)]\\??)|$",
+            "patterns": [
+                { "include": "#type-definition-record-variable" },
+                { "include": "#type-definition-record", "reason": "not recursive because fn args are same level as `Function`" },
+                { "include": "#type-recursive" }
+            ]
         },
 
-        "type-args-list-single-line": {
-            "begin": "(?=<[^+\\-*\\/^|&~=]*>(?<!=>)\\s*([(]|\\{|\\[))",
-            "end": "(?<=>|$)",
+        "type-recursive": {
             "patterns": [
-                { "include": "#type-args-list" }
+                { "include": "#type-recursive-generic-params" },
+                { "include": "#type-recursive-definition-record" },
+                { "include": "#type-recursive-definition-function" }
             ]
         },
-        "type-args-list": {
-            "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[_a-zA-Z0-9$]\\s*(<\\s*)*)<|<(?=(\\s*<)*\\s*[_a-zA-Z0-9$<>,(])",
+        "type-recursive-generic-params": {
+            "name": "electris.source-code.types.type-recursive",
+            "begin": "<",
             "end": ">|$",
             "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-args-record" },
-                { "include": "#type-args-function" }
+                { "include": "#type-recursive" }
             ]
         },
-        "type-args-keywords": {
-            "match": "(dynamic|extends|implements)",
-            "captures": {
-                "1": { "name": "electris.source-code.operator" }
-            }
-        },
-        "type-args-record": {
-            "begin": "[(]",
-            "end": "[)]\\??|$|(?=>)",
+        "type-recursive-definition-record" : {
+            "name": "electris.source-code.types.type-recursive",
+            "begin": "(?=[(])",
+            "end": "(?<=[)]|\\?)|$",
+            "begin-end-sameAs": "#type-definition-record-top",
             "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-definition-record-variable" },
-                { "include": "#type-args-record-recursive" },
-                { "include": "#type-args-function-recursive" }
-            ],
-            "copiedBy": "type-args-function"
+                { "include": "#type-definition-record" }
+            ]
         },
-        "type-args-record-recursive": {
-            "name": "electris.source-code.types.type-args",
-            "begin": "[(]",
-            "end": "[)]\\??|$|(?=>)",
+        "type-recursive-definition-function" : {
+            "name": "electris.source-code.types.type-recursive",
+            "begin": "(?<=[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?[(])",
+            "end": "(?<=[)]|\\?|>|Function)|$",
+            "begin-end-sameAs": "#type-definition-function-top",
             "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-definition-record-variable" },
-                { "include": "#type-args-record-recursive" },
-                { "include": "#type-args-function-recursive" }
-            ],
-            "copiedBy": "type-args-function-recursive"
-        },
-        "type-args-function": {
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
-            "end": "(?<=[)]\\??)|$|(?=>)",
-            "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-args-record", "reason": "not recursive because fn args are same level as `Function`" }
-            ],
-            "copiedFrom": "type-args-record"
-        },
-        "type-args-function-recursive": {
-            "name": "electris.source-code.types.type-args",
-            "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
-            "end": "(?<=[)]\\??)|$|(?=>)",
-            "patterns": [
-                { "include": "#type-args-list" },
-                { "include": "#type-args-keywords" },
-                { "include": "#type-args-record", "reason": "not recursive because fn args are same level as `Function`" }
-            ],
-            "copiedFrom": "type-args-record-recursive"
+                { "include": "#type-definition-function" }
+            ]
         },
 
         "function-call": {
-            "name": "electris.source-code.function-call",
+            "name": "electris.source-code.function-call.DEBUG1",
             "match": "(?<![^_a-zA-Z0-9$]get\\s+)(?<![^_a-zA-Z0-9$]set\\s+)[_a-zA-Z0-9$]+(?=\\s*!?\\s*[(])"
         },
         "function-call-generic": {
-            "name": "electris.source-code.function-call",
+            "name": "electris.source-code.function-call.DEBUG2",
             "begin": "[_a-zA-Z0-9$]+(?=\\s*!?\\s*<[^+\\-*\\/^|&~=]*>\\s*[(])",
             "end": "(?<=>)(?=\\s*[(])|$",
             "patterns": [
-                { "include": "#type-args-list" },
+                { "include": "#type-recursive-generic-params" },
                 { "match": "!", "name": "electris.source-code.operator" }
             ]
         },
