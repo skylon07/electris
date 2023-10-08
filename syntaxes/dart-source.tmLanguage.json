@@ -503,7 +503,7 @@
         "expression-punctuation-parentheses-not-record": {
             "comment": "tries to detect non-record pairs of parentheses, aka (...) {} expressions (should be evaluated before records)",
             "comment2": "this is a hack because (?=.*[)]) will prematurely detect close parentesis that isn't paired with the first; aka ((num, num*)* test)",
-            "begin": "(?<!\\s+as\\s+)([(])(?=.*[)]\\s*([a-zA-Z\\*]*\\s*\\{|,|$))(?!.*[)]\\s*[_a-zA-Z0-9$.]+\\s*[(])",
+            "begin": "(?<!\\s+as\\s+)(?<!\\s+is\\s+)([(])(?=.*[)]\\s*([a-zA-Z*]*\\s*\\{|,|$))(?!.*[)]\\s*[_a-zA-Z0-9$.]+\\s*[(])",
             "end": "([)])",
             "beginCaptures": {
                 "1": { "name": "electris.source-code.punctuation" }
