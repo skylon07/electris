@@ -500,11 +500,11 @@
         },
 
         "function-call": {
-            "name": "electris.source-code.function-call.DEBUG1",
+            "name": "electris.source-code.function-call",
             "match": "(?<![^_a-zA-Z0-9$]get\\s+)(?<![^_a-zA-Z0-9$]set\\s+)[_a-zA-Z0-9$]+(?=\\s*!?\\s*[(])"
         },
         "function-call-generic": {
-            "name": "electris.source-code.function-call.DEBUG2",
+            "name": "electris.source-code.function-call",
             "begin": "[_a-zA-Z0-9$]+(?=\\s*!?\\s*<[^+\\-*\\/^|&~=]*>\\s*[(])",
             "end": "(?<=>)(?=\\s*[(])|$",
             "patterns": [
@@ -545,9 +545,9 @@
         "expression-punctuation-parentheses-not-record": {
             "comment": "tries to detect non-record pairs of parentheses, aka (...) {} expressions (should be evaluated before records)",
             "comment2": "this is a hack because (?=.*[)]) will prematurely detect close parentesis that isn't paired with the first; aka ((num, num*)* test)",
-            "SUPER-help-because-this-is-crazy": "  __lambda_close__                                                                                                                  __type_params_end__                                           ",
-            "help-because-this-is-crazy": "         (?<!___^___)(?<!(?<!__fn_return_type________fn_name____)___fn_name_end___)(?<!(?<!__fn_return_type________fn_name______________________)__^__)MATCH                                            ",
-            "begin": "(?<!\\s+as\\s+)(?<!\\s+is\\s+)(?<!\\}\\s*)(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]*)[_a-zA-Z0-9$]\\s*)(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]*<[^+\\-*\\/^|&~=]*)>\\s*)([(])(?=(.*[)])+\\s*(a?sync)?\\*?\\s*(\\{|=>?|;|$))",
+            "SUPER-help-because-this-is-crazy": "  __lambda_close__                                                                                                                  __type_params_end__                                                                                                       ",
+            "help-because-this-is-crazy": "         (?<!___^___)(?<!(?<!__fn_return_type________fn_name____)___fn_name_end___)(?<!(?<!__fn_return_type________fn_name______________________)__^__)MATCH(?=(?!_____fn_definition_____________________________________) MATCH_______mods____________lambda_end__)",
+            "begin": "(?<!\\s+as\\s+)(?<!\\s+is\\s+)(?<!\\}\\s*)(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]*)[_a-zA-Z0-9$]\\s*)(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]*<[^+\\-*\\/^|&~=]*)>\\s*)([(])(?=(?!.*[_a-zA-Z0-9$]+\\s*!?\\s*(<[^+\\-*\\/^|&~=]*>)?\\s*[(])(.*[)])\\s*(a?sync)?\\*?\\s*(\\{|=>?|;|$))",
             "end": "([)])",
             "beginCaptures": {
                 "1": { "name": "electris.source-code.punctuation" }
@@ -567,10 +567,23 @@
                 "var fn = ((rec, rec) id) =>",
                 "var fn = ((rec, rec) id) {",
                 "   ",
-                "type       fn      (((rec, rec), rec) id) {",
-                "type<type> fn      (((rec, rec), rec) id) {",
-                "type       fn<type>(((rec, rec), rec) id) {",
-                "type<type> fn<type>(((rec, rec), rec) id) {",
+                "(rec, rec)  syn",
+                "(rec, rec)  asyn",
+                "(rec, rec)? syn",
+                "(rec, rec)? asyn",
+                "(id, id)    sync",
+                "(id, id)    async",
+                "(rec, rec)? sync",
+                "(rec, rec)? async",
+                "   ",
+                "type                   fn      (((rec, rec), rec) id) {",
+                "type<type>             fn      (((rec, rec), rec) id) {",
+                "type                   fn<type>(((rec, rec), rec) id) {",
+                "type<type>             fn<type>(((rec, rec), rec) id) {",
+                "(type, type)           fn      (((rec, rec), rec) id) {",
+                "(type, type)           fn<type>(((rec, rec), rec) id) {",
+                "((type,), type)        fn      (((rec, rec), rec) id) {",
+                "(type, (type, type))   fn<type>(((rec, rec), rec) id) {",
                 "   ",
                 "var fn = (((rec, rec), rec) id) =>",
                 "var fn = (((rec, rec), rec) id) {",
