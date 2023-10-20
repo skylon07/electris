@@ -309,8 +309,8 @@
         },
         "type-identifier-generic": {
             "name": "electris.source-code.types.type",
-            "begin": "_*[A-Z][_a-zA-Z0-9$]*(?=\\s*<[^+\\-*\\/^|&~=]*>)(?!\\s*<[^+\\-*\\/^|&~=]*>\\s*[(])",
-            "end": "(?<=>)(\\?(?!\\.))?(?<!\\s*[(])|$",
+            "begin": "_*[A-Z][_a-zA-Z0-9$]*(?=\\s*<[^+\\-*\\/^|&~=]*>)",
+            "end": "(?<=>)(\\?(?!\\.))?|$",
             "patterns": [
                 { "include": "#type-recursive-generic-params" }
             ],
