@@ -171,35 +171,37 @@
 			}
 		},
 
-		// light blue/green fading -- variables in generic lists
+		// light blue/green -- variables in record/function types
 		{
 			"scope": "electris.source-code.types.type electris.source-code.variable",
 			"settings": {
 				"foreground": "#76c0b5",
 			}
 		},
+
+		// light blue/green fading -- variables in generic lists
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b5d8"
+				"foreground": "#76c0b5b3"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b5b0"
+				"foreground": "#76c0b57d"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b588"
+				"foreground": "#76c0b557"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b560"
+				"foreground": "#76c0b53d"
 			}
 		},
 
@@ -215,25 +217,25 @@
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef4d8"
+				"foreground": "#339ef4b3"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef4b0"
+				"foreground": "#339ef47d"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef488"
+				"foreground": "#339ef457"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef460"
+				"foreground": "#339ef43d"
 			}
 		},
 
@@ -284,35 +286,35 @@
 		{
 			"scope": "electris.source-code.types.type-recursive",
 			"settings": {
-				"foreground": "#4eb071d8",
+				"foreground": "#4eb071b3",
 				"fontStyle": "italic"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive",
 			"settings": {
-				"foreground": "#4eb071b0",
+				"foreground": "#4eb0717d",
 				"fontStyle": "italic"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive",
 			"settings": {
-				"foreground": "#4eb07188",
+				"foreground": "#4eb07157",
 				"fontStyle": "italic"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive",
 			"settings": {
-				"foreground": "#4eb07160",
+				"foreground": "#4eb0713d",
 				"fontStyle": "italic"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive, electris.source-code.types electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator, electris.source-code.types electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#b04e4e50",
+				"foreground": "#b04e4e3d",
 				"fontStyle": "italic"
 			}
 		},
