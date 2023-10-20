@@ -467,10 +467,15 @@
 
         "type-recursive": {
             "patterns": [
+                { "include": "#type-recursive-keywords" },
                 { "include": "#type-recursive-generic-params" },
                 { "include": "#type-recursive-definition-record" },
                 { "include": "#type-recursive-definition-function" }
             ]
+        },
+        "type-recursive-keywords": {
+            "name": "electris.source-code.operator",
+            "match": "dynamic|extends"
         },
         "type-recursive-generic-params": {
             "name": "electris.source-code.types.type-recursive",
