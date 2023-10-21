@@ -314,7 +314,7 @@
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive, electris.source-code.types electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator, electris.source-code.types electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#b04e4e3d",
+				"foreground": "#da6771",
 				"fontStyle": "italic"
 			}
 		},
