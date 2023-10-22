@@ -550,9 +550,9 @@
         "expression-punctuation-parentheses-not-record": {
             "comment": "tries to detect non-record pairs of parentheses, aka (...) {} expressions (should be evaluated before records)",
             "comment2": "this is a hack because (?=.*[)]) will prematurely detect close parentesis that isn't paired with the first; aka ((num, num*)* test)",
-            "SUPER-help-because-this-is-crazy": "  __lambda_close__                                                                                                                   __fn_call_type_params_end__                                __record_end__                                                                                                                          ",
-            "help-because-this-is-crazy": "         (?<!___^___)(?<!(?<!__fn_return_type_____fn_def_name___)___fn_call_end!___)(?<!(?<!__fn_return_type_____fn_def_name______type_params_start__)__^__)MATCH(?!(?<=_______record_return_start_______)___^___(_________fn_definition_________________________|_____get/set_definition________))(?=MATCH_______mods___________lambda_end__)",
-            "begin": "(?<!\\s+as\\s+)(?<!\\s+is\\s+)(?<!\\}\\s*)(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]*)[_a-zA-Z0-9$!]\\s*)(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]+\\s*<[^+\\-*\\/^|&~=]*)>\\s*)([(])(?!(?<!(?<!^\\s*)(?<!^\\s*static\\s*)[(]).*[)].*([_a-zA-Z0-9$]+\\s*(<[^+\\-*\\/^|&~=]*>)?\\s*[(]|(get|set)\\s*[_a-zA-Z0-9$]+\\s*))(?=.*[)]\\s*(a?sync\\*?)?\\s*(\\{|=>?|;|$))",
+            "SUPER-help-because-this-is-crazy": "  __lambda_close__                                                                                                                                                    __fn_call_type_params_end__                                                           __record_end__                                                                                                                          ",
+            "help-because-this-is-crazy": "         (?<!___^___)(?=(?<!(?<!__fn_return_type_____fn_def_name___)___fn_call_end!___)(?!__no-ret_fn_def_end___))(?=(?<!(?<!__fn_return_type_____fn_def_name______type_params_start__)__^__)(?!__no-ret_fn_def_end___))MATCH(?!(?<=_______record_return_start_______)___^___(_________fn_definition_________________________|_____get/set_definition________))(?=MATCH_______mods___________lambda_end__)",
+            "begin": "(?<!\\s+as\\s+)(?<!\\s+is\\s+)(?<!\\}\\s*)(?=(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]*)[_a-zA-Z0-9$!]\\s*)(?!.*\\{\\s*(?:\\}\\s*)?$))(?=(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]+\\s*<[^+\\-*\\/^|&~=]*)>\\s*)(?!.*\\{\\s*(?:\\}\\s*)?$))([(])(?!(?<!(?<!^\\s*)(?<!^\\s*static\\s*)[(]).*[)].*([_a-zA-Z0-9$]+\\s*(<[^+\\-*\\/^|&~=]*>)?\\s*[(]|(get|set)\\s*[_a-zA-Z0-9$]+\\s*))(?=.*[)]\\s*(a?sync\\*?)?\\s*(\\{|=>?|;|$))",
             "end": "([)])",
             "beginCaptures": {
                 "1": { "name": "electris.source-code.escape" }
@@ -620,7 +620,6 @@
                 "  static (type, (type, type))   fn<type>(((rec, rec), rec) id) {}",
                 "}",
                 "   ",
-                "// implicit dynamic function definitions interpreted as function calls (in favor of cases below like `fn((...) { ... })`)",
                 "fn      (((rec, rec), rec) id) {",
                 "fn      ((( id,  id),  id))",
                 "fn<type>(((rec, rec), rec) id) {",
