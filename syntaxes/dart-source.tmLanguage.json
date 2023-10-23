@@ -329,7 +329,7 @@
             "name": "electris.source-code.types.type",
             "patterns": [
                 {
-                    "begin": "(?<=(^|[(]|,)\\s*((?<=^|[^_a-zA-Z0-9$])(var|final|const|dynamic|covariant|static)\\s+)*)(?=[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??(?=\\s*(?<=(\\?|\\s))(?!(import|export|library|hide|show|deferred|part|class|macro|extends|abstract|interface|implements|mixin|base|sealed|with|super|is|as|enum|typedef|extension|var|const|final|dynamic|static|covariant|late|if|else|for|in|while|continue|break|do|switch|case|when|default|try|on|catch|finally|throw|rethrow|assert|async|await|sync|this|new|return|yield|external|required|factory)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]{2}))",
+                    "begin": "(?<=(^|[(]|,)\\s*((?<=^|[^_a-zA-Z0-9$])(var|final|const|dynamic|covariant|static)\\s+)*)(?=[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??(?=\\s*(?<=(\\?|\\s))(?!(is|as|in|if|else|for|while|switch|case|when|on)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]{2}))",
                     "beginBasedOn": "#type-definition-identifier:match",
                     "end": "(?<=[_a-zA-Z0-9$]|\\.)(?=\\s)|(?<=\\?)|$",
                     "patterns": [ { "include": "#type-definition-identifier" } ]
@@ -341,7 +341,7 @@
                     "patterns": [ { "include": "#type-definition-identifier-generic" } ]
                 },
                 {
-                    "begin": "(?<=(^|[(]|,)\\s*((?<=^|[^_a-zA-Z0-9$])(var|final|const|dynamic|covariant|static)\\s+)*)(?=[(](?=[^+\\-*\\/^|&~=]*[)]\\??\\s*[_a-zA-Z0-9$]))",
+                    "begin": "(?<=(^|[(]|,)\\s*((?<=^|[^_a-zA-Z0-9$])(var|final|const|dynamic|covariant|static)\\s+)*)(?=[(](?=[^+\\-*\\/^|&~=]*[)]\\??\\s*(?!(is|as|in|if|else|for|while|switch|case|when|on)(?![_a-zA-Z0-9$]))[_a-zA-Z0-9$]{2}))",
                     "beginBasedOn": "#type-definition-record:begin",
                     "end": "(?<=[)]|\\?)|$",
                     "patterns": [ { "include": "#type-definition-record-top" } ]
