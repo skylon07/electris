@@ -6,6 +6,10 @@ code:not(._something_to_ignore_) {
     white-space: nowrap;
 }
 
+pre:not(._something_to_ignore_) {
+    background-color: rgb(236, 240, 248);
+}
+
 pre code:not(._something_to_ignore_) {
     white-space: pre-wrap;
 }
