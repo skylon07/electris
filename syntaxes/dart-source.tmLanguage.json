@@ -460,7 +460,7 @@
             "end": "(?<=[)]\\??)|$",
             "patterns": [
                 { "include": "#type-definition-record-variable" },
-                { "include": "#type-recursive-definition-record" },
+                { "include": "#type-definition-record", "reason": "not recursive because fn args are same level as `Function`" },
                 { "include": "#type-recursive" }
             ]
         },
@@ -482,6 +482,7 @@
             "begin": "<",
             "end": ">|$",
             "patterns": [
+                { "include": "#type-definition-record", "reason": "not recursive to avoid excessive shading" },
                 { "include": "#type-recursive" }
             ]
         },
