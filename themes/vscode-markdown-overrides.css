@@ -3,6 +3,7 @@ strong:not(._something_to_ignore_) {
 }
 
 code:not(._something_to_ignore_) {
+    background-color: rgba(160, 160, 160, 0.4);
     white-space: nowrap;
 }
 
@@ -11,5 +12,6 @@ pre:not(._something_to_ignore_) {
 }
 
 pre code:not(._something_to_ignore_) {
+    background-color: rgba(0, 0, 0, 0);
     white-space: pre-wrap;
 }
