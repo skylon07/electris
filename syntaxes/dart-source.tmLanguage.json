@@ -141,7 +141,7 @@
         },
         "condition-operator-ternary": {
             "name": "electris.source-code.operator",
-            "match": "\\?|:"
+            "match": "\\?"
         },
         "assignment-operator": {
             "name": "electris.source-code.operator",
@@ -421,7 +421,7 @@
             ],
             "copiedFrom": "#type-identifier-generic"
         },
-        "type-definition-record-top" : {
+        "type-definition-record-top": {
             "name": "electris.source-code.types.type",
             "begin": "(?=[(])",
             "end": "(?<=[)]|\\?)|$",
@@ -444,7 +444,7 @@
             "name": "electris.source-code.variable",
             "match": "(?<=[_a-zA-Z0-9$]\\s|[)]|>)\\s*(?!Function)[_a-zA-Z0-9$]+"
         },
-        "type-definition-function-top" : {
+        "type-definition-function-top": {
             "name": "electris.source-code.types.type",
             "begin": "(?<=[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?[(])",
             "end": "(?<=[)]|\\?|>|Function)|$",
@@ -453,7 +453,7 @@
                 { "include": "#type-definition-function" }
             ]
         },
-        "type-definition-function" : {
+        "type-definition-function": {
             "no-name": "to allow both regular and recursive `name`s",
             "begin": "(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
             "beginDependedBy": "#type-definition-before-variable",
@@ -486,7 +486,7 @@
                 { "include": "#type-recursive" }
             ]
         },
-        "type-recursive-definition-record" : {
+        "type-recursive-definition-record": {
             "name": "electris.source-code.types.type-recursive",
             "begin": "(?=[(])",
             "end": "(?<=[)]|\\?)|$",
@@ -495,7 +495,7 @@
                 { "include": "#type-definition-record" }
             ]
         },
-        "type-recursive-definition-function" : {
+        "type-recursive-definition-function": {
             "noNameBecause": "Recursive scoping is handled by the recursive record; `Function` itself should stay at the same level",
             "begin": "(?<=[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?[(])",
             "end": "(?<=[)]|\\?|>|Function)|$",
@@ -542,11 +542,7 @@
         },
         "expression-punctuation": {
             "name": "electris.source-code.punctuation",
-            "match": "\\.|,|;|[(]|[)]"
-        },
-        "case-punctuation": {
-            "name": "electris.source-code.punctuation",
-            "match": "(?<=(case|default)\\s.*):"
+            "match": "\\.|,|:|;|[(]|[)]"
         },
         "expression-punctuation-parentheses-not-record": {
             "comment": "tries to detect non-record pairs of parentheses, aka (...) {} expressions (should be evaluated before records)",
