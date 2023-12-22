@@ -110,8 +110,8 @@
         },
         "style-emphasized-asterisk": {
             "contentName": "electris.markdown.emphasized",
-            "begin": "(\\*)(?=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])",
-            "end": "(?<=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])(\\*)",
+            "begin": "(\\*)(?=[^*\\s])",
+            "end": "(?<!\\s)(\\*)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
@@ -124,8 +124,8 @@
         },
         "style-emphasized-underscore": {
             "contentName": "electris.markdown.emphasized",
-            "begin": "(?<=^|\\s)(_)(?=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])",
-            "end": "(?<=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])(_)",
+            "begin": "(?<=^|\\s)(_)(?=[^_\\s])",
+            "end": "(?<!\\s)(_)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
@@ -145,8 +145,8 @@
         },
         "style-bold-asterisk": {
             "contentName": "electris.markdown.bold",
-            "begin": "(\\*\\*)(?=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])",
-            "end": "(?<=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])(\\*\\*)",
+            "begin": "(\\*\\*)(?!\\s|$)",
+            "end": "(?<!\\s)(\\*\\*)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
@@ -159,8 +159,8 @@
         },
         "style-bold-underscore": {
             "contentName": "electris.markdown.bold",
-            "begin": "(?<=^|\\s)(__)(?=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])",
-            "end": "(?<=[^\\s`~!@#$%^&*()\\-_=+\\|\\[\\]{};:'\"<>,./?])(__)",
+            "begin": "(?<=^|\\s)(__)(?!\\s|$)",
+            "end": "(?<!\\s)(__)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
