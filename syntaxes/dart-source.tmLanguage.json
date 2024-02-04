@@ -391,7 +391,8 @@
             ]
         },
         "type-definition-collection-cast": {
-            "begin": "(?=<[^+\\-*\\/^|&~=]*>(?<!=>)\\s*(\\{|\\[))",
+            "begin": "(?=<[^+\\-*\\/^|&~=]*>(?<!=>)\\s*(\\{|\\[|\\())",
+            "comment": "paren branch is for generic anonymous functions like `<T> () {}`",
             "end": "(?<=>)|$",
             "patterns": [
                 { "include": "#type-recursive-generic-params" }
