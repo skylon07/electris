@@ -116,10 +116,11 @@
         },
         "extract-operator-dollar-variable": {
             "name": "electris.source-code.operator",
-            "match": "(?<!\\.)\\$([_a-zA-Z0-9]*)",
-            "captures": {
-                "1": { "name": "electris.source-code.variable" }
-            }
+            "begin": "(?<!\\.)\\$(?=[_a-zA-Z0-9]*)",
+            "end": "(?![_a-zA-Z0-9])",
+            "patterns": [
+                { "include": "$self" }
+            ]
         },
         "extract-operator-dollar-expression": {
             "begin": "(?<!\\.)(\\$\\{)",
@@ -300,7 +301,7 @@
 
         "builtin-type": {
             "name": "electris.source-code.types.type",
-            "match": "(?<![_a-zA-Z0-9$.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9$])"
+            "match": "(?<![.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9$])"
         },
         "type-identifier": {
             "name": "electris.source-code.types.type",
