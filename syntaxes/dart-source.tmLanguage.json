@@ -357,7 +357,7 @@
             ]
         },
         "type-definition-after-as-or-is": {
-            "begin": "((?<=(^|[^_a-zA-Z0-9$])as\\s+)(?<!import\\s+.*\\s+as\\s)|(?<=(^|[^_a-zA-Z0-9$])is\\s+))(?=\\s*[_a-zA-Z0-9$]|[(])",
+            "begin": "((?<=(^|[^_a-zA-Z0-9$])as\\s+)(?<!import\\s+.*\\s+as\\s)|(?<=(^|[^_a-zA-Z0-9$])is\\s+))(?=\\s*([_a-zA-Z0-9$]|[(]))",
             "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
             "patterns": [
                 { "include": "#type-definition" }
@@ -370,21 +370,21 @@
             ]
         },
         "type-definition-with-typedef-left-hand-side": {
-            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+)(?=\\s*[_a-zA-Z0-9$]|[(])",
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+)(?=\\s*([_a-zA-Z0-9$]|[(]))",
             "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
             "patterns": [
                 { "include": "#type-definition" }
             ]
         },
         "type-definition-with-typedef-right-hand-side": {
-            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+([_a-zA-Z0-9$]|<|>)*\\s*=\\s*)(?=\\s*[_a-zA-Z0-9$]|[(])",
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+([_a-zA-Z0-9$]|<|>)*\\s*=\\s*)(?=\\s*([_a-zA-Z0-9$]|[(]))",
             "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
             "patterns": [
                 { "include": "#type-definition" }
             ]
         },
         "type-definition-in-class-headers": {
-            "begin": "(?<=(^|[^_a-zA-Z0-9$])(class\\s|extends\\s|implements\\s|with\\s|on\\s))(?=\\s*[_a-zA-Z0-9$]|[(])",
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])(class\\s|extends\\s|implements\\s|with\\s|on\\s))(?=\\s*([_a-zA-Z0-9$]|[(]))",
             "end": "(?<=\\{)\\s*$|(?=\\{)|(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
             "patterns": [
                 { "include": "#type-definition" }
