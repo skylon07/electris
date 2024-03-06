@@ -151,7 +151,8 @@
         "keyword": {
             "patterns": [
                 { "include": "#keyword-hard" },
-                { "include": "#keyword-soft" }
+                { "include": "#keyword-soft" },
+                { "include": "#keyword-soft-type" }
             ]
         },
         "keyword-hard": {
@@ -161,7 +162,12 @@
         "keyword-soft": {
             "name": "electris.source-code.operator",
             "comment": "This theme only supports escaping identifiers named as soft keywords for function calls/declarations -- I'm not handling every case one of these could be a variable (plus, naming identifiers even if they're *soft* keywords is a bad idea, imo)",
+            "comment2": "If the keyword has a clear contextual application (like 'type' in 'extension type'), a separate `keyword-soft-...` rule can be made for it",
             "match": "(?<!\\.)(import|export|library|hide|show|deferred|part|macro|abstract|interface|implements|mixin|base|sealed|typedef|extension|dynamic|static|covariant|late|when|on|async|await|sync|get|set|yield|external|required|factory)(?![_a-zA-Z0-9$])(?![(]|<)"
+        },
+        "keyword-soft-type": {
+            "name": "electris.source-code.operator",
+            "match": "(?<=(?<!\\.)(?<![_a-zA-Z0-9$])extension\\s+)type"
         },
         "keyword-operator": {
             "name": "electris.source-code.operator",
