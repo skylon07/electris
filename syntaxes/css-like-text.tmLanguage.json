@@ -20,7 +20,7 @@
             ]
         },
         "at-operators": {
-            "match": "(@(import|include|.*))\\s+(.*)\\s*(;)?",
+            "match": "(@(import|include|[a-zA-Z]*))\\s+([^;]*)\\s*(;)?",
             "captures": {
                 "1": { "name": "electris.source-code.operator" },
                 "3": { "name": "electris.source-code.primitive-literal" },
