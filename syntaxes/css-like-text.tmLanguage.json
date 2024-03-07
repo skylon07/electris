@@ -1,51 +1,94 @@
 {
     "fileTypes": [
         "css",
+        "scss",
         "less"
     ],
     "scopeName": "electris.text.css",
     "patterns": [
+        { "include": "#top-level-operators"},
         { "include": "#comment" },
         { "include": "#class-declaration" },
         { "include": "#class-declaration-unfinished-top-level" }
     ],
     "repository": {
+        "top-level-operators": {
+            "patterns": [
+                { "include": "#at-operator-mixin" },
+                { "include": "#at-operators" },
+                { "include": "#variable-declaration" }
+            ]
+        },
+        "at-operators": {
+            "match": "(@(import|include|.*))\\s+(.*)\\s*(;)?",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" },
+                "3": { "name": "electris.source-code.primitive-literal" },
+                "4": { "name": "electris.source-code.punctuation" }
+            }
+        },
+        "at-operator-mixin": {
+            "begin": "(@(mixin))\\s+(.*)\\s*(?=\\{)",
+            "end": "(?<=\\})",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" },
+                "3": { "name": "electris.source-code.primitive-literal" },
+                "4": { "name": "electris.source-code.punctuation" }
+            },
+            "patterns": [
+                { "include": "#class-declaration-block" }
+            ]
+        },
+        "variable-declaration": {
+            "begin": "(\\$)(?=[_a-zA-Z0-9\\-]+\\s*:)",
+            "end": "(?<=;|\\})",
+            "beginCaptures": {
+                "1": { "name": "electris.source-code.operator" }
+            },
+            "patterns": [
+                { "include": "#class-property" }
+            ]
+        },
+
         "comment": {
+            "patterns": [
+                { "include": "#comment-block" },
+                { "include": "#comment-inline" }
+            ]
+        },
+        "comment-block": {
             "name": "electris.source-code.comment",
             "begin": "/\\*",
             "end": "\\*/",
             "patterns": [{ "include": "#comment" }]
         },
+        "comment-inline": {
+            "name": "electris.source-code.comment",
+            "match": "//.*$"
+        },
 
         "class-declaration": {
-            "begin": "(?=.+\\{)",
+            "begin": "(?=(?!.*(//|/\\*)).+\\{)",
             "end": "(?<=\\})",
             "patterns": [
-                { "include": "#class-scope-pseudo" },
-                { "include": "#class-scope-name" },
-                { "include": "#class-self-ref-operator" },
-                { "include": "#class-scope-operator" },
-                { "include": "#list-separator" },
-                { "include": "#parameter-punctuation" },
-                { "include": "#class-declaration-block" }
+                { "include": "#class-declaration-patterns" }
             ]
         },
         "class-declaration-unfinished-top-level": {
             "begin": "(?=^\\s*.)",
             "end": "(?<=$)",
             "patterns": [
-                { "include": "#class-scope-pseudo" },
-                { "include": "#class-scope-name" },
-                { "include": "#class-self-ref-operator" },
-                { "include": "#class-scope-operator" },
-                { "include": "#list-separator" },
-                { "include": "#parameter-punctuation" },
-                { "include": "#class-declaration-block" }
+                { "include": "#class-declaration-patterns" }
             ]
         },
         "class-declaration-unfinished": {
             "begin": "(?=&|:|^[_a-zA-Z0-9\\s]*\\.|>|\\+|~)",
             "end": "(?<=$)",
+            "patterns": [
+                { "include": "#class-declaration-patterns" }
+            ]
+        },
+        "class-declaration-patterns": {
             "patterns": [
                 { "include": "#class-scope-pseudo" },
                 { "include": "#class-scope-name" },
@@ -93,16 +136,17 @@
                 "1": { "name": "electris.source-code.punctuation" }
             },
             "patterns": [
+                { "include": "#top-level-operators" },
                 { "include": "#comment" },
-                { "include": "#class-property" },
                 { "include": "#class-declaration" },
-                { "include": "#class-declaration-unfinished" }
+                { "include": "#class-declaration-unfinished" },
+                { "include": "#class-property" }
             ]
         },
 
         "class-property": {
             "begin": "(?:\\s*)([_a-zA-Z0-9\\-]+)",
-            "end": "(;)",
+            "end": "(;)|(?=\\})",
             "beginCaptures": {
                 "1": { "name": "electris.source-code.variable" }
             },
@@ -116,7 +160,7 @@
 
         "class-property-value-list": {
             "begin": "(:)",
-            "end": "(?=;)",
+            "end": "(?=[;}])",
             "beginCaptures": {
                 "1": { "name": "electris.source-code.punctuation" }
             },
@@ -127,6 +171,7 @@
         "value-list": {
             "patterns": [
                 { "include": "#list-separator" },
+                { "include": "#class-variable-deref-operator" },
                 { "include": "#class-property-value" }
             ]
         },
@@ -139,6 +184,14 @@
                 { "include": "#string" },
                 { "include": "#literal" }
             ]
+        },
+        "class-variable-deref-operator": {
+            "name": "electris.source-code.operator",
+            "match": "(\\$)([_a-zA-Z0-9\\-]+)",
+            "captures": {
+                "1": { "name": "electris.source-code.operator" },
+                "2": { "name": "electris.source-code.variable" }
+            }
         },
 
         "function": {

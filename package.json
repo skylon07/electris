@@ -168,6 +168,11 @@
                 "language": "css"
             },
             {
+                "path": "./syntaxes/css-like-text.tmLanguage.json",
+                "scopeName": "electris.text.css",
+                "language": "scss"
+            },
+            {
                 "path": "./syntaxes/less-text.tmLanguage.json",
                 "scopeName": "electris.text.less",
                 "language": "less"
