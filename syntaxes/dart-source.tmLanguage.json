@@ -167,7 +167,7 @@
         },
         "keyword-soft-type": {
             "name": "electris.source-code.operator",
-            "match": "(?<=[^_a-zA-Z0-9$.]extension\\s+)type"
+            "match": "(?<=(^|[^_a-zA-Z0-9$.])extension\\s+)type"
         },
         "keyword-operator": {
             "name": "electris.source-code.operator",
