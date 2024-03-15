@@ -24,9 +24,8 @@
                     ]
                 },
                 {
-                    "precedenceGroup": "builtin-keywords",
+                    "precedenceGroup": "keywords",
                     "patterns": [
-                        { "include": "#builtin-type" },
                         { "include": "#keyword" },
                         { "include": "#keyword-operator" }
                     ]
@@ -50,7 +49,8 @@
                         { "include": "#type-definition-before-variable" },
                         { "include": "#type-identifier-after-new" },
                         { "include": "#type-identifier-generic" },
-                        { "include": "#type-identifier" }
+                        { "include": "#type-identifier" },
+                        { "include": "#builtin-type" }
                     ]
                 },
                 {
