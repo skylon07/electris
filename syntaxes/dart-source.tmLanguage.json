@@ -173,6 +173,7 @@
             "name": "electris.source-code.operator",
             "match": "operator\\s*(>|>=|<|<=|==|\\+|\\-|\\*|/|~/|%|<<|>>|\\^|&|\\||~|>>>|\\[\\]|\\[\\]=)(?=\\s*[(]|\\s*$)|operator\\s*([^(\\s]+|$)",
             "captures": {
+                "1": { "name": "electris.source-code.function-call" },
                 "2": { "name": "electris.source-code.escape" }
             }
         },
