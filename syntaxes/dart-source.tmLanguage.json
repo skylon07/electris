@@ -157,7 +157,7 @@
         },
         "keyword-hard": {
             "name": "electris.source-code.operator",
-            "match": "(?<!\\.)(class|extends|with|super|is|as|enum|var|const|final|if|else|for|in|while|continue|break|do|switch|case|default|try|catch|finally|throw|rethrow|assert|this|new|return)(?![_a-zA-Z0-9$])"
+            "match": "(?<!(?<!\\.\\.)\\.)(class|extends|with|super|is|as|enum|var|const|final|if|else|for|in|while|continue|break|do|switch|case|default|try|catch|finally|throw|rethrow|assert|this|new|return)(?![_a-zA-Z0-9$])"
         },
         "keyword-soft": {
             "name": "electris.source-code.operator",
