@@ -384,8 +384,8 @@
             ]
         },
         "type-definition-with-typedef-right-hand-side": {
-            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+([_a-zA-Z0-9$]|<|>|\\s)*\\s*=\\s*)(?=\\s*([_a-zA-Z0-9$]|[(]))",
-            "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+([_a-zA-Z0-9$]|<|>|\\s)*=)(?!;)",
+            "end": "(?=;|$)",
             "patterns": [
                 { "include": "#type-definition" }
             ]
