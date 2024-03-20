@@ -356,7 +356,7 @@
                 },
                 {
                     "beginNote": "restrictions on 'begin' are different so you can chain `void Function(...) Function(...) ...`",
-                    "begin": "(?<=(^|[(\\[{]|,|([_a-zA-Z0-9$]|[)]|>)(\\.|\\?)?)\\s*((?<=^|[^_a-zA-Z0-9$])(var|final|const|dynamic|covariant|static)\\s+)*)(?=(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??\\s*[_a-zA-Z0-9$]))",
+                    "begin": "(?<=(^|[(\\[{]|,|([_a-zA-Z0-9$]|[)]|>)\\??)\\s*((?<=^|[^_a-zA-Z0-9$])(var|final|const|dynamic|covariant|static)\\s+)*)(?=(?<=[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??\\s*[_a-zA-Z0-9$]))",
                     "beginBasedOn": "#type-definition-function:begin",
                     "end": "(?<=[)]|\\?)|$",
                     "patterns": [ { "include": "#type-definition-function-top" } ]
