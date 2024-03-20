@@ -119,7 +119,7 @@
             "begin": "\\$(?=[_a-zA-Z0-9]*)",
             "end": "(?![_a-zA-Z0-9])",
             "patterns": [
-                { "include": "$self" }
+                { "include": "#variable-reference" }
             ]
         },
         "extract-operator-dollar-expression": {
