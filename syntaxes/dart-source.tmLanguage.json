@@ -387,7 +387,8 @@
             "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+.*=)(?!;)",
             "end": "(?=;|$)",
             "patterns": [
-                { "include": "#type-definition" }
+                { "include": "#type-definition" },
+                { "include": "#condition-operator" }
             ]
         },
         "type-definition-in-class-headers": {
