@@ -455,7 +455,7 @@
         },
         "type-definition-function-top": {
             "name": "electris.source-code.types.type",
-            "begin": "(?<=[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?[(])",
+            "begin": "(?<=[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
             "end": "(?<=[)]|\\?|>|Function)|$",
             "begin-end-sameAs": "#type-recursive-definition-function",
             "patterns": [
@@ -506,7 +506,7 @@
         },
         "type-recursive-definition-function": {
             "noNameBecause": "Recursive scoping is handled by the recursive record; `Function` itself should stay at the same level",
-            "begin": "(?<=[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?[(])",
+            "begin": "(?<=^|[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
             "end": "(?<=[)]|\\?|>|Function)|$",
             "begin-end-sameAs": "#type-definition-function-top",
             "patterns": [
