@@ -18,9 +18,7 @@
                 {
                     "precedenceGroup": "comments",
                     "patterns": [
-                        { "include": "#single-line-doc-comment" },
-                        { "include": "#single-line-comment" },
-                        { "include": "#multi-line-comment" }
+                        { "include": "#comments" }
                     ]
                 },
                 {
@@ -291,6 +289,13 @@
             "match": "_*[A-Z][_A-Z][_A-Z0-9]*(?![_a-zA-Z0-9$])"
         },
 
+        "comments": {
+            "patterns": [
+                { "include": "#single-line-doc-comment" },
+                { "include": "#single-line-comment" },
+                { "include": "#multi-line-comment" }
+            ]
+        },
         "single-line-comment": {
             "name": "electris.source-code.comment",
             "match": "//.*"
@@ -387,8 +392,10 @@
             "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+.*=\\s*)(?!;)",
             "end": "(?=;|$)",
             "patterns": [
+                { "include": "#comments"},
                 { "include": "#type-definition" },
-                { "include": "#condition-operator" }
+                { "include": "#math-operator", "for": "first `/` when typing comment" },
+                { "include": "#condition-operator", "for": "unpaired `<` and `>` when declaring type parameter lists" }
             ]
         },
         "type-definition-in-class-headers": {
