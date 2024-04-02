@@ -389,11 +389,12 @@
             ]
         },
         "type-definition-with-typedef-right-hand-side": {
-            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+.*=\\s*)(?!;)",
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+.*)(?!(=\\s*)?;)(?<!;)",
             "end": "(?=;|$)",
             "patterns": [
                 { "include": "#comments"},
                 { "include": "#type-definition" },
+                { "include": "#assignment-operator", "for": "the `=` declaring typedef assignment" },
                 { "include": "#math-operator", "for": "first `/` when typing comment" },
                 { "include": "#condition-operator", "for": "unpaired `<` and `>` when declaring type parameter lists" }
             ]
