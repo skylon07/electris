@@ -384,7 +384,7 @@
             ]
         },
         "type-definition-with-typedef-right-hand-side": {
-            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+.*=)(?!;)",
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+.*=\\s*)(?!;)",
             "end": "(?=;|$)",
             "patterns": [
                 { "include": "#type-definition" },
