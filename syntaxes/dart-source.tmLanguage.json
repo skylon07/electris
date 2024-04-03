@@ -425,6 +425,7 @@
             "patterns": [
                 { "include": "#type-definition-function-top" },
                 { "include": "#type-definition-record-top" },
+                { "include": "#type-definition-identifier-generic-multiline" },
                 { "include": "#type-definition-identifier-generic" },
                 { "include": "#type-definition-identifier" }
             ]
@@ -437,7 +438,8 @@
             "match": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??"
         },
         "type-definition-identifier-generic": {
-            "beginDependedBy": "#type-definition-before-variable",
+            "beginDependedBy": "#type-definition-before-variable, #type-definition-identifier-generic-multiline",
+            "endDependedBy": "#type-definition-identifier-generic-multiline",
             "copiedFrom": "#type-identifier-generic",
 
             "name": "electris.source-code.types.type syntax.dart.type-definition-identifier-generic",
@@ -445,6 +447,18 @@
             "end": "(?<=>)\\??|$",
             "patterns": [
                 { "include": "#type-recursive-generic-params" }
+            ]
+        },
+        "type-definition-identifier-generic-multiline": {
+            "beginBasedOn": "#type-definition-identifier-generic (except the 'generic list' part)",
+            "endBasedOn": "#type-definition-identifier-generic",
+            "copiedFrom": "#type-identifier-generic",
+
+            "name": "electris.source-code.types.type syntax.dart.type-definition-identifier-generic",
+            "begin": "(?<=(^|[^_a-zA-Z0-9$])(class|typedef)\\s*)[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*(?=\\s*<)",
+            "end": "(?<=>)\\??|$",
+            "patterns": [
+                { "include": "#type-recursive-generic-params-multiline" }
             ]
         },
         "type-definition-record-top": {
@@ -510,9 +524,22 @@
             "match": "dynamic|extends"
         },
         "type-recursive-generic-params": {
+            "begin-end-sameAs": "#type-recursive-generic-params-multiline (except for `end` matching EOL)",
+
             "name": "electris.source-code.types.type-recursive syntax.dart.type-recursive-generic-params",
             "begin": "<",
             "end": ">|$",
+            "patterns": [
+                { "include": "#type-definition-record", "reason": "not recursive to avoid excessive shading" },
+                { "include": "#type-recursive" }
+            ]
+        },
+        "type-recursive-generic-params-multiline": {
+            "begin-end-sameAs": "#type-recursive-generic-params (except for `end` not matching EOL)",
+
+            "name": "electris.source-code.types.type-recursive syntax.dart.type-recursive-generic-params-multiline",
+            "begin": "<",
+            "end": ">",
             "patterns": [
                 { "include": "#type-definition-record", "reason": "not recursive to avoid excessive shading" },
                 { "include": "#type-recursive" }
@@ -597,7 +624,7 @@
             "patterns": [
                 { "include": "#self-no-parentheses-for-functions-that-arent-record-types" }
             ],
-            
+
             "casesToConsider": [
                 "type       fn      ((rec, rec) id) {",
                 "type<type> fn      ((rec, rec) id) {",
