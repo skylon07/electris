@@ -158,9 +158,10 @@
             "match": "(?<!(?<!\\.\\.)\\.)(class|extends|with|super|is|as|enum|var|const|final|if|else|for|in|while|continue|break|do|switch|case|default|try|catch|finally|throw|rethrow|assert|this|new|return)(?![_a-zA-Z0-9$])"
         },
         "keyword-soft": {
-            "name": "electris.source-code.operator",
             "comment": "This theme only supports escaping identifiers named as soft keywords for function calls/declarations -- I'm not handling every case one of these could be a variable (plus, naming identifiers even if they're *soft* keywords is a bad idea, imo)",
             "comment2": "If the keyword has a clear contextual application (like 'type' in 'extension type'), a separate `keyword-soft-...` rule can be made for it",
+            
+            "name": "electris.source-code.operator",
             "match": "(?<!(?<!\\.\\.)\\.)(import|export|library|hide|show|deferred|part|macro|abstract|interface|implements|mixin|base|sealed|typedef|extension|dynamic|static|covariant|late|when|on|async|await|sync|get|set|yield|external|required|factory)(?![_a-zA-Z0-9$])(?![(]|<)"
         },
         "keyword-soft-type": {
@@ -316,18 +317,20 @@
             "match": "(?<![.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9$])"
         },
         "type-identifier": {
+            "copiedBy": "#type-definition-identifier",
+
             "name": "electris.source-code.types.type",
-            "match": "_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?",
-            "copiedBy": "#type-definition-identifier"
+            "match": "_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?"
         },
         "type-identifier-generic": {
+            "copiedBy": "#type-definition-identifier-generic",
+
             "name": "electris.source-code.types.type syntax.dart.type-identifier-generic",
             "begin": "_*[A-Z][_a-zA-Z0-9$]*(?=\\s*<[^+\\-*\\/^|&~=]*>)",
             "end": "(?<=>)(\\?(?!\\.))?|$",
             "patterns": [
                 { "include": "#type-recursive-generic-params" }
-            ],
-            "copiedBy": "#type-definition-identifier-generic"
+            ]
         },
         "type-identifier-after-new": {
             "name": "electris.source-code.types.type",
@@ -427,35 +430,39 @@
             ]
         },
         "type-definition-identifier": {
-            "name": "electris.source-code.types.type",
-            "match": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??",
             "matchDependedBy": "#type-definition-before-variable",
-            "copiedFrom": "#type-identifier"
+            "copiedFrom": "#type-identifier",
+
+            "name": "electris.source-code.types.type",
+            "match": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??"
         },
         "type-definition-identifier-generic": {
+            "beginDependedBy": "#type-definition-before-variable",
+            "copiedFrom": "#type-identifier-generic",
+
             "name": "electris.source-code.types.type syntax.dart.type-definition-identifier-generic",
             "begin": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*(?=\\s*<[^+\\-*\\/^|&~=]*>\\??)",
-            "beginDependedBy": "#type-definition-before-variable",
             "end": "(?<=>)\\??|$",
             "patterns": [
                 { "include": "#type-recursive-generic-params" }
-            ],
-            "copiedFrom": "#type-identifier-generic"
+            ]
         },
         "type-definition-record-top": {
+            "begin-end-sameAs": "#type-recursive-definition-record",
+
             "name": "electris.source-code.types.type syntax.dart.type-definition-record-top",
             "begin": "(?=[(])",
             "end": "(?<=[)]|\\?)|$",
-            "begin-end-sameAs": "#type-recursive-definition-record",
             "patterns": [
                 { "include": "#type-definition-record" }
             ]
         },
         "type-definition-record": {
             "no-name-styling": "to allow both regular and recursive `name`s",
+            "beginDependedBy": "#type-definition-before-variable",
+
             "name": "syntax.dart.type-definition-record",
             "begin": "[(](?=[^+\\-*\\/^|&~=]*[)]\\??)",
-            "beginDependedBy": "#type-definition-before-variable",
             "end": "[)]\\??|$",
             "patterns": [
                 { "include": "#type-definition-record-variable" },
@@ -467,19 +474,21 @@
             "match": "(?<=[_a-zA-Z0-9$]\\s|[)]|>)\\s*(?!Function)[_a-zA-Z0-9$]+"
         },
         "type-definition-function-top": {
+            "begin-end-sameAs": "#type-recursive-definition-function",
+
             "name": "electris.source-code.types.type syntax.dart.type-definition-function-top",
             "begin": "(?<=^|[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
             "end": "(?<=[)]|\\?|>|Function)|$",
-            "begin-end-sameAs": "#type-recursive-definition-function",
             "patterns": [
                 { "include": "#type-definition-function" }
             ]
         },
         "type-definition-function": {
             "no-name-styling": "to allow both regular and recursive `name`s",
+            "beginDependedBy": "#type-definition-before-variable",
+
             "name": "syntax.dart.type-definition-function",
             "begin": "(?<=^|[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
-            "beginDependedBy": "#type-definition-before-variable",
             "end": "(?<=[)]\\??)|$",
             "patterns": [
                 { "include": "#type-definition-record-variable" },
@@ -510,22 +519,23 @@
             ]
         },
         "type-recursive-definition-record": {
+            "begin-end-sameAs": "#type-definition-record-top",
+
             "name": "electris.source-code.types.type-recursive syntax.dart.type-recursive-definition-record",
             "begin": "(?=[(])",
             "end": "(?<=[)]|\\?)|$",
-            "begin-end-sameAs": "#type-definition-record-top",
             "patterns": [
                 { "include": "#type-definition-record" }
             ]
         },
         "type-recursive-definition-function__UNUSED": {
             "unused-reason": "Found out that not using this class causes nested functions' arguments to fade as expected (but this is still kept here in case it needs to be used again)",
-
             "no-name-styling": "because recursive scoping is handled by the recursive record; `Function` itself should stay at the same level",
+            "begin-end-sameAs": "#type-definition-function-top",
+
             "name": "syntax.dart.type-recursive-definition-function",
             "begin": "(?<=^|[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
             "end": "(?<=[)]|\\?|>|Function)|$",
-            "begin-end-sameAs": "#type-definition-function-top",
             "patterns": [
                 { "include": "#type-definition-function" }
             ]
@@ -573,6 +583,7 @@
         "expression-punctuation-parentheses-not-record": {
             "comment": "tries to detect non-record pairs of parentheses, aka (...) {} expressions (should be evaluated before records)",
             "comment2": "this is a hack because (?=.*[)]) will prematurely detect close parentesis that isn't paired with the first; aka ((num, num*)* test)",
+
             "SUPER-help-because-this-is-crazy": "  __lambda_close__                                                                                                                   __fn_call_type_params_end__                                                                                                 __record_end__                                                                                                                          ",
             "help-because-this-is-crazy": "         (?<!___^___)(?=(?<!(?<!__fn_return_type_____fn_def_name___)___fn_call_end!___)(?<!(?<!__fn_return_type_____fn_def_name______type_params_start__)__^__)|__(?<!____`.then(() {`-like_____)____fn_def_body_bracket____)MATCH(?!(?<=_______record_return_start_______)___^___(_________fn_definition_________________________|_____get/set_definition________))(?=MATCH_______mods___________lambda_end__)",
             "begin": "(?<!\\s+as\\s+)(?<!\\s+is\\s+)(?<!\\}\\s*)(?=(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]*)[_a-zA-Z0-9$!]\\s*)(?<!(?<![.>)?_a-zA-Z0-9$]\\s+[_a-zA-Z0-9$]+\\s*<[^+\\-*\\/^|&~=]*)>\\s*)|.*(?<!\\.[_a-zA-Z0-9$!]+[(]{2,}.*)[)]\\s*\\{(?:\\s*\\})?\\s*$)([(])(?!(?<!(?<!^\\s*)(?<!^\\s*static\\s*)[(]).*[)].*([_a-zA-Z0-9$]+\\s*(<[^+\\-*\\/^|&~=]*>)?\\s*[(]|(get|set)\\s*[_a-zA-Z0-9$]+\\s*))(?=.*[)]\\s*(a?sync\\*?)?\\s*(\\{|=>?|;|$))",
@@ -586,6 +597,7 @@
             "patterns": [
                 { "include": "#self-no-parentheses-for-functions-that-arent-record-types" }
             ],
+            
             "casesToConsider": [
                 "type       fn      ((rec, rec) id) {",
                 "type<type> fn      ((rec, rec) id) {",
