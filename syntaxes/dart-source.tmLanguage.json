@@ -452,7 +452,7 @@
             ]
         },
         "type-definition-record": {
-            "no-name": "to allow both regular and recursive `name`s",
+            "no-name-styling": "to allow both regular and recursive `name`s",
             "begin": "[(](?=[^+\\-*\\/^|&~=]*[)]\\??)",
             "beginDependedBy": "#type-definition-before-variable",
             "end": "[)]\\??|$",
@@ -475,7 +475,7 @@
             ]
         },
         "type-definition-function": {
-            "no-name": "to allow both regular and recursive `name`s",
+            "no-name-styling": "to allow both regular and recursive `name`s",
             "name": "syntax.dart.type-definition-function",
             "begin": "(?<=^|[^_a-zA-Z0-9$])Function(?=(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(].*[)]\\??)",
             "beginDependedBy": "#type-definition-before-variable",
@@ -518,7 +518,7 @@
             ]
         },
         "type-recursive-definition-function": {
-            "noNameBecause": "Recursive scoping is handled by the recursive record; `Function` itself should stay at the same level",
+            "no-name-styling": "because recursive scoping is handled by the recursive record; `Function` itself should stay at the same level",
             "name": "syntax.dart.type-recursive-definition-function",
             "begin": "(?<=^|[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
             "end": "(?<=[)]|\\?|>|Function)|$",
