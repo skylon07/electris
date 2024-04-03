@@ -443,7 +443,7 @@
             "copiedFrom": "#type-identifier-generic"
         },
         "type-definition-record-top": {
-            "name": "electris.source-code.types.type",
+            "name": "electris.source-code.types.type syntax.dart.type-definition-record-top",
             "begin": "(?=[(])",
             "end": "(?<=[)]|\\?)|$",
             "begin-end-sameAs": "#type-recursive-definition-record",
@@ -453,6 +453,7 @@
         },
         "type-definition-record": {
             "no-name-styling": "to allow both regular and recursive `name`s",
+            "name": "syntax.dart.type-definition-record",
             "begin": "[(](?=[^+\\-*\\/^|&~=]*[)]\\??)",
             "beginDependedBy": "#type-definition-before-variable",
             "end": "[)]\\??|$",
@@ -500,7 +501,7 @@
             "match": "dynamic|extends"
         },
         "type-recursive-generic-params": {
-            "name": "electris.source-code.types.type-recursive",
+            "name": "electris.source-code.types.type-recursive syntax.dart.type-recursive-generic-params",
             "begin": "<",
             "end": ">|$",
             "patterns": [
@@ -509,7 +510,7 @@
             ]
         },
         "type-recursive-definition-record": {
-            "name": "electris.source-code.types.type-recursive",
+            "name": "electris.source-code.types.type-recursive syntax.dart.type-recursive-definition-record",
             "begin": "(?=[(])",
             "end": "(?<=[)]|\\?)|$",
             "begin-end-sameAs": "#type-definition-record-top",
@@ -517,7 +518,9 @@
                 { "include": "#type-definition-record" }
             ]
         },
-        "type-recursive-definition-function": {
+        "type-recursive-definition-function__UNUSED": {
+            "unused-reason": "Found out that not using this class causes nested functions' arguments to fade as expected (but this is still kept here in case it needs to be used again)",
+
             "no-name-styling": "because recursive scoping is handled by the recursive record; `Function` itself should stay at the same level",
             "name": "syntax.dart.type-recursive-definition-function",
             "begin": "(?<=^|[^_a-zA-Z0-9$])(?=Function(\\s*<[^+\\-*\\/^|&~=]*>)?\\s*[(])",
