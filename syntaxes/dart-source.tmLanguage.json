@@ -383,17 +383,21 @@
             ]
         },
         "type-definition-with-typedef-left-hand-side": {
+            "name": "syntax.dart.type-definition-with-typedef-left-hand-side",
             "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+)(?=\\s*([_a-zA-Z0-9$]|[(]))",
             "end": "(?<=[_a-zA-Z0-9$]|\\.|\\?|>|[)])(?![^_a-zA-Z0-9$]Function[^_a-zA-Z0-9$])",
             "patterns": [
+                { "include": "#type-definition-record-top-multiline" },
                 { "include": "#type-definition" }
             ]
         },
         "type-definition-with-typedef-right-hand-side": {
+            "name": "syntax.dart.type-definition-with-typedef-right-hand-side",
             "begin": "(?<=(^|[^_a-zA-Z0-9$])typedef\\s+.*)(?!(=\\s*)?;)(?<!;)",
             "end": "(?=;|$)",
             "patterns": [
                 { "include": "#comments"},
+                { "include": "#type-definition-record-top-multiline" },
                 { "include": "#type-definition" },
                 { "include": "#assignment-operator", "for": "the `=` declaring typedef assignment" },
                 { "include": "#math-operator", "for": "first `/` when typing comment" },
@@ -420,6 +424,7 @@
         "type-definition": {
             "patterns": [
                 { "include": "#type-definition-function-top" },
+                { "NOT-include": "#type-definition-record-top-multiline", "reason": "included directly in typedef patterns" },
                 { "include": "#type-definition-record-top" },
                 { "include": "#type-definition-identifier-generic-multiline" },
                 { "include": "#type-definition-identifier-generic" },
@@ -456,12 +461,25 @@
         },
         "type-definition-record-top": {
             "begin-end-sameAs": "#type-recursive-definition-record",
+            "beginDependedBy": "#type-definition-record-top-multiline",
+            "endDependedBy": "#type-definition-record-top-multiline",
 
             "name": "electris.source-code.types.type syntax.dart.type-definition-record-top",
             "begin": "(?=[(])",
             "end": "(?<=[)]|\\?)|$",
             "patterns": [
                 { "include": "#type-definition-record" }
+            ]
+        },
+        "type-definition-record-top-multiline": {
+            "beginBasedOn": "#type-definition-record-top",
+            "endBasedOn": "#type-definition-record-top",
+
+            "name": "electris.source-code.types.type syntax.dart.type-definition-record-top-multiline",
+            "begin": "(?=[(])",
+            "end": "(?<=[)]|\\?)|(?![^+\\-*\\/^|&~=])",
+            "patterns": [
+                { "include": "#type-definition-record-multiline" }
             ]
         },
         "type-definition-record": {
@@ -471,6 +489,17 @@
             "name": "syntax.dart.type-definition-record",
             "begin": "[(](?=[^+\\-*\\/^|&~=]*[)]\\??)",
             "end": "[)]\\??|$",
+            "patterns": [
+                { "include": "#type-definition-record-variable" },
+                { "include": "#type-recursive" }
+            ]
+        },
+        "type-definition-record-multiline": {
+            "no-name-styling": "to allow both regular and recursive `name`s",
+
+            "name": "syntax.dart.type-definition-record-multiline",
+            "begin": "[(]",
+            "end": "[)]\\??",
             "patterns": [
                 { "include": "#type-definition-record-variable" },
                 { "include": "#type-recursive" }
