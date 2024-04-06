@@ -317,14 +317,10 @@
             "match": "(?<![.])(num|int|double|bool|void)(\\?(?!\\.))?(?![_a-zA-Z0-9$])"
         },
         "type-identifier": {
-            "copiedBy": "#type-definition-identifier",
-
             "name": "electris.source-code.types.type",
             "match": "_*[A-Z][_a-zA-Z0-9$]*(\\?(?!\\.))?"
         },
         "type-identifier-generic": {
-            "copiedBy": "#type-definition-identifier-generic",
-
             "name": "electris.source-code.types.type syntax.dart.type-identifier-generic",
             "begin": "_*[A-Z][_a-zA-Z0-9$]*(?=\\s*<[^+\\-*\\/^|&~=]*>)",
             "end": "(?<=>)(\\?(?!\\.))?|$",
@@ -432,7 +428,6 @@
         },
         "type-definition-identifier": {
             "matchDependedBy": "#type-definition-before-variable",
-            "copiedFrom": "#type-identifier",
 
             "name": "electris.source-code.types.type",
             "match": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*\\??"
@@ -440,7 +435,6 @@
         "type-definition-identifier-generic": {
             "beginDependedBy": "#type-definition-before-variable, #type-definition-identifier-generic-multiline",
             "endDependedBy": "#type-definition-identifier-generic-multiline",
-            "copiedFrom": "#type-identifier-generic",
 
             "name": "electris.source-code.types.type syntax.dart.type-definition-identifier-generic",
             "begin": "[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*(?=\\s*<[^+\\-*\\/^|&~=]*>\\??)",
@@ -452,7 +446,6 @@
         "type-definition-identifier-generic-multiline": {
             "beginBasedOn": "#type-definition-identifier-generic (except the 'generic list' part)",
             "endBasedOn": "#type-definition-identifier-generic",
-            "copiedFrom": "#type-identifier-generic",
 
             "name": "electris.source-code.types.type syntax.dart.type-definition-identifier-generic",
             "begin": "(?<=(^|[^_a-zA-Z0-9$])(class|typedef)\\s*)[_a-zA-Z0-9$]+(\\.[_a-zA-Z0-9$]*)*(?=\\s*<)",
