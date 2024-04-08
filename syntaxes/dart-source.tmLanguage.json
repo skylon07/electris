@@ -162,7 +162,7 @@
             "comment2": "If the keyword has a clear contextual application (like 'type' in 'extension type'), a separate `keyword-soft-...` rule can be made for it",
             
             "name": "electris.source-code.operator",
-            "match": "(?<!(?<!\\.\\.)\\.)(import|export|library|hide|show|deferred|part|macro|abstract|interface|implements|mixin|base|sealed|typedef|extension|dynamic|static|covariant|late|when|on|async|await|sync|get|set|yield|external|required|factory)(?![_a-zA-Z0-9$])(?![(]|<)"
+            "match": "(?<!(?<!\\.\\.)\\.)(import|export|library|hide|show|deferred|part|(?<=^\\s*part\\s)of|macro|abstract|interface|implements|mixin|base|sealed|typedef|extension|dynamic|static|covariant|late|when|on|async|await|sync|get|set|yield|external|required|factory)(?![_a-zA-Z0-9$])(?![(]|<)"
         },
         "keyword-soft-type": {
             "name": "electris.source-code.operator",
