@@ -27,10 +27,10 @@ sealed class SyntaxElement implements JsonEncodable {
 
 
 final class MainBody extends SyntaxElement {
-  final FileTypesList fileTypes;
-  final ScopeName scopeName;
+  final List<String> fileTypes;
+  final String scopeName;
   final List<Pattern> topLevelPatterns;
-  final List<RepositoryItem> repository;
+  final Map<String, Pattern> repository;
 
   const MainBody({
     required this.fileTypes,
@@ -45,50 +45,8 @@ final class MainBody extends SyntaxElement {
       "fileTypes": fileTypes,
       "scopeName": scopeName,
       "patterns": topLevelPatterns,
-      "repository": {
-        for (var item in repository)
-          item.identifier: item
-      },
+      "repository": repository,
     };
-  }
-}
-
-final class FileTypesList extends SyntaxElement {
-  final List<String> names;
-
-  const FileTypesList({required this.names});
-
-  @override
-  Object? toJson() {
-    return names;
-  }
-}
-
-final class ScopeName extends SyntaxElement {
-  final String scope;
-
-  const ScopeName({required this.scope});
-
-  @override
-  Object? toJson() {
-    return scope;
-  }
-}
-
-final class RepositoryItem extends SyntaxElement {
-  final String identifier;
-  final Pattern body;
-
-  const RepositoryItem({
-    required this.identifier,
-    required this.body,
-  });
-
-  @override
-  Object? toJson() {
-    // it is the containing object's resposibility to
-    // assign the correct identifier
-    return body.toJson();
   }
 }
 
@@ -188,9 +146,7 @@ final class EnclosurePattern extends GroupingPattern {
 final class IncludePattern extends Pattern {
   final String identifier;
 
-  const IncludePattern({
-    required this.identifier,
-  }): super(name: "");
+  const IncludePattern({required this.identifier}): super(name: "");
 
   @override
   Map toJson() {

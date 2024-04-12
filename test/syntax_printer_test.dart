@@ -7,63 +7,6 @@ String syntaxPrint(SyntaxElement syntax) =>
   SyntaxPrinter.instance.print(syntax);
 
 void main() {
-  group("top level little syntaxes, such as", () {
-    group("file type lists, like", () {
-      test("an empty list", () {
-        var result = SyntaxPrinter.instance.print(
-          FileTypesList(names: [])
-        );
-        expect(result, '[]');
-      });
-
-      test("a list with one element", () {
-        var result = SyntaxPrinter.instance.print(
-          FileTypesList(names: ["dart"])
-        );
-        expect(
-          result,
-          equals(
-"""
-[
-    "dart"
-]"""
-          ),
-        );
-      });
-
-      test("a list with a few elements", () {
-        var result = SyntaxPrinter.instance.print(
-          FileTypesList(names: ["dart1", "dart2", "dart3"])
-        );
-        expect(
-          result,
-          equals(
-"""
-[
-    "dart1",
-    "dart2",
-    "dart3"
-]"""
-          ),
-        );
-      });
-    });
-
-
-    group("scope names, like", () {
-      test("electris' dart scope", () {
-        var result = SyntaxPrinter.instance.print(
-          ScopeName(scope: "electris.source.dart")
-        );
-        expect(
-          result,
-          equals('"electris.source.dart"'),
-        );
-      });
-    });
-  });
-
-
   group("pattern syntaxes, such as", () {
     group("'capture' patterns, like", () {
       test("those with a name", () {
@@ -357,36 +300,15 @@ void main() {
   });
 
 
-  group("repository items, like", () {
-    test("those with identifiers, which should not be present in their encodings (only in parents when they encode it)", () {
-      var result = SyntaxPrinter.instance.print(
-        RepositoryItem(
-          identifier: "some-identifier",
-          body: IncludePattern(identifier: "#some-other-identifier")
-        )
-      );
-      expect(
-        result,
-        equals(
-"""
-{
-    "include": "#some-other-identifier"
-}"""
-        ),
-      );
-    });
-  });
-
-
   group("entire syntax bodies/files, like", () {
     test("those with all their attributes defined", () {
       var result = SyntaxPrinter.instance.print(
         MainBody(
-          fileTypes: FileTypesList(names: [
+          fileTypes: [
             "dart1",
-            "dart2",
-          ]),
-          scopeName: ScopeName(scope: "electris.source.dart"),
+            "dart2"
+          ],
+          scopeName: "electris.source.dart",
           topLevelPatterns: [
             EnclosurePattern(
               name: "electris.scope.enclosure",
@@ -394,18 +316,15 @@ void main() {
               end: "enclosure-end",
               innerPatterns: [
                 IncludePattern(identifier: "#some-repo-thing")
-              ],
-            ),
+              ]
+            )
           ],
-          repository: [
-            RepositoryItem(
-              identifier: "some-repo-thing",
-              body: MatchPattern(
-                name: "electris.scope.match",
-                match: "match-me",
-              ),
-            ),
-          ],
+          repository: {
+            "some-repo-thing": MatchPattern(
+              name: "electris.scope.match",
+              match: "match-me"
+            )
+          }
         )
       );
       expect(
