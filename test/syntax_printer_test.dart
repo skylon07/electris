@@ -11,7 +11,7 @@ void main() {
     group("'capture' patterns, like", () {
       test("those with a name", () {
         var result = SyntaxPrinter.instance.print(
-          CapturePattern(name: "electris.capture.name")
+          CapturePattern(debugName: "electris.capture.name")
         );
         expect(
           result,
@@ -29,7 +29,7 @@ void main() {
     group("'match' patterns, like", () {
       test("those without a name", () {
         var result = SyntaxPrinter.instance.print(
-          MatchPattern(name: "", match: "abcdef")
+          MatchPattern(debugName: "", match: "abcdef")
         );
         expect(
           result,
@@ -44,7 +44,7 @@ void main() {
 
       test("those with a name", () {
         var result = SyntaxPrinter.instance.print(
-          MatchPattern(name: "electris.some.scope", match: "abcdef")
+          MatchPattern(debugName: "electris.some.scope", match: "abcdef")
         );
         expect(
           result,
@@ -60,10 +60,10 @@ void main() {
 
       test("those with captures", () {
         var result = SyntaxPrinter.instance.print(
-          MatchPattern(name: "", match: "abcdef", captures: [
-            CapturePattern(name: "electris.some.name"),
-            CapturePattern(name: "electris.some.othername"),
-            CapturePattern(name: "electris.some.anothername"),
+          MatchPattern(debugName: "", match: "abcdef", captures: [
+            CapturePattern(debugName: "electris.some.name"),
+            CapturePattern(debugName: "electris.some.othername"),
+            CapturePattern(debugName: "electris.some.anothername"),
           ])
         );
         expect(
@@ -93,10 +93,10 @@ void main() {
     group("'group' patterns, like", () {
       test("those without a name", () {
         var result = SyntaxPrinter.instance.print(
-          GroupingPattern(name: "", innerPatterns: [
-            CapturePattern(name: "electris.some.name"),
-            CapturePattern(name: "electris.some.othername"),
-            CapturePattern(name: "electris.some.anothername"),
+          GroupingPattern(debugName: "", innerPatterns: [
+            CapturePattern(debugName: "electris.some.name"),
+            CapturePattern(debugName: "electris.some.othername"),
+            CapturePattern(debugName: "electris.some.anothername"),
           ])
         );
         expect(
@@ -122,10 +122,10 @@ void main() {
 
       test("those with a name", () {
         var result = SyntaxPrinter.instance.print(
-          GroupingPattern(name: "electris.pattern.name", innerPatterns: [
-            CapturePattern(name: "electris.some.name"),
-            CapturePattern(name: "electris.some.othername"),
-            CapturePattern(name: "electris.some.anothername"),
+          GroupingPattern(debugName: "electris.pattern.name", innerPatterns: [
+            CapturePattern(debugName: "electris.some.name"),
+            CapturePattern(debugName: "electris.some.othername"),
+            CapturePattern(debugName: "electris.some.anothername"),
           ])
         );
         expect(
@@ -155,7 +155,7 @@ void main() {
     group("'enclosure' patterns, like", () {
       test("those without a name", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(name: "", begin: "abc", end: "def")
+          EnclosurePattern(debugName: "", begin: "abc", end: "def")
         );
         expect(
           result,
@@ -171,7 +171,7 @@ void main() {
 
       test("those with a name", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(name: "electris.enclosure.name", begin: "abc", end: "def")
+          EnclosurePattern(debugName: "electris.enclosure.name", begin: "abc", end: "def")
         );
         expect(
           result,
@@ -188,10 +188,10 @@ void main() {
 
       test("those with begin-captures", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(name: "", begin: "abc", end: "def", beginCaptures: [
-            CapturePattern(name: "electris.some.name"),
-            CapturePattern(name: "electris.some.othername"),
-            CapturePattern(name: "electris.some.anothername"),
+          EnclosurePattern(debugName: "", begin: "abc", end: "def", beginCaptures: [
+            CapturePattern(debugName: "electris.some.name"),
+            CapturePattern(debugName: "electris.some.othername"),
+            CapturePattern(debugName: "electris.some.anothername"),
           ])
         );
         expect(
@@ -219,10 +219,10 @@ void main() {
 
       test("those with end-captures", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(name: "", begin: "abc", end: "def", endCaptures: [
-            CapturePattern(name: "electris.some.name"),
-            CapturePattern(name: "electris.some.othername"),
-            CapturePattern(name: "electris.some.anothername"),
+          EnclosurePattern(debugName: "", begin: "abc", end: "def", endCaptures: [
+            CapturePattern(debugName: "electris.some.name"),
+            CapturePattern(debugName: "electris.some.othername"),
+            CapturePattern(debugName: "electris.some.anothername"),
           ])
         );
         expect(
@@ -250,10 +250,10 @@ void main() {
 
       test("those with inner children patterns", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(name: "", begin: "abc", end: "def", innerPatterns: [
-            CapturePattern(name: "electris.some.name"),
-            CapturePattern(name: "electris.some.othername"),
-            CapturePattern(name: "electris.some.anothername"),
+          EnclosurePattern(debugName: "", begin: "abc", end: "def", innerPatterns: [
+            CapturePattern(debugName: "electris.some.name"),
+            CapturePattern(debugName: "electris.some.othername"),
+            CapturePattern(debugName: "electris.some.anothername"),
           ])
         );
         expect(
@@ -300,6 +300,35 @@ void main() {
   });
 
 
+  group("repository items, like", () {
+    test("that they should not include their identifier in their JSON encoding", () {
+      var result = SyntaxPrinter.instance.print(
+        RepositoryItem(
+          identifier: "some-identifier",
+          body: IncludePattern(identifier: "#some-other-identifier")
+        )
+      );
+      expect(
+        result,
+        equals(
+"""
+{
+    "include": "#some-other-identifier"
+}"""
+        ),
+      );
+    });
+
+    test("that their identifiers match their corresponding include pattern", () {
+      var includeId = RepositoryItem(
+        identifier: "repository-identifier",
+        body: MatchPattern(debugName: "whatever", match: "whatever"),
+      ).asInclude().identifier;
+      expect(includeId, equals("#repository-identifier"));
+    });
+  });
+
+
   group("entire syntax bodies/files, like", () {
     test("those with all their attributes defined", () {
       var result = SyntaxPrinter.instance.print(
@@ -308,10 +337,10 @@ void main() {
             "dart1",
             "dart2"
           ],
-          scopeName: "electris.source.dart",
+          langName: "electris.source.dart",
           topLevelPatterns: [
             EnclosurePattern(
-              name: "electris.scope.enclosure",
+              debugName: "electris.scope.enclosure",
               begin: "enclosure-begin",
               end: "enclosure-end",
               innerPatterns: [
@@ -319,12 +348,15 @@ void main() {
               ]
             )
           ],
-          repository: {
-            "some-repo-thing": MatchPattern(
-              name: "electris.scope.match",
-              match: "match-me"
-            )
-          }
+          repository: [
+            RepositoryItem(
+              identifier: "some-repo-thing",
+              body: MatchPattern(
+                debugName: "electris.scope.match",
+                match: "match-me"
+              ),
+            ),
+          ],
         )
       );
       expect(

@@ -28,13 +28,13 @@ sealed class SyntaxElement implements JsonEncodable {
 
 final class MainBody extends SyntaxElement {
   final List<String> fileTypes;
-  final String scopeName;
+  final String langName;
   final List<Pattern> topLevelPatterns;
-  final Map<String, Pattern> repository;
+  final List<RepositoryItem> repository;
 
   const MainBody({
     required this.fileTypes,
-    required this.scopeName,
+    required this.langName,
     required this.topLevelPatterns,
     required this.repository,
   });
@@ -43,11 +43,30 @@ final class MainBody extends SyntaxElement {
   Object? toJson() {
     return {
       "fileTypes": fileTypes,
-      "scopeName": scopeName,
+      "scopeName": "electris.source.$langName",
       "patterns": topLevelPatterns,
       "repository": repository,
     };
   }
+}
+
+final class RepositoryItem extends SyntaxElement {
+  final String identifier;
+  final Pattern body;
+
+  const RepositoryItem({
+    required this.identifier,
+    required this.body,
+  });
+
+  @override
+  Object? toJson() {
+    // it is the containing object's resposibility to
+    // assign the correct identifier
+    return body.toJson();
+  }
+
+  IncludePattern asInclude() => IncludePattern(identifier: identifier);
 }
 
 sealed class Pattern extends SyntaxElement {
@@ -64,7 +83,9 @@ sealed class Pattern extends SyntaxElement {
   @mustCallSuper
   Map toJson() {
     return {
-      'name': "${styleName.isNotEmpty ? "$styleName " : ""}$debugName",
+      'name':
+        "${styleName.isNotEmpty ? "electris.source-code.$styleName " : ""}"
+        "syntax.$debugName",
     };
   }
 }
