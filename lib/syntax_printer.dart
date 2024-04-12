@@ -51,17 +51,20 @@ final class MainBody extends SyntaxElement {
 }
 
 sealed class Pattern extends SyntaxElement {
-  final String name;
+  final String debugName;
+  final String styleName;
 
-  const Pattern({required this.name});
+  const Pattern({
+    required this.debugName,
+    this.styleName = "",
+  });
 
   @override
   @mustBeOverridden
   @mustCallSuper
   Map toJson() {
     return {
-      if (name.isNotEmpty)
-        'name': name,
+      'name': "${styleName.isNotEmpty ? "$styleName " : ""}$debugName",
     };
   }
 }
@@ -71,7 +74,8 @@ final class MatchPattern extends Pattern {
   final List<CapturePattern> captures;
 
   const MatchPattern({
-    required super.name,
+    required super.debugName,
+    super.styleName,
     required this.match,
     this.captures = const [],
   });
@@ -88,7 +92,10 @@ final class MatchPattern extends Pattern {
 }
 
 final class CapturePattern extends Pattern {
-  CapturePattern({required super.name});
+  CapturePattern({
+    required super.debugName,
+    super.styleName,
+  });
 
   @override
   Map toJson() {
@@ -100,7 +107,8 @@ final class GroupingPattern extends Pattern {
   final List<Pattern> innerPatterns;
 
   const GroupingPattern({
-    required super.name,
+    required super.debugName,
+    super.styleName,
     required this.innerPatterns,
   });
 
@@ -121,7 +129,8 @@ final class EnclosurePattern extends GroupingPattern {
   final List<CapturePattern> endCaptures;
 
   const EnclosurePattern({
-    required super.name,
+    required super.debugName,
+    super.styleName,
     super.innerPatterns = const [],
     required this.begin,
     required this.end,
@@ -146,7 +155,7 @@ final class EnclosurePattern extends GroupingPattern {
 final class IncludePattern extends Pattern {
   final String identifier;
 
-  const IncludePattern({required this.identifier}): super(name: "");
+  const IncludePattern({required this.identifier}): super(debugName: "");
 
   @override
   Map toJson() {
