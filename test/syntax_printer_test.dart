@@ -18,7 +18,7 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName"
+    "name": "electris.syntax.debugName"
 }"""
           ),
         );
@@ -26,14 +26,14 @@ void main() {
 
       test("those with a (style) name", () {
         var result = SyntaxPrinter.instance.print(
-          CapturePattern(debugName: "debugName", styleName: "styleName")
+          CapturePattern(debugName: "debugName", styleName: StyleName.sourceCode_escape)
         );
         expect(
           result,
           equals(
 """
 {
-    "name": "electris.source-code.styleName syntax.debugName"
+    "name": "electris.source-code.escape electris.syntax.debugName"
 }"""
           ),
         );
@@ -51,7 +51,7 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName",
+    "name": "electris.syntax.debugName",
     "match": "abcdef"
 }"""
           ),
@@ -60,14 +60,18 @@ void main() {
 
       test("those with a (style) name", () {
         var result = SyntaxPrinter.instance.print(
-          MatchPattern(debugName: "debugName", styleName: "styleName", match: "abcdef")
+          MatchPattern(
+            debugName: "debugName",
+            styleName: StyleName.sourceCode_escape,
+            match: "abcdef"
+          )
         );
         expect(
           result,
           equals(
 """
 {
-    "name": "electris.source-code.styleName syntax.debugName",
+    "name": "electris.source-code.escape electris.syntax.debugName",
     "match": "abcdef"
 }"""
           ),
@@ -87,17 +91,17 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName",
+    "name": "electris.syntax.debugName",
     "match": "abcdef",
     "captures": {
         "1": {
-            "name": "syntax.debugName1"
+            "name": "electris.syntax.debugName1"
         },
         "2": {
-            "name": "syntax.debugName2"
+            "name": "electris.syntax.debugName2"
         },
         "3": {
-            "name": "syntax.debugName3"
+            "name": "electris.syntax.debugName3"
         }
     }
 }"""
@@ -121,16 +125,16 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName",
+    "name": "electris.syntax.debugName",
     "patterns": [
         {
-            "name": "syntax.debugName1"
+            "name": "electris.syntax.debugName1"
         },
         {
-            "name": "syntax.debugName2"
+            "name": "electris.syntax.debugName2"
         },
         {
-            "name": "syntax.debugName3"
+            "name": "electris.syntax.debugName3"
         }
     ]
 }"""
@@ -140,27 +144,31 @@ void main() {
 
       test("those with a (style) name", () {
         var result = SyntaxPrinter.instance.print(
-          GroupingPattern(debugName: "debugName", styleName: "styleName", innerPatterns: [
-            CapturePattern(debugName: "debugName1"),
-            CapturePattern(debugName: "debugName2"),
-            CapturePattern(debugName: "debugName3"),
-          ])
+          GroupingPattern(
+            debugName: "debugName",
+            styleName: StyleName.sourceCode_escape,
+            innerPatterns: [
+              CapturePattern(debugName: "debugName1"),
+              CapturePattern(debugName: "debugName2"),
+              CapturePattern(debugName: "debugName3"),
+            ]
+          )
         );
         expect(
           result,
           equals(
 """
 {
-    "name": "electris.source-code.styleName syntax.debugName",
+    "name": "electris.source-code.escape electris.syntax.debugName",
     "patterns": [
         {
-            "name": "syntax.debugName1"
+            "name": "electris.syntax.debugName1"
         },
         {
-            "name": "syntax.debugName2"
+            "name": "electris.syntax.debugName2"
         },
         {
-            "name": "syntax.debugName3"
+            "name": "electris.syntax.debugName3"
         }
     ]
 }"""
@@ -180,7 +188,7 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName",
+    "name": "electris.syntax.debugName",
     "begin": "abc",
     "end": "def"
 }"""
@@ -190,14 +198,19 @@ void main() {
 
       test("those with a (style) name", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(debugName: "debugName", styleName: "styleName", begin: "abc", end: "def")
+          EnclosurePattern(
+            debugName: "debugName",
+            styleName: StyleName.sourceCode_escape,
+            begin: "abc",
+            end: "def"
+          )
         );
         expect(
           result,
           equals(
 """
 {
-    "name": "electris.source-code.styleName syntax.debugName",
+    "name": "electris.source-code.escape electris.syntax.debugName",
     "begin": "abc",
     "end": "def"
 }"""
@@ -218,18 +231,18 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName",
+    "name": "electris.syntax.debugName",
     "begin": "abc",
     "end": "def",
     "beginCaptures": {
         "1": {
-            "name": "syntax.debugName1"
+            "name": "electris.syntax.debugName1"
         },
         "2": {
-            "name": "syntax.debugName2"
+            "name": "electris.syntax.debugName2"
         },
         "3": {
-            "name": "syntax.debugName3"
+            "name": "electris.syntax.debugName3"
         }
     }
 }"""
@@ -250,18 +263,18 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName",
+    "name": "electris.syntax.debugName",
     "begin": "abc",
     "end": "def",
     "endCaptures": {
         "1": {
-            "name": "syntax.debugName1"
+            "name": "electris.syntax.debugName1"
         },
         "2": {
-            "name": "syntax.debugName2"
+            "name": "electris.syntax.debugName2"
         },
         "3": {
-            "name": "syntax.debugName3"
+            "name": "electris.syntax.debugName3"
         }
     }
 }"""
@@ -282,16 +295,16 @@ void main() {
           equals(
 """
 {
-    "name": "syntax.debugName",
+    "name": "electris.syntax.debugName",
     "patterns": [
         {
-            "name": "syntax.debugName1"
+            "name": "electris.syntax.debugName1"
         },
         {
-            "name": "syntax.debugName2"
+            "name": "electris.syntax.debugName2"
         },
         {
-            "name": "syntax.debugName3"
+            "name": "electris.syntax.debugName3"
         }
     ],
     "begin": "abc",
@@ -408,7 +421,7 @@ void main() {
     "scopeName": "electris.source.dart",
     "patterns": [
         {
-            "name": "syntax.enclosureDebugName",
+            "name": "electris.syntax.enclosureDebugName",
             "patterns": [
                 {
                     "include": "#some-repo-thing"
@@ -420,7 +433,7 @@ void main() {
     ],
     "repository": {
         "some-repo-thing": {
-            "name": "syntax.matchDebugName",
+            "name": "electris.syntax.matchDebugName",
             "match": "match-me"
         }
     }
