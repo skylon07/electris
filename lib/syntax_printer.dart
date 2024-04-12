@@ -45,7 +45,10 @@ final class MainBody extends SyntaxElement {
       "fileTypes": fileTypes,
       "scopeName": "electris.source.$langName",
       "patterns": topLevelPatterns,
-      "repository": repository,
+      "repository": {
+        for (var item in repository)
+          item.identifier: item,
+      },
     };
   }
 }
@@ -66,7 +69,7 @@ final class RepositoryItem extends SyntaxElement {
     return body.toJson();
   }
 
-  IncludePattern asInclude() => IncludePattern(identifier: identifier);
+  IncludePattern asInclude() => IncludePattern(identifier: "#$identifier");
 }
 
 sealed class Pattern extends SyntaxElement {
@@ -82,10 +85,12 @@ sealed class Pattern extends SyntaxElement {
   @mustBeOverridden
   @mustCallSuper
   Map toJson() {
+    var name =
+      "${styleName.isNotEmpty ? "electris.source-code.$styleName " : ""}"
+      "${debugName.isNotEmpty ? "syntax.$debugName" : ""}";
     return {
-      'name':
-        "${styleName.isNotEmpty ? "electris.source-code.$styleName " : ""}"
-        "syntax.$debugName",
+      if (name.isNotEmpty)
+        'name': name,
     };
   }
 }
@@ -176,13 +181,14 @@ final class EnclosurePattern extends GroupingPattern {
 final class IncludePattern extends Pattern {
   final String identifier;
 
-  const IncludePattern({required this.identifier}): super(debugName: "");
+  const IncludePattern({required this.identifier, super.debugName = ""});
 
   @override
   Map toJson() {
+    var shouldTreatAsReference = identifier.isNotEmpty && identifier[0] != "%";
     return {
       ...super.toJson(),
-      'include': identifier,
+      'include': shouldTreatAsReference ? "#$identifier" : identifier.substring(1),
     };
   }
 }
