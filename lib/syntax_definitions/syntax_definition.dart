@@ -4,10 +4,8 @@ import '../syntax_printer.dart';
 
 
 abstract class SyntaxDefinition {
-  const SyntaxDefinition();
-
-  MainBody body();
-
+  MainBody get body; // should implement as a `late final` value
+  
 
   // basic/fundamental result manipulation
 

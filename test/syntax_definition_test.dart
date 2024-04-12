@@ -41,9 +41,7 @@ void main() {
 
 class TestDefinition extends SyntaxDefinition {
   @override
-  MainBody body() {
-    throw UnimplementedError();
-  }
+  get body => throw UnimplementedError();
 
   SyntaxResult singleCaptureTest1(GroupId id) {
     return capture(pattern("asdf"), id);
