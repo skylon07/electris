@@ -99,7 +99,7 @@ typedef SyntaxResult = (String, GroupTracker);
 class GroupRef {}
 
 // TODO: document operation meanings
-class GroupTracker {
+final class GroupTracker {
   final Map<GroupRef, int> _positions;
   final int _groupCount;
 
