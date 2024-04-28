@@ -38,7 +38,7 @@ void main() {
   });
 }
 
-class TestDefinition extends SyntaxDefinition {
+final class TestDefinition extends SyntaxDefinition {
   @override
   get body => throw UnimplementedError();
 

@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 import '../syntax_printer.dart';
 
 
-abstract class SyntaxDefinition {
+abstract base class SyntaxDefinition {
   MainBody get body; // should implement as a `late final` value
   
 
