@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 
+// TODO: document all classes here; include a code block showing a "template"
+//  that illustrates the kind of pattern the class is emulating
+
 class SyntaxPrinter {
   static const INDENT = "    ";
   static final instance = SyntaxPrinter._create();
@@ -69,7 +72,7 @@ final class RepositoryItem extends SyntaxElement {
     return body.toJson();
   }
 
-  IncludePattern asInclude() => IncludePattern(identifier: "#$identifier");
+  IncludePattern asInclude() => IncludePattern(identifier: identifier);
 }
 
 sealed class Pattern extends SyntaxElement {
@@ -192,7 +195,7 @@ final class GroupingPattern extends Pattern {
 
   @override
   Map toJson() {
-    return {
+    return {  
       ...super.toJson(),
       if (innerPatterns.isNotEmpty)
         'patterns': innerPatterns,

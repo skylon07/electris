@@ -374,7 +374,7 @@ void main() {
         identifier: "repository-identifier",
         body: MatchPattern(debugName: "whatever", match: "whatever"),
       ).asInclude().identifier;
-      expect(includeId, equals("#repository-identifier"));
+      expect(includeId, equals("repository-identifier"));
     });
   });
 
