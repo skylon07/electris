@@ -17,10 +17,12 @@ class SyntaxPrinter {
   String print(SyntaxElement syntax) {
     return _encoder.convert(syntax);
   }
+
+  // TODO: printToFile()
 }
 
 abstract interface class JsonEncodable {
-  Object? toJson();
+  Map toJson();
 }
 
 
@@ -43,7 +45,7 @@ final class MainBody extends SyntaxElement {
   });
 
   @override
-  Object? toJson() {
+  Map toJson() {
     return {
       "fileTypes": fileTypes,
       "scopeName": "electris.source.$langName",
@@ -66,7 +68,7 @@ final class RepositoryItem extends SyntaxElement {
   });
 
   @override
-  Object? toJson() {
+  Map toJson() {
     // it is the containing object's resposibility to
     // assign the correct identifier
     return body.toJson();
