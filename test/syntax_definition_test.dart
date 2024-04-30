@@ -1,26 +1,26 @@
 import 'package:test/test.dart';
 
-import '../lib/syntax_definitions/syntax_definition.dart';
+import 'package:electris_generator/syntax_definitions/syntax_definition.dart';
 
 
 void main() {
   group("capture index tracking, like", () {
     test("a single capture group", () {
       var ref = GroupRef();
-      var (expr, tracker) = TestDefinition().singleCaptureTest1(ref);
-      expect(expr, equals("(asdf)"));
-      expect(tracker.getPosition(ref), equals(1));
+      var recipe = TestBuilder().singleCaptureTest1(ref);
+      expect(recipe.compile(), equals("(asdf)"));
+      expect(recipe.positionOf(ref), equals(1));
     });
 
     test("nested capture groups", () {
       var ref1 = GroupRef();
       var ref2 = GroupRef();
       var ref3 = GroupRef();
-      var (expr, tracker) = TestDefinition().multiCaptureTest1(ref1, ref2, ref3);
-      expect(expr, equals("(((bfksn)))"));
-      expect(tracker.getPosition(ref1), equals(1));
-      expect(tracker.getPosition(ref2), equals(2));
-      expect(tracker.getPosition(ref3), equals(3));
+      var recipe = TestBuilder().multiCaptureTest1(ref1, ref2, ref3);
+      expect(recipe.compile(), equals("(((bfksn)))"));
+      expect(recipe.positionOf(ref1), equals(1));
+      expect(recipe.positionOf(ref2), equals(2));
+      expect(recipe.positionOf(ref3), equals(3));
     });
 
     test("nested and concatenated capture groups", () {
@@ -28,29 +28,29 @@ void main() {
       var ref2 = GroupRef();
       var ref3 = GroupRef();
       var ref4 = GroupRef();
-      var (expr, tracker) = TestDefinition().multiCaptureTest2(ref1, ref2, ref3, ref4);
-      expect(expr, equals("(abc1)abc2(((abc3))abc4)"));
-      expect(tracker.getPosition(ref1), equals(1));
-      expect(tracker.getPosition(ref2), equals(2));
-      expect(tracker.getPosition(ref3), equals(3));
-      expect(tracker.getPosition(ref4), equals(4));
+      var recipe = TestBuilder().multiCaptureTest2(ref1, ref2, ref3, ref4);
+      expect(recipe.compile(), equals("(abc1)abc2(((abc3))abc4)"));
+      expect(recipe.positionOf(ref1), equals(1));
+      expect(recipe.positionOf(ref2), equals(2));
+      expect(recipe.positionOf(ref3), equals(3));
+      expect(recipe.positionOf(ref4), equals(4));
     });
   });
 }
 
-final class TestDefinition extends SyntaxDefinition {
+final class TestBuilder extends RegExpBuilder {
   @override
-  get body => throw UnimplementedError();
+  RegExpCollection createCollection() => throw UnimplementedError();
 
-  SyntaxResult singleCaptureTest1(GroupRef ref) {
+  RegExpRecipe singleCaptureTest1(GroupRef ref) {
     return capture(pattern("asdf"), ref);
   }
 
-  SyntaxResult multiCaptureTest1(GroupRef ref1, GroupRef ref2, GroupRef ref3) {
+  RegExpRecipe multiCaptureTest1(GroupRef ref1, GroupRef ref2, GroupRef ref3) {
     return capture(capture(capture(pattern("bfksn"), ref3), ref2), ref1);
   }
 
-  SyntaxResult multiCaptureTest2(GroupRef ref1, GroupRef ref2, GroupRef ref3, GroupRef ref4) {
+  RegExpRecipe multiCaptureTest2(GroupRef ref1, GroupRef ref2, GroupRef ref3, GroupRef ref4) {
     return concat([
       capture(pattern("abc1"), ref1),
       pattern("abc2"),

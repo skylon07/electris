@@ -3,98 +3,169 @@ import 'package:collection/collection.dart';
 import '../syntax_printer.dart';
 
 
-abstract base class SyntaxDefinition {
-  MainBody get body; // should implement as a `late final` value
+abstract base class SyntaxDefinition<CollectionT extends RegExpCollection> {
+  final String langName;
+  final CollectionT collection;
+  final List<String> fileTypes;
+  final List<DefinitionItem> _items = [];
   
+  SyntaxDefinition({
+    required this.langName,
+    required this.collection,
+    required this.fileTypes,
+  });
+
+  List<DefinitionItem> get rootItems;
+
+  late final mainBody = MainBody(
+    fileTypes: fileTypes,
+    langName: langName,
+    topLevelPatterns: [for (var item in rootItems) item.asIncludePattern()],
+    repository: [for (var item in _items) item.asRepositoryItem()],
+  );
+
+  DefinitionItem createItem(
+    String identifier,
+    {
+      required Pattern Function(String debugName, List<Pattern> innerPatterns) createBody,
+      List<DefinitionItem> Function()? createInnerItems,
+    }
+  ) => DefinitionItem(
+    identifier,
+    parent: this,
+    createBody: createBody,
+    createInnerItems: createInnerItems,
+  );
+}
+
+final class DefinitionItem {
+  final SyntaxDefinition parent;
+  final String identifier;
+  final Pattern Function(String debugName, List<Pattern> innerPatterns) createBody;
+  final List<DefinitionItem> Function()? createInnerItems;
+
+  DefinitionItem(
+    this.identifier,
+    {
+      required this.parent,
+      required this.createBody,
+      this.createInnerItems,
+    }
+  );
+
+  late final innerItems = createInnerItems?.call() ?? [];
+
+  RepositoryItem asRepositoryItem() => _repositoryItem;
+  late final _repositoryItem = RepositoryItem(
+    identifier: identifier,
+    body: createBody(
+      "${parent.langName}.$identifier",
+      [for (var item in innerItems) item.asIncludePattern()]
+    )
+  );
+
+  IncludePattern asIncludePattern() => _includePattern;
+  late final _includePattern = IncludePattern(identifier: identifier);
+}
+
+
+abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
+  CollectionT createCollection();
 
   // basic/fundamental result manipulation
 
-  SyntaxResult pattern(String expr) => (expr, GroupTracker());
+  RegExpRecipe pattern(String expr) =>
+    RegExpRecipe._from(GroupTracker(), () => expr);
 
-  SyntaxResult mapExpr(SyntaxResult result, String Function(String innerExpr) convert) {
-    var (expr, tracker) = result;
-    var newExpr = convert(expr);
-    return (newExpr, tracker);
-  }
+  RegExpRecipe mapExpr(RegExpRecipe builder, String Function(String expr) mapper) =>
+    RegExpRecipe._from(builder._tracker, () => mapper(builder._expr));
 
-  SyntaxResult capture(SyntaxResult inner, [GroupRef? ref]) {
-    var (innerExpr, tracker) = inner;
-    tracker = tracker.increment();
+  RegExpRecipe capture(RegExpRecipe inner, [GroupRef? ref]) {
+    var _tracker = inner._tracker.increment();
     if (ref != null) {
-      tracker = tracker.startTracking(ref);
+      _tracker = _tracker.startTracking(ref);
     }
-    return ("($innerExpr)", tracker);
+    var _transform = () => "(${inner._expr})";
+    return RegExpRecipe._from(_tracker, _transform);
   }
 
-  SyntaxResult concat(List<SyntaxResult> results) {
+  RegExpRecipe concat(List<RegExpRecipe> builders) {
     var zip = IterableZip([
-      for (var (expr, tracker) in results)
-        [expr, tracker]
+      for (var RegExpRecipe(:_tracker, _createExpr:_transform) in builders)
+        [_tracker, _transform]
     ]);
-    var [
-      exprs,
-      trackers,
-    ] = [...zip];
-    return (
-      exprs.cast<String>().join(""),
-      GroupTracker.combine(trackers.cast<GroupTracker>()),
+    var zipList = [...zip];
+    
+    var trackers = zipList[0].cast<GroupTracker>();
+    var transforms = zipList[1].cast<String Function()>();
+    return RegExpRecipe._from(
+      GroupTracker.combine(trackers),
+      () => 
+        [
+          for (var transform in transforms)
+          transform()
+        ].join(""),
     );
   }
 
 
   // repitition and optionality
   
-  SyntaxResult optional(SyntaxResult inner) =>
+  RegExpRecipe optional(RegExpRecipe inner) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr?");
 
-  SyntaxResult zeroOrMore(SyntaxResult inner) =>
+  RegExpRecipe zeroOrMore(RegExpRecipe inner) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr*");
 
-  SyntaxResult oneOrMore(SyntaxResult inner) =>
+  RegExpRecipe oneOrMore(RegExpRecipe inner) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr+");
 
-  SyntaxResult repeatEqual(SyntaxResult inner, int times) =>
+  RegExpRecipe repeatEqual(RegExpRecipe inner, int times) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times}");
     
-  SyntaxResult repeatAtLeast(SyntaxResult inner, int times) =>
+  RegExpRecipe repeatAtLeast(RegExpRecipe inner, int times) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times,}");
 
-  SyntaxResult repeatAtMost(SyntaxResult inner, int times) =>
+  RegExpRecipe repeatAtMost(RegExpRecipe inner, int times) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr{,$times}");
 
-  SyntaxResult repeatBetween(SyntaxResult inner, int lowTimes, int highTimes) =>
+  RegExpRecipe repeatBetween(RegExpRecipe inner, int lowTimes, int highTimes) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr{$lowTimes,$highTimes}");
 
 
   // "look around" operations
 
-  SyntaxResult aheadIs(SyntaxResult inner) => 
+  RegExpRecipe aheadIs(RegExpRecipe inner) => 
     mapExpr(inner, (innerExpr) => "(?=$innerExpr)");
 
-  SyntaxResult aheadIsNot(SyntaxResult inner) => 
+  RegExpRecipe aheadIsNot(RegExpRecipe inner) => 
     mapExpr(inner, (innerExpr) => "(?!$innerExpr)");
 
-  SyntaxResult behindIs(SyntaxResult inner) => 
+  RegExpRecipe behindIs(RegExpRecipe inner) => 
     mapExpr(inner, (innerExpr) => "(?<=$innerExpr)");
 
-  SyntaxResult behindIsNot(SyntaxResult inner) => 
+  RegExpRecipe behindIsNot(RegExpRecipe inner) => 
     mapExpr(inner, (innerExpr) => "(?<!$innerExpr)");
-
-
-  // other helpful stuff
-
-  List<IncludePattern> includes(List<String> repoIdentifiers) => 
-    [
-      for (var identifier in repoIdentifiers)
-      IncludePattern(
-        identifier: identifier.contains(RegExp(r"^[$#].*$")) ? 
-          "#$identifier" : identifier
-      )
-    ];
 }
 
 
-typedef SyntaxResult = (String, GroupTracker);
+final class RegExpRecipe {
+  final GroupTracker _tracker;
+  final String Function() _createExpr;
+
+  RegExpRecipe._from(this._tracker, this._createExpr);
+
+  String compile() => _expr;
+  late final _expr = _createExpr();
+
+  int positionOf(GroupRef ref) => _tracker.getPosition(ref);
+}
+
+
+abstract base class RegExpCollection {
+  const RegExpCollection();
+}
+
 
 class GroupRef {}
 
