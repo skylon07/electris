@@ -1,3 +1,4 @@
+import 'package:electris_generator/syntax_printer.dart';
 import 'package:test/test.dart';
 
 import 'package:electris_generator/syntax_definitions/syntax_definition.dart';
@@ -36,11 +37,92 @@ void main() {
       expect(recipe.positionOf(ref4), equals(4));
     });
   });
+
+
+  group("creating definition items", () {
+    late TestDefinition definition;
+
+    setUp(() {
+      definition = TestDefinition();
+    });
+
+    void expectItem_groupPattern(DefinitionItem item) {
+      expect(item.identifier, equals("newItem"));
+      expect(item.parent, same(definition));
+      expect(item.innerItems, [definition.basicMatch]);
+
+      var repositoryItem = item.asRepositoryItem();
+      expect(repositoryItem.identifier, equals("newItem"));
+      expect(repositoryItem.body, isA<GroupingPattern>());
+      expect(repositoryItem.body.debugName, equals("TESTLANG.newItem"));
+      expect(repositoryItem.body.styleName, equals(null));
+    }
+    
+    
+    group("directly", () {
+      test("GroupingPattern", () {
+        var item = definition.createItemDirect(
+          "newItem",
+          createBody: (debugName, innerPatterns) {
+            return GroupingPattern(
+              debugName: debugName,
+              innerPatterns: innerPatterns
+            );
+          },
+          createInnerItems: () => [
+            definition.basicMatch
+          ]
+        );
+        expectItem_groupPattern(item);
+      });
+
+      // TODO: tests for other Patterns
+    });
+
+
+    group("intelligently", () {
+      test("GroupingPattern", () {
+        var item = definition.createItem(
+          "newItem",
+          createInnerItems: () => [
+            definition.basicMatch,
+          ],
+        );
+        expectItem_groupPattern(item);
+      });
+
+      // TODO: tests for other Patterns
+      // TODO: error tests for invalid combinations
+    });
+  });
 }
 
-final class TestBuilder extends RegExpBuilder {
+
+final class TestDefinition extends SyntaxDefinition<TestCollection> {
+  TestDefinition() : super(
+    langName: "TESTLANG",
+    collection: TestCollection(),
+    fileTypes: ["completely_fake_filetype"]
+  );
+
   @override
-  RegExpCollection createCollection() => throw UnimplementedError();
+  List<DefinitionItem> get rootItems => throw UnimplementedError();
+
+  late final basicMatch = createItemDirect(
+    "basicCapture",
+    createBody: (debugName, innerPatterns) => 
+      MatchPattern(debugName: debugName, match: "matchPattern"),
+  );
+}
+
+final class TestBuilder extends RegExpBuilder<TestCollection> {
+  @override
+  TestCollection createCollection() {
+    var basicMatch = pattern("matchPattern").compile();
+    return TestCollection._from(
+      basicMatch: basicMatch
+    );
+  }
 
   RegExpRecipe singleCaptureTest1(GroupRef ref) {
     return capture(pattern("asdf"), ref);
@@ -62,4 +144,12 @@ final class TestBuilder extends RegExpBuilder {
   }
 }
 
+final class TestCollection extends RegExpCollection {
+  final String basicMatch;
 
+  const TestCollection._from({
+    required this.basicMatch,
+  });
+
+  factory TestCollection() => TestBuilder().createCollection();
+}
