@@ -59,8 +59,8 @@ void main() {
     }
     
     
-    group("directly", () {
-      test("GroupingPattern", () {
+    group("directly, like", () {
+      test("for GroupingPatterns", () {
         var item = definition.createItemDirect(
           "newItem",
           createBody: (debugName, innerPatterns) {
@@ -80,8 +80,8 @@ void main() {
     });
 
 
-    group("intelligently", () {
-      test("GroupingPattern", () {
+    group("intelligently, like", () {
+      test("for GroupingPatterns", () {
         var item = definition.createItem(
           "newItem",
           createInnerItems: () => [
@@ -93,6 +93,24 @@ void main() {
 
       // TODO: tests for other Patterns
       // TODO: error tests for invalid combinations
+    });
+  });
+
+
+  group("regular expression generation using", () {
+    group("'exactly' patterns, like", () {
+      test("ones with escaped characters", () {
+        var result = TestBuilder().exactly(r"Use .* and .+, also (), [], or {}... right? (Many $ from ^s)").compile();
+        expect(result, equals(r"Use \.\* and \.\+, also \(\), \[\], or \{\}\.\.\. right\? (Many \$ from \^s)"));
+      });
+    });
+
+
+    group("`chars` patterns, like", () {
+      test("ones with escaped characters", () {
+        var result = TestBuilder().exactly("asdf-jkl; [^stuff]").compile();
+        expect(result, equals(r"Use \.\* and \.\+, also \(\), \[\], or \{\}\.\.\. right\?"));
+      });
     });
   });
 }
@@ -118,27 +136,27 @@ final class TestDefinition extends SyntaxDefinition<TestCollection> {
 final class TestBuilder extends RegExpBuilder<TestCollection> {
   @override
   TestCollection createCollection() {
-    var basicMatch = pattern("matchPattern").compile();
+    var basicMatch = exactly("matchPattern").compile();
     return TestCollection._from(
       basicMatch: basicMatch
     );
   }
 
   RegExpRecipe singleCaptureTest1(GroupRef ref) {
-    return capture(pattern("asdf"), ref);
+    return capture(exactly("asdf"), ref);
   }
 
   RegExpRecipe multiCaptureTest1(GroupRef ref1, GroupRef ref2, GroupRef ref3) {
-    return capture(capture(capture(pattern("bfksn"), ref3), ref2), ref1);
+    return capture(capture(capture(exactly("bfksn"), ref3), ref2), ref1);
   }
 
   RegExpRecipe multiCaptureTest2(GroupRef ref1, GroupRef ref2, GroupRef ref3, GroupRef ref4) {
     return concat([
-      capture(pattern("abc1"), ref1),
-      pattern("abc2"),
+      capture(exactly("abc1"), ref1),
+      exactly("abc2"),
       capture(concat([
-        capture(capture(pattern("abc3"), ref4), ref3),
-        pattern("abc4")
+        capture(capture(exactly("abc3"), ref4), ref3),
+        exactly("abc4")
       ]), ref2)
     ]);
   }

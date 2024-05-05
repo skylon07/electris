@@ -178,8 +178,14 @@ abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
 
   // basic/fundamental result manipulation
 
-  RegExpRecipe pattern(String expr) =>
-    RegExpRecipe._from(GroupTracker(), () => expr);
+  RegExpRecipe _pattern(String expr, RegExp escapeExpr) {
+    expr = expr.replaceAllMapped(escapeExpr, (match) => "\\${match[0]}");
+    return RegExpRecipe._from(GroupTracker(), () => expr);
+  }
+
+  RegExpRecipe exactly(String string) => _pattern(string, RegExp(r"[.?*+\-()\[\]{}\^$|]"));
+
+  RegExpRecipe chars(String charSet) => _pattern(charSet, RegExp(r"[\[\]\^\/]"));
 
   RegExpRecipe mapExpr(RegExpRecipe builder, String Function(String expr) mapper) =>
     RegExpRecipe._from(builder._tracker, () => mapper(builder._expr));
@@ -193,7 +199,7 @@ abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
     return RegExpRecipe._from(_tracker, _transform);
   }
 
-  RegExpRecipe concat(List<RegExpRecipe> builders) {
+  RegExpRecipe join(List<RegExpRecipe> builders, {required String joinBy, GroupRef? ref}) {
     var zip = IterableZip([
       for (var RegExpRecipe(:_tracker, _createExpr:_transform) in builders)
         [_tracker, _transform]
@@ -202,15 +208,22 @@ abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
     
     var trackers = zipList[0].cast<GroupTracker>();
     var transforms = zipList[1].cast<String Function()>();
-    return RegExpRecipe._from(
+    var result = RegExpRecipe._from(
       GroupTracker.combine(trackers),
       () => 
         [
           for (var transform in transforms)
           transform()
-        ].join(""),
+        ].join(joinBy),
     );
+    var needToCapture = joinBy.isNotEmpty || ref != null;
+    if (needToCapture) {
+      result = capture(result, ref);
+    }
+    return result;
   }
+
+  RegExpRecipe concat(List<RegExpRecipe> builders) => join(builders, joinBy: r"");
 
 
   // repitition and optionality
@@ -235,6 +248,8 @@ abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
 
   RegExpRecipe repeatBetween(RegExpRecipe inner, int lowTimes, int highTimes) =>
     mapExpr(capture(inner), (innerExpr) => "$innerExpr{$lowTimes,$highTimes}");
+
+  RegExpRecipe either(List<RegExpRecipe> branches) => join(branches, joinBy: r"|");
 
 
   // "look around" operations
