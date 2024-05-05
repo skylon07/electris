@@ -19,7 +19,8 @@ void main() {
 """
 {
     "name": "electris.syntax.debugName"
-}"""
+}
+"""
           ),
         );
       });
@@ -34,7 +35,8 @@ void main() {
 """
 {
     "name": "electris.source-code.escape electris.syntax.debugName"
-}"""
+}
+"""
           ),
         );
       });
@@ -53,7 +55,8 @@ void main() {
 {
     "name": "electris.syntax.debugName",
     "match": "abcdef"
-}"""
+}
+"""
           ),
         );
       });
@@ -73,7 +76,8 @@ void main() {
 {
     "name": "electris.source-code.escape electris.syntax.debugName",
     "match": "abcdef"
-}"""
+}
+"""
           ),
         );
       });
@@ -104,7 +108,8 @@ void main() {
             "name": "electris.syntax.debugName3"
         }
     }
-}"""
+}
+"""
           ),
         );
       });
@@ -137,7 +142,8 @@ void main() {
             "name": "electris.syntax.debugName3"
         }
     ]
-}"""
+}
+"""
           ),
         );
       });
@@ -171,7 +177,8 @@ void main() {
             "name": "electris.syntax.debugName3"
         }
     ]
-}"""
+}
+"""
           ),
         );
       });
@@ -191,7 +198,8 @@ void main() {
     "name": "electris.syntax.debugName",
     "begin": "abc",
     "end": "def"
-}"""
+}
+"""
           ),
         );
       });
@@ -213,7 +221,8 @@ void main() {
     "name": "electris.source-code.escape electris.syntax.debugName",
     "begin": "abc",
     "end": "def"
-}"""
+}
+"""
           ),
         );
       });
@@ -245,7 +254,8 @@ void main() {
             "name": "electris.syntax.debugName3"
         }
     }
-}"""
+}
+"""
           ),
         );
       });
@@ -277,7 +287,8 @@ void main() {
             "name": "electris.syntax.debugName3"
         }
     }
-}"""
+}
+"""
           ),
         );
       });
@@ -309,7 +320,8 @@ void main() {
     ],
     "begin": "abc",
     "end": "def"
-}"""
+}
+"""
           ),
         );
       });
@@ -327,7 +339,8 @@ void main() {
 """
 {
     "include": "#some-repository-identifier"
-}"""
+}
+"""
           ),
         );
       });
@@ -342,7 +355,8 @@ void main() {
 """
 {
     "include": "do-this-exactly"
-}"""
+}
+"""
           ),
         );
       });
@@ -364,7 +378,8 @@ void main() {
 """
 {
     "include": "#some-other-identifier"
-}"""
+}
+"""
         ),
       );
     });
@@ -437,7 +452,8 @@ void main() {
             "match": "match-me"
         }
     }
-}"""
+}
+"""
         ),
       );
     });

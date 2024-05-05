@@ -15,7 +15,7 @@ class SyntaxPrinter {
   SyntaxPrinter._create();
 
   String print(SyntaxElement syntax) {
-    return _encoder.convert(syntax);
+    return _encoder.convert(syntax) + "\n";
   }
 
   // TODO: printToFile()
