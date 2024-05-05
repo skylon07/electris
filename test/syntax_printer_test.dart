@@ -16,7 +16,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName"
 }
@@ -32,7 +32,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.source-code.escape electris.syntax.debugName"
 }
@@ -51,7 +51,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName",
     "match": "abcdef"
@@ -72,7 +72,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.source-code.escape electris.syntax.debugName",
     "match": "abcdef"
@@ -93,7 +93,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName",
     "match": "abcdef",
@@ -113,6 +113,23 @@ void main() {
           ),
         );
       });
+
+      test("those with escapes in matches", () {
+        var result = SyntaxPrinter.instance.print(
+          MatchPattern(debugName: "debugName", match: r"\.*"),
+        );
+        expect(
+          result,
+          equals(
+r"""
+{
+    "name": "electris.syntax.debugName",
+    "match": "\\.*"
+}
+"""
+          )
+        );
+      });
     });
 
 
@@ -128,7 +145,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName",
     "patterns": [
@@ -163,7 +180,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.source-code.escape electris.syntax.debugName",
     "patterns": [
@@ -193,7 +210,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName",
     "begin": "abc",
@@ -216,7 +233,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.source-code.escape electris.syntax.debugName",
     "begin": "abc",
@@ -238,7 +255,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName",
     "begin": "abc",
@@ -271,7 +288,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName",
     "begin": "abc",
@@ -304,7 +321,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "name": "electris.syntax.debugName",
     "patterns": [
@@ -336,7 +353,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "include": "#some-repository-identifier"
 }
@@ -352,7 +369,7 @@ void main() {
         expect(
           result,
           equals(
-"""
+r"""
 {
     "include": "do-this-exactly"
 }
@@ -375,7 +392,7 @@ void main() {
       expect(
         result,
         equals(
-"""
+r"""
 {
     "include": "#some-other-identifier"
 }
@@ -427,7 +444,7 @@ void main() {
       expect(
         result,
         equals(
-"""
+r"""
 {
     "fileTypes": [
         "dart1",
