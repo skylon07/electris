@@ -29,8 +29,8 @@
 		"diffEditor.insertedTextBackground": "#3e743ea9",
 		"diffEditor.removedLineBackground": "#4f1a1aa9",
 		"diffEditor.removedTextBackground": "#8e3434a9",
-		"editorGutter.modifiedBackground": "#4eb071",
-		"editorGutter.addedBackground": "#399ef4",
+		"editorGutter.modifiedBackground": "#399ef4",
+		"editorGutter.addedBackground": "#4eb071",
 		"editorGutter.deletedBackground": "#da6771",
 		"editorRuler.foreground": "#efefef40",
 		
@@ -60,9 +60,13 @@
 		"activityBarBadge.foreground": "#efefef",
 		"sideBar.background": "#1c2431",
 		"sideBarSectionHeader.background": "#399ef450", // dropdown collapser things
-		"gitDecoration.modifiedResourceForeground": "#4eb071",
-		"gitDecoration.untrackedResourceForeground": "#399ef4",
+		"gitDecoration.modifiedResourceForeground": "#399ef4",
+		"gitDecoration.stageModifiedResourceForeground": "#9ccffa",
+		"gitDecoration.renamedResourceForeground": "#9ccffa",
+		"gitDecoration.untrackedResourceForeground": "#4eb071",
+		"gitDecoration.addedResourceForeground": "#a7d8b8",
 		"gitDecoration.deletedResourceForeground": "#da6771",
+		"gitDecoration.stageDeletedResourceForeground": "#edb3b8",
 		"gitDecoration.conflictingResourceForeground": "#fff099",
 		"gitDecoration.ignoredResourceForeground": "#717a8dde",
 		
