@@ -98,18 +98,100 @@ void main() {
 
 
   group("regular expression generation using", () {
+    late TestBuilder builder;
+
+    setUp(() {
+      builder = TestBuilder();
+    });
+
+
     group("'exactly' patterns, like", () {
       test("ones with escaped characters", () {
-        var result = TestBuilder().exactly(r"Use .* and .+, also (), [], or {}... right? (Many $ from ^s)").compile();
-        expect(result, equals(r"Use \.\* and \.\+, also \(\), \[\], or \{\}\.\.\. right\? (Many \$ from \^s)"));
+        var result = builder
+          .exactly(r"Use .* and .+, also (), [], or {}... right? (Many $ from ^s)")
+          .compile();
+        expect(result, equals(r"Use \.\* and \.\+, also \(\), \[\], or \{\}\.\.\. right\? \(Many \$ from \^s\)"));
       });
     });
 
 
     group("`chars` patterns, like", () {
+      test("ones with ranges characters", () {
+        var result = builder
+          .chars("a-z")
+          .compile();
+        expect(result, equals(r"[a-z]"));
+      });
+
       test("ones with escaped characters", () {
-        var result = TestBuilder().exactly("asdf-jkl; [^stuff]").compile();
-        expect(result, equals(r"Use \.\* and \.\+, also \(\), \[\], or \{\}\.\.\. right\?"));
+        var result = builder
+          .chars("a-z/[^-^]")
+          .compile();
+        expect(result, equals(r"[a-z\/\[\^-\^\]]"));
+      });
+
+      test("ones that are inverted escaped characters", () {
+        var result = builder
+          .chars("nope", invert: true)
+          .compile();
+        expect(result, equals(r"[^nope]"));
+      });
+    });
+
+
+    group("`concat` patterns, like", () {
+      test("ones combining basic patterns", () {
+        var result = builder
+          .concat([
+            builder.exactly("abc"),
+            builder.exactly("def"),
+            builder.exactly("ghi"),
+          ])
+          .compile();
+        expect(result, equals("abcdefghi"));
+      });
+    });
+
+
+    group("`either` patterns, like", () {
+      test("ones with multiple patterns", () {
+        var result = builder
+          .either([
+            builder.exactly("asdf"),
+            builder.chars("asdf"),
+          ])
+          .compile();
+        expect(result, equals("(asdf|[asdf])"));
+      });
+
+      test("those with only character classes", () {
+        var result = builder
+          .either([
+            builder.chars("123"),
+            builder.chars("a-c"),
+          ])
+          .compile();
+        expect(result, equals("[123a-c]"));
+      });
+
+      test("those with only inverted character classes", () {
+        var result = builder
+          .either([
+            builder.chars("123", invert: true),
+            builder.chars("a-c", invert: true),
+          ])
+          .compile();
+        expect(result, equals("[^123a-c]"));
+      });
+
+      test("those with a mixture of normal/inverted character classes", () {
+        var result = builder
+          .either([
+            builder.chars("123", invert: true),
+            builder.chars("a-c",),
+          ])
+          .compile();
+        expect(result, equals("([^123]|[a-c])"));
       });
     });
   });

@@ -176,19 +176,28 @@ final class DefinitionItem {
 abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
   CollectionT createCollection();
 
-  // basic/fundamental result manipulation
+  // base/fundamental recipe creation functions
 
-  RegExpRecipe _pattern(String expr, RegExp escapeExpr) {
-    expr = expr.replaceAllMapped(escapeExpr, (match) => "\\${match[0]}");
-    return RegExpRecipe._from(GroupTracker(), () => expr);
+  RegExpRecipe exactly(String string) => 
+    _escapedPattern(string, RegExp(r"[.?*+\-()\[\]{}\^$|]"));
+
+  RegExpRecipe chars(String charSet, {bool invert = false}) {
+    var recipe = _escapedPattern(charSet, RegExp(r"[\[\]\^\/]"), isInvertedCharClass: invert);
+    return _mapExpr(recipe, (expr) => "[${invert? "^":""}$expr]");
   }
 
-  RegExpRecipe exactly(String string) => _pattern(string, RegExp(r"[.?*+\-()\[\]{}\^$|]"));
+  RegExpRecipe _escapedPattern(String exprStr, RegExp? escapeExpr, {bool? isInvertedCharClass}) {
+    String expr;
+    if (escapeExpr != null) {
+      expr = exprStr.replaceAllMapped(escapeExpr, (match) => "\\${match[0]}");
+    } else {
+      expr = exprStr;
+    }
+    return RegExpRecipe._from(GroupTracker(), () => expr, isInvertedCharClass: isInvertedCharClass);
+  }
 
-  RegExpRecipe chars(String charSet) => _pattern(charSet, RegExp(r"[\[\]\^\/]"));
-
-  RegExpRecipe mapExpr(RegExpRecipe builder, String Function(String expr) mapper) =>
-    RegExpRecipe._from(builder._tracker, () => mapper(builder._expr));
+  
+  // basic composition operations
 
   RegExpRecipe capture(RegExpRecipe inner, [GroupRef? ref]) {
     var _tracker = inner._tracker.increment();
@@ -199,16 +208,25 @@ abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
     return RegExpRecipe._from(_tracker, _transform);
   }
 
-  RegExpRecipe join(List<RegExpRecipe> builders, {required String joinBy, GroupRef? ref}) {
+  RegExpRecipe concat(List<RegExpRecipe> recipes) => _join(recipes, joinBy: "");
+
+  RegExpRecipe _mapExpr(RegExpRecipe recipe, String Function(String expr) mapper) =>
+    RegExpRecipe._from(
+      recipe._tracker,
+      () => mapper(recipe._expr),
+      isInvertedCharClass: recipe.isInvertedCharClass,
+    );
+
+  RegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy}) {
     var zip = IterableZip([
-      for (var RegExpRecipe(:_tracker, _createExpr:_transform) in builders)
+      for (var RegExpRecipe(:_tracker, _createExpr:_transform) in recipes)
         [_tracker, _transform]
     ]);
     var zipList = [...zip];
     
     var trackers = zipList[0].cast<GroupTracker>();
     var transforms = zipList[1].cast<String Function()>();
-    var result = RegExpRecipe._from(
+    return RegExpRecipe._from(
       GroupTracker.combine(trackers),
       () => 
         [
@@ -216,63 +234,91 @@ abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
           transform()
         ].join(joinBy),
     );
-    var needToCapture = joinBy.isNotEmpty || ref != null;
-    if (needToCapture) {
-      result = capture(result, ref);
-    }
-    return result;
   }
-
-  RegExpRecipe concat(List<RegExpRecipe> builders) => join(builders, joinBy: r"");
 
 
   // repitition and optionality
   
   RegExpRecipe optional(RegExpRecipe inner) =>
-    mapExpr(capture(inner), (innerExpr) => "$innerExpr?");
+    _mapExpr(capture(inner), (innerExpr) => "$innerExpr?");
 
   RegExpRecipe zeroOrMore(RegExpRecipe inner) =>
-    mapExpr(capture(inner), (innerExpr) => "$innerExpr*");
+    _mapExpr(capture(inner), (innerExpr) => "$innerExpr*");
 
   RegExpRecipe oneOrMore(RegExpRecipe inner) =>
-    mapExpr(capture(inner), (innerExpr) => "$innerExpr+");
+    _mapExpr(capture(inner), (innerExpr) => "$innerExpr+");
 
   RegExpRecipe repeatEqual(RegExpRecipe inner, int times) =>
-    mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times}");
+    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times}");
     
   RegExpRecipe repeatAtLeast(RegExpRecipe inner, int times) =>
-    mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times,}");
+    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times,}");
 
   RegExpRecipe repeatAtMost(RegExpRecipe inner, int times) =>
-    mapExpr(capture(inner), (innerExpr) => "$innerExpr{,$times}");
+    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{,$times}");
 
   RegExpRecipe repeatBetween(RegExpRecipe inner, int lowTimes, int highTimes) =>
-    mapExpr(capture(inner), (innerExpr) => "$innerExpr{$lowTimes,$highTimes}");
+    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{$lowTimes,$highTimes}");
 
-  RegExpRecipe either(List<RegExpRecipe> branches) => join(branches, joinBy: r"|");
+  RegExpRecipe either(List<RegExpRecipe> branches) {
+    bool? allInverted = null;
+    if (branches.isNotEmpty) {
+      allInverted = branches.first.isInvertedCharClass;
+      if (allInverted != null) {
+        for (var recipe in branches) {
+          if (allInverted != recipe.isInvertedCharClass) {
+            allInverted = null;
+            break;
+          }
+        }
+      }
+    }
+
+    var allCharClassesOfSameType = allInverted != null;
+    if (allCharClassesOfSameType) {
+      var sliceStart = allInverted? "[^".length : "[".length;
+
+      var sliceEnd = -"]".length;
+      var combinedClass = "[${allInverted? "^":""}${
+        branches
+          .map((recipe) => 
+            _mapExpr(
+              recipe,
+              (expr) => expr.substring(sliceStart, expr.length + sliceEnd)
+            ).compile()
+          )
+          .join("")
+      }]";
+      return _escapedPattern(combinedClass, null, isInvertedCharClass: allInverted);
+    } else {
+      return capture(_join(branches, joinBy: r"|"));
+    }
+  }
 
 
   // "look around" operations
 
   RegExpRecipe aheadIs(RegExpRecipe inner) => 
-    mapExpr(inner, (innerExpr) => "(?=$innerExpr)");
+    _mapExpr(inner, (innerExpr) => "(?=$innerExpr)");
 
   RegExpRecipe aheadIsNot(RegExpRecipe inner) => 
-    mapExpr(inner, (innerExpr) => "(?!$innerExpr)");
+    _mapExpr(inner, (innerExpr) => "(?!$innerExpr)");
 
   RegExpRecipe behindIs(RegExpRecipe inner) => 
-    mapExpr(inner, (innerExpr) => "(?<=$innerExpr)");
+    _mapExpr(inner, (innerExpr) => "(?<=$innerExpr)");
 
   RegExpRecipe behindIsNot(RegExpRecipe inner) => 
-    mapExpr(inner, (innerExpr) => "(?<!$innerExpr)");
+    _mapExpr(inner, (innerExpr) => "(?<!$innerExpr)");
 }
 
 
 final class RegExpRecipe {
   final GroupTracker _tracker;
   final String Function() _createExpr;
+  final bool? isInvertedCharClass;
+  late final isCharClass = isInvertedCharClass != null;
 
-  RegExpRecipe._from(this._tracker, this._createExpr);
+  RegExpRecipe._from(this._tracker, this._createExpr, {this.isInvertedCharClass = null});
 
   String compile() => _expr;
   late final _expr = _createExpr();
