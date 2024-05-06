@@ -3,17 +3,19 @@ import 'package:collection/collection.dart';
 import '../syntax_printer.dart';
 
 
-abstract base class SyntaxDefinition<CollectionT extends RegExpCollection> {
+abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>, CollectionT extends Record> {
   final String langName;
-  final CollectionT collection;
   final List<String> fileTypes;
   final List<DefinitionItem> _items = [];
+  late final CollectionT collection;
   
   SyntaxDefinition({
     required this.langName,
-    required this.collection,
     required this.fileTypes,
-  });
+    required BuilderT builder,
+  }) {
+    collection = builder.createCollection();
+  }
 
   List<DefinitionItem> get rootItems;
 
@@ -173,7 +175,7 @@ final class DefinitionItem {
 }
 
 
-abstract base class RegExpBuilder<CollectionT extends RegExpCollection> {
+abstract base class RegExpBuilder<CollectionT extends Record> {
   CollectionT createCollection();
 
   // base/fundamental recipe creation functions
@@ -324,11 +326,6 @@ final class RegExpRecipe {
   late final _expr = _createExpr();
 
   int positionOf(GroupRef ref) => _tracker.getPosition(ref);
-}
-
-
-abstract base class RegExpCollection {
-  const RegExpCollection();
 }
 
 

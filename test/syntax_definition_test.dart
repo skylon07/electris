@@ -198,11 +198,11 @@ void main() {
 }
 
 
-final class TestDefinition extends SyntaxDefinition<TestCollection> {
+final class TestDefinition extends SyntaxDefinition<TestBuilder, TestCollection> {
   TestDefinition() : super(
     langName: "TESTLANG",
-    collection: TestCollection(),
-    fileTypes: ["completely_fake_filetype"]
+    fileTypes: ["completely_fake_filetype"],
+    builder: TestBuilder(),
   );
 
   @override
@@ -219,9 +219,7 @@ final class TestBuilder extends RegExpBuilder<TestCollection> {
   @override
   TestCollection createCollection() {
     var basicMatch = exactly("matchPattern").compile();
-    return TestCollection._from(
-      basicMatch: basicMatch
-    );
+    return (basicMatch: basicMatch);
   }
 
   RegExpRecipe singleCaptureTest1(GroupRef ref) {
@@ -244,12 +242,4 @@ final class TestBuilder extends RegExpBuilder<TestCollection> {
   }
 }
 
-final class TestCollection extends RegExpCollection {
-  final String basicMatch;
-
-  const TestCollection._from({
-    required this.basicMatch,
-  });
-
-  factory TestCollection() => TestBuilder().createCollection();
-}
+typedef TestCollection = ({String basicMatch});
