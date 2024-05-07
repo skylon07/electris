@@ -6,10 +6,10 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Run Generator",
+			"name": "Run All Generators",
 			"type": "dart",
 			"request": "launch",
-			"program": "lib/"
+			"program": "lib/generate_all.dart"
 		},
 		{
 			"name": "Run Extension",

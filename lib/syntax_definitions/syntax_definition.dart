@@ -5,12 +5,14 @@ import '../syntax_printer.dart';
 
 abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>, CollectionT extends Record> {
   final String langName;
+  final bool isTextSyntax;
   final List<String> fileTypes;
   final List<DefinitionItem> _items = [];
   late final CollectionT collection;
   
   SyntaxDefinition({
     required this.langName,
+    required this.isTextSyntax,
     required this.fileTypes,
     required BuilderT builder,
   }) {
@@ -32,12 +34,16 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
       required Pattern Function(String debugName, List<Pattern> innerPatterns) createBody,
       List<DefinitionItem>? Function()? createInnerItems,
     }
-  ) => DefinitionItem(
-    identifier,
-    parent: this,
-    createBody: createBody,
-    createInnerItems: createInnerItems,
-  );
+  ) {
+    var item = DefinitionItem(
+      identifier,
+      parent: this,
+      createBody: createBody,
+      createInnerItems: createInnerItems,
+    );
+    _items.add(item);
+    return item;
+  }
 
   DefinitionItem createItem(
     String identifier,

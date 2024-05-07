@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:meta/meta.dart';
 
 
@@ -18,7 +19,11 @@ class SyntaxPrinter {
     return _encoder.convert(syntax) + "\n";
   }
 
-  // TODO: printToFile()
+  Future<void> printToFile(SyntaxElement syntax, String path) {
+    var file = File(path);
+    var contents = print(syntax);
+    return file.writeAsString(contents);
+  }
 }
 
 abstract interface class JsonEncodable {
