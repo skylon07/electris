@@ -201,6 +201,7 @@ void main() {
 final class TestDefinition extends SyntaxDefinition<TestBuilder, TestCollection> {
   TestDefinition() : super(
     langName: "TESTLANG",
+    isTextSyntax: false,
     fileTypes: ["completely_fake_filetype"],
     builder: TestBuilder(),
   );
