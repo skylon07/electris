@@ -234,39 +234,39 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
     
     var trackers = zipList[0].cast<GroupTracker>();
     var transforms = zipList[1].cast<String Function()>();
-    return RegExpRecipe._from(
+    return capture(RegExpRecipe._from(
       GroupTracker.combine(trackers),
       () => 
         [
           for (var transform in transforms)
           transform()
         ].join(joinBy),
-    );
+    ));
   }
 
 
   // repitition and optionality
   
   RegExpRecipe optional(RegExpRecipe inner) =>
-    _mapExpr(capture(inner), (innerExpr) => "$innerExpr?");
+    _mapExpr(inner, (innerExpr) => "$innerExpr?");
 
   RegExpRecipe zeroOrMore(RegExpRecipe inner) =>
-    _mapExpr(capture(inner), (innerExpr) => "$innerExpr*");
+    _mapExpr(inner, (innerExpr) => "$innerExpr*");
 
   RegExpRecipe oneOrMore(RegExpRecipe inner) =>
-    _mapExpr(capture(inner), (innerExpr) => "$innerExpr+");
+    _mapExpr(inner, (innerExpr) => "$innerExpr+");
 
   RegExpRecipe repeatEqual(RegExpRecipe inner, int times) =>
-    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times}");
+    _mapExpr(inner, (innerExpr) => "$innerExpr{$times}");
     
   RegExpRecipe repeatAtLeast(RegExpRecipe inner, int times) =>
-    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{$times,}");
+    _mapExpr(inner, (innerExpr) => "$innerExpr{$times,}");
 
   RegExpRecipe repeatAtMost(RegExpRecipe inner, int times) =>
-    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{,$times}");
+    _mapExpr(inner, (innerExpr) => "$innerExpr{,$times}");
 
   RegExpRecipe repeatBetween(RegExpRecipe inner, int lowTimes, int highTimes) =>
-    _mapExpr(capture(inner), (innerExpr) => "$innerExpr{$lowTimes,$highTimes}");
+    _mapExpr(inner, (innerExpr) => "$innerExpr{$lowTimes,$highTimes}");
 
   RegExpRecipe either(List<RegExpRecipe> branches) {
     bool? allInverted = null;
@@ -299,7 +299,7 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
       }]";
       return _escapedPattern(combinedClass, null, isInvertedCharClass: allInverted);
     } else {
-      return capture(_join(branches, joinBy: r"|"));
+      return _join(branches, joinBy: r"|");
     }
   }
 
@@ -317,6 +317,48 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
 
   RegExpRecipe behindIsNot(RegExpRecipe inner) => 
     _mapExpr(inner, (innerExpr) => "(?<!$innerExpr)");
+
+  
+  // anchors
+
+  RegExpRecipe startsWith(RegExpRecipe inner) =>
+    _mapExpr(inner, (innerExpr) => "^$innerExpr");
+
+  RegExpRecipe endsWith(RegExpRecipe inner) =>
+    _mapExpr(inner, (innerExpr) => "$innerExpr\$");
+
+  RegExpRecipe startsAndEndsWith(RegExpRecipe inner) =>
+    _mapExpr(inner, (innerExpr) => "^$innerExpr\$");
+
+
+  // spacing
+
+  late final _anySpace = _escapedPattern(r"\s*", null);
+  late final _reqSpace = _escapedPattern(r"\s+", null);
+
+  RegExpRecipe spaceBefore(RegExpRecipe inner) =>
+    concat([_anySpace, inner]);
+  
+  RegExpRecipe spaceReqBefore(RegExpRecipe inner) =>
+    concat([_reqSpace, inner]);
+
+  RegExpRecipe spaceAfter(RegExpRecipe inner) =>
+    concat([inner, _anySpace]);
+  
+  RegExpRecipe spaceReqAfter(RegExpRecipe inner) =>
+    concat([inner, _reqSpace]);
+    
+  RegExpRecipe spaceAround(RegExpRecipe inner) =>
+    concat([_anySpace, inner, _anySpace]);
+  
+  RegExpRecipe spaceReqAround(RegExpRecipe inner) =>
+    concat([_reqSpace, inner, _reqSpace]);
+
+  RegExpRecipe spaceAroundReqBefore(RegExpRecipe inner) =>
+    concat([_reqSpace, inner, _anySpace]);
+  
+  RegExpRecipe spaceAroundReqAfter(RegExpRecipe inner) =>
+    concat([_anySpace, inner, _reqSpace]);
 }
 
 
