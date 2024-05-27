@@ -144,7 +144,7 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
           innerPatterns: innerPatterns
         ),
       
-      _ => throw ArgumentError("Invalid argument pattern"),
+      _ => throw ArgumentError("Invalid argument pattern."),
     };
 }
 
@@ -189,7 +189,11 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
   RegExpRecipe exactly(String string) => 
     _escapedPattern(string, RegExp(r"[.?*+\-()\[\]{}\^$|]"));
 
-  RegExpRecipe chars(String charSet, {bool invert = false}) {
+  RegExpRecipe chars(String charSet) => _chars(charSet, invert: false);
+
+  RegExpRecipe notChars(String charSet) => _chars(charSet, invert: true);
+
+  RegExpRecipe _chars(String charSet, {bool invert = false}) {
     var recipe = _escapedPattern(charSet, RegExp(r"[\[\]\^\/]"), isInvertedCharClass: invert);
     return _mapExpr(recipe, (expr) => "[${invert? "^":""}$expr]");
   }
@@ -226,6 +230,8 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
     );
 
   RegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy}) {
+    if (recipes.isEmpty) throw ArgumentError("Cannot join an empty list."); 
+
     var zip = IterableZip([
       for (var RegExpRecipe(:_tracker, _createExpr:_transform) in recipes)
         [_tracker, _transform]
@@ -303,6 +309,8 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
     }
   }
 
+  late final nothing = exactly("");
+
 
   // "look around" operations
 
@@ -336,6 +344,8 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
   late final _anySpace = _escapedPattern(r"\s*", null);
   late final _reqSpace = _escapedPattern(r"\s+", null);
 
+  RegExpRecipe space({required bool req}) => req? _reqSpace : _anySpace;
+
   RegExpRecipe spaceBefore(RegExpRecipe inner) =>
     concat([_anySpace, inner]);
   
@@ -359,6 +369,25 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
   
   RegExpRecipe spaceAroundReqAfter(RegExpRecipe inner) =>
     concat([_anySpace, inner, _reqSpace]);
+
+  RegExpRecipe phrase(String string) {
+    var inner = _mapExpr(
+      exactly(string),
+      (innerExpr) => innerExpr.replaceAll(r" ", r"\s+"),
+    );
+    return concat([
+      behindIs(either([
+        startsWith(nothing),
+        space(req: true),
+      ])),
+      either([
+        concat([inner, aheadIsNot(_wordChar)]),
+        endsWith(inner),
+      ]),
+    ]);
+  }
+
+  late final _wordChar = chars(r"a-zA-Z0-9_$"); // dart chars -- should work for most languages
 }
 
 
