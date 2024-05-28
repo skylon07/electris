@@ -21,6 +21,7 @@ void main() {
   var vars = Type? "str-literal" : int;
   vars = null;
 
+  late final FIXED = 0xabcd;
   TESTextension type;
 
   var my_var$ = "test";
