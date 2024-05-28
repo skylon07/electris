@@ -21,6 +21,14 @@ void main() {
   vars = null;
 
   TESTextension type;
+
+  var my_var$ = "test";
+  var my_var_ = "test";
+  STRING STRING1 = "$my_var_";
+  STRING STRING2 = "$my_var$"; // second `$` should be an operator
+  STRING STRING3 = "$my_var_$my_var_";
+  STRING STRING4 = "${my_var_}$my_var_";
+  STRING STRING5 = "$my_var_${my_var_}";
 }
 
 extension type MyInt(int n) {}
