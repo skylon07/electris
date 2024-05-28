@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 
-import '../syntax_printer.dart';
+import './syntax_printer.dart';
 
 
 abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>, CollectionT extends Record> {

@@ -1,7 +1,7 @@
 import 'dart:isolate';
 
 import './syntax_definitions/dart_definition.dart';
-import './syntax_printer.dart';
+import './better_textmate/syntax_printer.dart';
 
 
 void main() async {

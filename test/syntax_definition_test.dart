@@ -1,7 +1,6 @@
-import 'package:electris_generator/syntax_printer.dart';
 import 'package:test/test.dart';
 
-import 'package:electris_generator/syntax_definitions/syntax_definition.dart';
+import '../lib/better_textmate/better_textmate.dart';
 
 
 void main() {
@@ -132,7 +131,7 @@ void main() {
 
       test("ones that are inverted escaped characters", () {
         var result = builder
-          .chars("nope", invert: true)
+          .notChars("nope")
           .compile();
         expect(result, equals(r"[^nope]"));
       });
@@ -177,8 +176,8 @@ void main() {
       test("those with only inverted character classes", () {
         var result = builder
           .either([
-            builder.chars("123", invert: true),
-            builder.chars("a-c", invert: true),
+            builder.notChars("123"),
+            builder.notChars("a-c"),
           ])
           .compile();
         expect(result, equals("[^123a-c]"));
@@ -187,8 +186,8 @@ void main() {
       test("those with a mixture of normal/inverted character classes", () {
         var result = builder
           .either([
-            builder.chars("123", invert: true),
-            builder.chars("a-c",),
+            builder.notChars("123"),
+            builder.chars("a-c"),
           ])
           .compile();
         expect(result, equals("([^123]|[a-c])"));

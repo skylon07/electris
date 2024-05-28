@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
 
-import '../lib/syntax_printer.dart';
+import '../lib/better_textmate/better_textmate.dart';
 
 
 String syntaxPrint(SyntaxElement syntax) =>
