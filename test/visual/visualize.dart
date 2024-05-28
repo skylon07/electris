@@ -1,5 +1,6 @@
 import 'dart:async';
   import 'dart:async';
+
 part 'something';
 part of 'something';
   part of 'something';
@@ -34,3 +35,23 @@ void main() {
 extension type MyInt(int n) {}
  extension type MyInt2(int n) {}
  extension   type MyInt3(int n) {}
+
+class MyClass {
+  // hard keywords
+  for(){}
+  for () {}
+  while(){}
+  while () {}
+  this(){}
+  this () {}
+
+  // soft keywords
+  extension(){}
+  extension () {}
+  import(){}
+  import () {}
+  part of(){}
+  part  of () {}
+  part(){}
+  part () {}
+}
