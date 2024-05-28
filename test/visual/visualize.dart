@@ -19,4 +19,10 @@ void main() {
   
   var vars = Type? "str-literal" : int;
   vars = null;
+
+  TESTextension type;
 }
+
+extension type MyInt(int n) {}
+ extension type MyInt2(int n) {}
+ extension   type MyInt3(int n) {}
