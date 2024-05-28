@@ -188,9 +188,26 @@ void main() {
           .either([
             builder.notChars("123"),
             builder.chars("a-c"),
+            builder.notChars("456"),
+            builder.chars("d-g"),
           ])
           .compile();
-        expect(result, equals("([^123]|[a-c])"));
+        expect(result, equals("([a-cd-g]|[^123456])"));
+      });
+    });
+
+
+    group("`behindIsNot` patterns, like", () {
+      test("those with `either` clauses inside them", () {
+        var result = builder
+          .behindIsNot(
+            builder.either([
+              builder.exactly("abc"),
+              builder.exactly("def"),
+            ])
+          )
+          .compile();
+        expect(result, equals("(?<!abc)(?<!def)"));
       });
     });
   });
