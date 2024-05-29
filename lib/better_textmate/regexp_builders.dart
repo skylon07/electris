@@ -209,16 +209,18 @@ final class JoinedRegExpRecipe extends RegExpRecipe {
 }
 
 
-final class InvertibleRegExpRecipe extends AugmentedRegExpRecipe {
+final class CharClassRegExpRecipe extends AugmentedRegExpRecipe {
   final bool inverted;
 
-  InvertibleRegExpRecipe._from(super.source, super.augment, {required this.inverted}) : super._from();
+  CharClassRegExpRecipe._from(super.source, super.augment, {required this.inverted}) : super._from();
 }
 
-
-final class RetrackedRegExpRecipe extends AugmentedRegExpRecipe {
+final class CaptureRegExpRecipe extends AugmentedRegExpRecipe {
   @override
   GroupTracker _tracker;
+
+  CaptureRegExpRecipe._from(super.source, super.augment, this._tracker) : super._from();
+}
 
 final class EitherRegExpRecipe extends JoinedRegExpRecipe {
   EitherRegExpRecipe._from(super.sources, super.joinBy) : super._from();
