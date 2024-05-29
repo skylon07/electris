@@ -170,7 +170,7 @@ void main() {
             builder.chars("a-c"),
           ])
           .compile();
-        expect(result, equals("[123a-c]"));
+        expect(result, equals("([123a-c])"));
       });
 
       test("those with only inverted character classes", () {
@@ -180,7 +180,7 @@ void main() {
             builder.notChars("a-c"),
           ])
           .compile();
-        expect(result, equals("[^123a-c]"));
+        expect(result, equals("([^123a-c])"));
       });
 
       test("those with a mixture of normal/inverted character classes", () {
@@ -208,6 +208,17 @@ void main() {
           )
           .compile();
         expect(result, equals("(?<!abc)(?<!def)"));
+      });
+      test("those with `concat` clauses inside them", () {
+        var result = builder
+          .behindIsNot(
+            builder.concat([
+              builder.exactly("abc"),
+              builder.exactly("def"),
+            ])
+          )
+          .compile();
+        expect(result, equals("(?<!abcdef)"));
       });
     });
   });
