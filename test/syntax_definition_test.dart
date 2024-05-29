@@ -147,7 +147,7 @@ void main() {
             builder.exactly("ghi"),
           ])
           .compile();
-        expect(result, equals("abcdefghi"));
+        expect(result, equals("(abcdefghi)"));
       });
     });
 

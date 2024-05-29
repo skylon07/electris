@@ -37,7 +37,7 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
     return RetrackedRegExpRecipe._from(inner, augment, newTracker);
   }
 
-  RegExpRecipe concat(List<RegExpRecipe> recipes) => _join(recipes, joinBy: "");
+  RegExpRecipe concat(List<RegExpRecipe> recipes) => capture(_join(recipes, joinBy: ""));
 
   RegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr) =>
     AugmentedRegExpRecipe._from(recipe, mapExpr);
