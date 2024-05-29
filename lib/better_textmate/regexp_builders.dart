@@ -72,40 +72,8 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
     _augment(inner, (expr) => "$expr{$lowTimes,$highTimes}");
 
   RegExpRecipe either(List<RegExpRecipe> branches) {
-    // TODO: this should be included in the normalization step instead
-    /*
-    bool? allInverted = null;
-    if (branches.isNotEmpty) {
-      allInverted = branches.first.isInvertedCharClass;
-      if (allInverted != null) {
-        for (var recipe in branches) {
-          if (allInverted != recipe.isInvertedCharClass) {
-            allInverted = null;
-            break;
-          }
-        }
-      }
-    }
-
-    var allCharClassesOfSameType = allInverted != null;
-    if (allCharClassesOfSameType) {
-      var sliceStart = allInverted? "[^".length : "[".length;
-
-      var sliceEnd = -"]".length;
-      var combinedClass = "[${allInverted? "^":""}${
-        branches
-          .map((recipe) => 
-            _augment(
-              recipe,
-              (expr) => expr.substring(sliceStart, expr.length + sliceEnd)
-            ).compile()
-          )
-          .join("")
-      }]";
-      return _escapedPattern(combinedClass, null, isInvertedCharClass: allInverted);
-    } else {
-    */
-    return capture(_join(branches, joinBy: r"|"));
+    var recipe = _join(branches, joinBy: r"|");
+    return capture(EitherRegExpRecipe._from(recipe.sources, recipe.joinBy));
   }
 
   late final nothing = exactly("");
@@ -252,7 +220,70 @@ final class RetrackedRegExpRecipe extends AugmentedRegExpRecipe {
   @override
   GroupTracker _tracker;
 
-  RetrackedRegExpRecipe._from(super.source, super.augment, this._tracker) : super._from();
+final class EitherRegExpRecipe extends JoinedRegExpRecipe {
+  EitherRegExpRecipe._from(super.sources, super.joinBy) : super._from();
+
+  @override
+  RegExpRecipe _normalize() {
+    var (chars, notChars, rest) = _flatten();
+    var charClass = _combineCharClasses(chars);
+    var notCharClass = _combineCharClasses(notChars);
+    return EitherRegExpRecipe._from(
+      [
+        if (charClass != null) charClass,
+        if (notCharClass != null) notCharClass,
+        ...rest,
+      ],
+      joinBy,
+    );
+  }
+
+  EitherFlatClasses _flatten() {
+    var charsList = <CharClassRegExpRecipe>[];
+    var notCharsList = <CharClassRegExpRecipe>[];
+    var restList = <RegExpRecipe>[];
+
+    for (var source in sources) {
+      if (source is EitherRegExpRecipe) {
+        var (chars, notChars, rest) = source._flatten();
+        charsList.addAll(chars);
+        notCharsList.addAll(notChars);
+        restList.addAll(rest);
+      } else {
+        var listForSource = switch(source) {
+          CharClassRegExpRecipe(inverted: false) => charsList,
+          CharClassRegExpRecipe(inverted: true) => notCharsList,
+          RegExpRecipe() => restList,
+        };
+        listForSource.add(source);
+      }
+    }
+    return (charsList, notCharsList, restList);
+  }
+
+  CharClassRegExpRecipe? _combineCharClasses(List<CharClassRegExpRecipe> recipes) {
+    if (recipes.isEmpty) return null;
+
+    var (combinedClasses, inverted) = recipes
+      .map((recipe) => (recipe.source.compile(), recipe.inverted))
+      .reduce((last, next) {
+        var (lastSource, lastInverted) = last;
+        var (nextSource, nextInverted) = next;
+        assert (lastInverted == nextInverted);
+        return (lastSource + nextSource, nextInverted);
+      });
+    return CharClassRegExpRecipe._from(
+      BaseRegExpRecipe._from(combinedClasses),
+      recipes.first.augment,
+      inverted: inverted,
+    );
+  }
+}
+typedef EitherFlatClasses = (
+  List<CharClassRegExpRecipe> charsList,
+  List<CharClassRegExpRecipe> notCharsList,
+  List<RegExpRecipe>          restList,
+);
 }
 
 
