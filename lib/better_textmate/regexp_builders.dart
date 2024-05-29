@@ -6,7 +6,7 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
   RegExpRecipe exactly(String string) => 
     _escapedPattern(string, RegExp(r"[.?*+\-()\[\]{}\^$|]"));
 
-  RegExpRecipe _escapedPattern(String exprStr, RegExp? escapeExpr) {
+  BaseRegExpRecipe _escapedPattern(String exprStr, RegExp? escapeExpr) {
     String expr;
     if (escapeExpr != null) {
       expr = exprStr.replaceAllMapped(escapeExpr, (match) => "\\${match[0]}");
@@ -20,10 +20,10 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
 
   RegExpRecipe notChars(String charSet) => _chars(charSet, invert: true);
 
-  RegExpRecipe _chars(String charSet, {bool invert = false}) {
+  CharClassRegExpRecipe _chars(String charSet, {bool invert = false}) {
     var baseRecipe = _escapedPattern(charSet, RegExp(r"[\[\]\^\/]"));
     var augment = (expr) => "[${invert? "^":""}$expr]";
-    return InvertibleRegExpRecipe._from(baseRecipe, augment, inverted: invert);
+    return CharClassRegExpRecipe._from(baseRecipe, augment, inverted: invert);
   }
 
   // basic composition operations
@@ -34,15 +34,15 @@ abstract base class RegExpBuilder<CollectionT extends Record> {
       newTracker = newTracker.startTracking(ref);
     }
     var augment = (expr) => "($expr)";
-    return RetrackedRegExpRecipe._from(inner, augment, newTracker);
+    return CaptureRegExpRecipe._from(inner, augment, newTracker);
   }
 
   RegExpRecipe concat(List<RegExpRecipe> recipes) => capture(_join(recipes, joinBy: ""));
 
-  RegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr) =>
+  AugmentedRegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr) =>
     AugmentedRegExpRecipe._from(recipe, mapExpr);
 
-  RegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy}) {
+  JoinedRegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy}) {
     if (recipes.isEmpty) throw ArgumentError("Joining list should not be empty.", "recipes"); 
     return JoinedRegExpRecipe._from(recipes, joinBy);
   }
