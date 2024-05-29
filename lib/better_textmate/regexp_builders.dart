@@ -286,6 +286,14 @@ typedef EitherFlatClasses = (
   List<CharClassRegExpRecipe> notCharsList,
   List<RegExpRecipe>          restList,
 );
+
+final class BehindIsNotRegExpRecipe extends AugmentedRegExpRecipe {
+  BehindIsNotRegExpRecipe._from(super.source, super.augment) : super._from();
+
+  @override
+  RegExpRecipe _normalize() {
+    return super._normalize(); // TODO
+  }
 }
 
 
