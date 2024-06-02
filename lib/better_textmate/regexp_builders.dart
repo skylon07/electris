@@ -169,27 +169,60 @@ sealed class RegExpRecipe {
   int positionOf(GroupRef ref) => _tracker.getPosition(ref);
 
   String _createExpr();
+  Iterable<RegExpRecipe> get _sources;
+  @mustBeOverridden
+  RegExpRecipe _copy();
   RegExpRecipe _normalize() => this;
+  
+  Iterable<RegExpRecipe> get _sourcesFlat sync* {
+    yield* _sources;
+    for (var source in _sources) {
+      yield* source._sourcesFlat;
+    }
+  }
 }
 
 final class BaseRegExpRecipe extends RegExpRecipe {
   final String expr;
 
   BaseRegExpRecipe._from(this.expr) : super._from(GroupTracker());
+
+  @override
+  BaseRegExpRecipe _copy({
+    String? expr,
+  }) => BaseRegExpRecipe._from(
+    expr ?? this.expr,
+  );
   
   @override
   String _createExpr() => expr;
+
+  @override
+  Iterable<RegExpRecipe> get _sources => const [];
 }
 
 final class AugmentedRegExpRecipe extends RegExpRecipe {
   final RegExpRecipe source;
-  final String Function(String) augment;
+  final Augmenter augment;
 
   AugmentedRegExpRecipe._from(this.source, this.augment) : super._from(source._tracker);
 
   @override
+  AugmentedRegExpRecipe _copy({
+    RegExpRecipe? source,
+    Augmenter? augment
+  }) => AugmentedRegExpRecipe._from(
+    source ?? this.source,
+    augment ?? this.augment,
+  );
+
+  @override
   String _createExpr() => augment(source.compile());
+
+  @override
+  Iterable<RegExpRecipe> get _sources => [source];
 }
+typedef Augmenter = String Function(String expr);
 
 final class JoinedRegExpRecipe extends RegExpRecipe {
   final List<RegExpRecipe> sources;
@@ -201,11 +234,23 @@ final class JoinedRegExpRecipe extends RegExpRecipe {
     ));
 
   @override
+  JoinedRegExpRecipe _copy({
+    List<RegExpRecipe>? sources,
+    String? joinBy,
+  }) => JoinedRegExpRecipe._from(
+    sources ?? this.sources,
+    joinBy ?? this.joinBy,
+  );
+
+  @override
   String _createExpr() {
     return sources
       .map((source) => source.compile())
       .join(joinBy);
   }
+
+  @override
+  Iterable<RegExpRecipe> get _sources => sources;
 }
 
 
@@ -213,6 +258,17 @@ final class CharClassRegExpRecipe extends AugmentedRegExpRecipe {
   final bool inverted;
 
   CharClassRegExpRecipe._from(super.source, super.augment, {required this.inverted}) : super._from();
+
+  @override
+  CharClassRegExpRecipe _copy({
+    RegExpRecipe? source,
+    Augmenter? augment,
+    bool? inverted,
+  }) => CharClassRegExpRecipe._from(
+    source ?? this.source,
+    augment ?? this.augment,
+    inverted: inverted ?? this.inverted,
+  );
 }
 
 final class CaptureRegExpRecipe extends AugmentedRegExpRecipe {
@@ -220,10 +276,30 @@ final class CaptureRegExpRecipe extends AugmentedRegExpRecipe {
   GroupTracker _tracker;
 
   CaptureRegExpRecipe._from(super.source, super.augment, this._tracker) : super._from();
+
+  @override
+  CaptureRegExpRecipe _copy({
+    RegExpRecipe? source,
+    Augmenter? augment,
+    GroupTracker? tracker,
+  }) => CaptureRegExpRecipe._from(
+    source ?? this.source,
+    augment ?? this.augment,
+    tracker ?? this._tracker,
+  );
 }
 
 final class EitherRegExpRecipe extends JoinedRegExpRecipe {
   EitherRegExpRecipe._from(super.sources, super.joinBy) : super._from();
+
+  @override
+  EitherRegExpRecipe _copy({
+    List<RegExpRecipe>? sources,
+    String? joinBy,
+  }) => EitherRegExpRecipe._from(
+    sources ?? this.sources,
+    joinBy ?? this.joinBy,
+  );
 
   @override
   RegExpRecipe _normalize() {
@@ -290,6 +366,14 @@ typedef EitherFlatClasses = (
 final class BehindIsNotRegExpRecipe extends AugmentedRegExpRecipe {
   BehindIsNotRegExpRecipe._from(super.source, super.augment) : super._from();
 
+  @override
+  BehindIsNotRegExpRecipe _copy({
+    RegExpRecipe? source,
+    Augmenter? augment,
+  }) => BehindIsNotRegExpRecipe._from(
+    source ?? this.source,
+    augment ?? this.augment,
+  );
   @override
   RegExpRecipe _normalize() {
     return super._normalize(); // TODO
