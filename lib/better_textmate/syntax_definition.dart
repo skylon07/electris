@@ -2,7 +2,7 @@ import './syntax_printer.dart';
 import './regexp_builder_base.dart';
 
 
-abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>, CollectionT extends Record> {
+abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>, CollectionT> {
   final String langName;
   final bool isTextSyntax;
   final List<String> fileTypes;
@@ -44,6 +44,9 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
     return item;
   }
 
+  // TODO: `captures` needs to be reworked to a map;
+  //  this function should be supplied the capture patterns *and* their indexes
+  //  (and the caller probably shouldn't have to create `CapturePattern`s directly...)
   DefinitionItem createItem(
     String identifier,
     {
@@ -147,6 +150,7 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
     };
 }
 
+// TODO: should this be private...? (Or it should at least control binding to its parent in the constructor)
 final class DefinitionItem {
   final SyntaxDefinition parent;
   final String identifier;
