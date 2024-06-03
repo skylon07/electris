@@ -44,8 +44,8 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
     return item;
   }
 
-  // TODO: `captures` needs to be reworked to a map;
-  //  this function should be supplied the capture patterns *and* their indexes
+  // TODO: `match` needs to be a RegExpRecipe and `captures` needs to be reworked to a map of
+  //  GroupRef: CapturePattern, so this function could `compile()` and `getPosition()` on its own
   //  (and the caller probably shouldn't have to create `CapturePattern`s directly...)
   DefinitionItem createItem(
     String identifier,
