@@ -1,5 +1,5 @@
 import './syntax_printer.dart';
-import './regexp_builders.dart';
+import './regexp_builder_base.dart';
 
 
 abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>, CollectionT extends Record> {
