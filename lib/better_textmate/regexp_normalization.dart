@@ -6,6 +6,7 @@ RegExpRecipe normalize(RegExpRecipe recipe) {
   _NormalizedRecipe normalized = switch (recipe) {
     EitherRegExpRecipe() => _normalizeEither(recipe),
     BehindIsNotRegExpRecipe() => _normalizeBehindIsNot(recipe),
+    BehindIsRegExpRecipe() => _normalizeBehindIs(recipe),
     
     AugmentedRegExpRecipe(:var source) => _replaceSource(recipe, source),
     JoinedRegExpRecipe(:var sources) => _replaceSources(recipe, sources),
@@ -38,6 +39,33 @@ _NormalizedRecipe _replaceSource(AugmentedRegExpRecipe recipe, RegExpRecipe newS
 
 _NormalizedRecipe _replaceSources(JoinedRegExpRecipe recipe, List<RegExpRecipe> newSources) =>
   _replaceSubtree(newSources, (normalizedSources) => recipe.copy(sources: normalizedSources), normalizeHead: false);
+
+
+final class RecipeConfigurationError extends Error {
+  final RegExpRecipe topRecipe;
+  final RegExpRecipe containedRecipe;
+
+  RecipeConfigurationError(this.topRecipe, this.containedRecipe);
+
+  @override
+  String toString() {
+    var topRecipeRep = _prettyRepOf(topRecipe, "...");
+    var containedRecipeRep = _prettyRepOf(containedRecipe, "...");
+    var fullRep = _prettyRepOf(topRecipe, "...$containedRecipeRep...");
+    return "Invalid regex configuration `$fullRep`: `$topRecipeRep` cannot contain `$containedRecipeRep";
+  }
+
+  static String _prettyRepOf(RegExpRecipe recipe, String innerRep) {
+    return switch(recipe) {
+      BaseRegExpRecipe(:var expr) => 
+        expr,
+      AugmentedRegExpRecipe(:var augment) => 
+        augment(innerRep),
+      JoinedRegExpRecipe(:var joinBy) => 
+        "$innerRep$joinBy...",
+    };
+  }
+}
 
 
 _NormalizedRecipe _normalizeEither(EitherRegExpRecipe recipe) {
@@ -111,4 +139,19 @@ _NormalizedRecipe _normalizeBehindIsNot(BehindIsNotRegExpRecipe recipe) {
         ),
       ),
   );
+}
+
+
+_NormalizedRecipe _normalizeBehindIs(BehindIsRegExpRecipe recipe) {
+  for (var source in recipe.sourcesFlattened) {
+    switch (source) {
+      case AheadIsRegExpRecipe():
+      case AheadIsNotRegExpRecipe(): {
+        throw RecipeConfigurationError(recipe, source);
+      }
+
+      default: continue;
+    }
+  }
+  return _NormalizedRecipe(recipe);
 }

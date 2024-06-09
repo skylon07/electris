@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 
-import './regexp_builder_base.dart';
 import './regexp_normalization.dart';
 
 
@@ -18,6 +17,13 @@ sealed class RegExpRecipe {
   @mustBeOverridden
   RegExpRecipe copy();
   String _createExpr();
+
+  Iterable<RegExpRecipe> get sourcesFlattened sync* {
+    for (var source in sources) {
+      yield source;
+      yield* source.sourcesFlattened;
+    }
+  }
 }
 
 final class BaseRegExpRecipe extends RegExpRecipe {
@@ -136,6 +142,45 @@ final class EitherRegExpRecipe extends JoinedRegExpRecipe {
   }) => EitherRegExpRecipe(
     sources ?? this.sources,
     joinBy ?? this.joinBy,
+  );
+}
+
+final class AheadIsRegExpRecipe extends AugmentedRegExpRecipe {
+  AheadIsRegExpRecipe(super.source, super.augment);
+
+  @override
+  AheadIsRegExpRecipe copy({
+    RegExpRecipe? source,
+    Augmenter? augment,
+  }) => AheadIsRegExpRecipe(
+    source ?? this.source,
+    augment ?? this.augment,
+  );
+}
+
+final class AheadIsNotRegExpRecipe extends AugmentedRegExpRecipe {
+  AheadIsNotRegExpRecipe(super.source, super.augment);
+
+  @override
+  AheadIsNotRegExpRecipe copy({
+    RegExpRecipe? source,
+    Augmenter? augment,
+  }) => AheadIsNotRegExpRecipe(
+    source ?? this.source,
+    augment ?? this.augment,
+  );
+}
+
+final class BehindIsRegExpRecipe extends AugmentedRegExpRecipe {
+  BehindIsRegExpRecipe(super.source, super.augment);
+
+  @override
+  BehindIsRegExpRecipe copy({
+    RegExpRecipe? source,
+    Augmenter? augment,
+  }) => BehindIsRegExpRecipe(
+    source ?? this.source,
+    augment ?? this.augment,
   );
 }
 

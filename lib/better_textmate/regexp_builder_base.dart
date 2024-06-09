@@ -81,16 +81,16 @@ abstract base class RegExpBuilder<CollectionT> {
   // "look around" operations
 
   RegExpRecipe aheadIs(RegExpRecipe inner) => 
-    _augment(inner, (expr) => "(?=$expr)");
+    AheadIsRegExpRecipe(inner, (expr) => "(?=$expr)");
 
   RegExpRecipe aheadIsNot(RegExpRecipe inner) => 
-    _augment(inner, (expr) => "(?!$expr)");
+    AheadIsNotRegExpRecipe(inner, (expr) => "(?!$expr)");
 
   RegExpRecipe behindIs(RegExpRecipe inner) => 
-    _augment(inner, (expr) => "(?<=$expr)");
+    BehindIsRegExpRecipe(inner, (expr) => "(?<=$expr)");
 
   RegExpRecipe behindIsNot(RegExpRecipe inner) => 
-    _augment(inner, (expr) => "(?<!$expr)");
+    BehindIsNotRegExpRecipe(inner, (expr) => "(?<!$expr)");
 
   
   // anchors
