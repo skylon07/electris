@@ -3,21 +3,22 @@ import './regexp_builder_base.dart';
 
 
 RegExpRecipe normalize(RegExpRecipe recipe) {
-  // helps encourage/remind composing normalization functions with `_replace...()` methods
-  _ReplacedRecipe wrapper = switch (recipe) {
+  _NormalizedRecipe normalized = switch (recipe) {
     EitherRegExpRecipe() => _normalizeEither(recipe),
     BehindIsNotRegExpRecipe() => _normalizeBehindIsNot(recipe),
     
     AugmentedRegExpRecipe(:var source) => _replaceSource(recipe, source),
     JoinedRegExpRecipe(:var sources) => _replaceSources(recipe, sources),
-    _ => _ReplacedRecipe(recipe),
+    _ => _NormalizedRecipe(recipe),
   };
-  return wrapper.recipe;
+  return normalized.recipe;
 }
 
 
-extension type _ReplacedRecipe(RegExpRecipe recipe) {}
-_ReplacedRecipe _replaceSubtree(List<RegExpRecipe> newSources, RegExpRecipe Function(List<RegExpRecipe> normalizedSources) createRecipe, {bool normalizeHead = true}) {
+// TODO: document how this class reminds normalizing functions to use `_replace...()` functions,
+//  which handle normalizing subtrees, instead of just using `recipe.copy()`
+extension type _NormalizedRecipe(RegExpRecipe recipe) {}
+_NormalizedRecipe _replaceSubtree(List<RegExpRecipe> newSources, RegExpRecipe Function(List<RegExpRecipe> normalizedSources) createRecipe, {bool normalizeHead = true}) {
   var normalizedSources = [
     for (var source in newSources)
       normalize(source),
@@ -26,20 +27,20 @@ _ReplacedRecipe _replaceSubtree(List<RegExpRecipe> newSources, RegExpRecipe Func
   if (normalizeHead) {
     recipe = normalize(recipe);
   }
-  return _ReplacedRecipe(recipe);
+  return _NormalizedRecipe(recipe);
 }
 
-_ReplacedRecipe _replaceSubtreeSingle(RegExpRecipe newSource, RegExpRecipe Function(RegExpRecipe normalizedSource) createRecipe, {bool normalizeHead = true}) =>
+_NormalizedRecipe _replaceSubtreeSingle(RegExpRecipe newSource, RegExpRecipe Function(RegExpRecipe normalizedSource) createRecipe, {bool normalizeHead = true}) =>
   _replaceSubtree([newSource], (normalizedSources) => createRecipe(normalizedSources.single), normalizeHead: normalizeHead);
 
-_ReplacedRecipe _replaceSource(AugmentedRegExpRecipe recipe, RegExpRecipe newSource) =>
+_NormalizedRecipe _replaceSource(AugmentedRegExpRecipe recipe, RegExpRecipe newSource) =>
   _replaceSubtreeSingle(newSource, (normalizedSource) => recipe.copy(source: normalizedSource), normalizeHead: false);
 
-_ReplacedRecipe _replaceSources(JoinedRegExpRecipe recipe, List<RegExpRecipe> newSources) =>
+_NormalizedRecipe _replaceSources(JoinedRegExpRecipe recipe, List<RegExpRecipe> newSources) =>
   _replaceSubtree(newSources, (normalizedSources) => recipe.copy(sources: normalizedSources), normalizeHead: false);
 
 
-_ReplacedRecipe _normalizeEither(EitherRegExpRecipe recipe) {
+_NormalizedRecipe _normalizeEither(EitherRegExpRecipe recipe) {
   var (chars, notChars, rest) = _flattenEither(recipe);
   var charClass = _combineCharClasses(chars);
   var notCharClass = _combineCharClasses(notChars);
@@ -100,7 +101,7 @@ CharClassRegExpRecipe? _combineCharClasses(List<CharClassRegExpRecipe> recipes) 
 }
 
 
-_ReplacedRecipe _normalizeBehindIsNot(BehindIsNotRegExpRecipe recipe) {
+_NormalizedRecipe _normalizeBehindIsNot(BehindIsNotRegExpRecipe recipe) {
   return _replaceSubtreeSingle(
     recipe.source,
     (normalizedSource) => 
