@@ -155,3 +155,10 @@ abstract base class RegExpBuilder<CollectionT> {
 
   late final _wordChar = chars(r"a-zA-Z0-9_$"); // dart chars -- should work for most languages
 }
+
+
+final class BlankBuilder extends RegExpBuilder<()> {
+  @override
+  () createCollection() => ();
+}
+final regExpBuilder = BlankBuilder();

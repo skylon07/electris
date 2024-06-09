@@ -4,13 +4,6 @@ import './regexp_builder_base.dart';
 import './regexp_normalization.dart';
 
 
-final class _PrivateBuilder extends RegExpBuilder<()> {
-  @override
-  () createCollection() => ();
-}
-final _privateBuilder = _PrivateBuilder();
-
-
 sealed class RegExpRecipe {
   final List<RegExpRecipe> sources;
   final GroupTracker _tracker;
