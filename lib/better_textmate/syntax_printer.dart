@@ -159,13 +159,13 @@ enum StyleName {
 
 final class MatchPattern extends Pattern {
   final String match;
-  final List<CapturePattern> captures;
+  final Map<int, CapturePattern> captures;
 
   const MatchPattern({
     required super.debugName,
     super.styleName,
     required this.match,
-    this.captures = const [],
+    this.captures = const {},
   });
 
   @override
@@ -174,7 +174,7 @@ final class MatchPattern extends Pattern {
       ...super.toJson(),
       'match': match,
       if (captures.isNotEmpty)
-        'captures': captures.toIndexedMap(),
+        'captures': captures.stringifyKeys(),
     };
   }
 }
@@ -213,8 +213,8 @@ final class GroupingPattern extends Pattern {
 final class EnclosurePattern extends GroupingPattern {
   final String begin;
   final String end;
-  final List<CapturePattern> beginCaptures;
-  final List<CapturePattern> endCaptures;
+  final Map<int, CapturePattern> beginCaptures;
+  final Map<int, CapturePattern> endCaptures;
 
   const EnclosurePattern({
     required super.debugName,
@@ -222,8 +222,8 @@ final class EnclosurePattern extends GroupingPattern {
     super.innerPatterns = const [],
     required this.begin,
     required this.end,
-    this.beginCaptures = const [],
-    this.endCaptures = const [],
+    this.beginCaptures = const {},
+    this.endCaptures = const {},
   });
 
   @override
@@ -233,9 +233,9 @@ final class EnclosurePattern extends GroupingPattern {
       'begin': begin,
       'end': end,
       if (beginCaptures.isNotEmpty)
-        'beginCaptures': beginCaptures.toIndexedMap(),
+        'beginCaptures': beginCaptures.stringifyKeys(),
       if (endCaptures.isNotEmpty)
-        'endCaptures': endCaptures.toIndexedMap(),
+        'endCaptures': endCaptures.stringifyKeys(),
     };
   }
 }
@@ -261,5 +261,13 @@ extension _IndexMapping<ItemT> on List<ItemT> {
     {
       for (var idx = 0; idx < length; ++idx)
         '${idx + 1}': this[idx]
+    };
+}
+
+extension _IndexStringification<ItemT> on Map<dynamic, ItemT>{ 
+  Map<String, ItemT> stringifyKeys() => 
+    {
+      for (var MapEntry(:key, :value) in entries)
+        "$key": value
     };
 }

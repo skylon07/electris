@@ -1,5 +1,6 @@
 import './syntax_printer.dart';
 import './regexp_builder_base.dart';
+import './regexp_recipes.dart';
 
 
 abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>, CollectionT> {
@@ -44,19 +45,16 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
     return item;
   }
 
-  // TODO: `match` needs to be a RegExpRecipe and `captures` needs to be reworked to a map of
-  //  GroupRef: CapturePattern, so this function could `compile()` and `getPosition()` on its own
-  //  (and the caller probably shouldn't have to create `CapturePattern`s directly...)
   DefinitionItem createItem(
     String identifier,
     {
       StyleName? styleName,
-      String? match,
-      String? begin,
-      String? end,
-      List<CapturePattern>? captures,
-      List<CapturePattern>? beginCaptures,
-      List<CapturePattern>? endCaptures,
+      RegExpRecipe? match,
+      RegExpRecipe? begin,
+      RegExpRecipe? end,
+      Map<GroupRef, StyleName>? captures,
+      Map<GroupRef, StyleName>? beginCaptures,
+      Map<GroupRef, StyleName>? endCaptures,
       List<DefinitionItem>? Function()? createInnerItems,
     }
   ) {
@@ -86,10 +84,10 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
     switch (argMap) {
       {
         'debugName': String debugName,
-        'match': String match,
+        'match': RegExpRecipe match,
 
         'styleName': StyleName? styleName,
-        'captures': List<CapturePattern>? captures,
+        'captures': Map<GroupRef, StyleName>? captures,
         
         'begin': null,
         'end': null,
@@ -100,18 +98,21 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
         MatchPattern(
           debugName: debugName,
           styleName: styleName,
-          match: match,
-          captures: captures ?? [],
+          match: match.compile(),
+          captures: 
+            (captures != null)? 
+              _capturesAsPattern(captures, match, debugName, "captures")
+            : const {},
         ),
 
       {
         'debugName': String debugName,
-        'begin': String begin,
-        'end': String end,
+        'begin': RegExpRecipe begin,
+        'end': RegExpRecipe end,
 
         'styleName': StyleName? styleName,
-        'beginCaptures': List<CapturePattern>? beginCaptures,
-        'endCaptures': List<CapturePattern>? endCaptures,
+        'beginCaptures': Map<GroupRef, StyleName>? beginCaptures,
+        'endCaptures': Map<GroupRef, StyleName>? endCaptures,
         'innerPatterns': List<Pattern>? innerPatterns,
 
         'match': null,
@@ -121,10 +122,16 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
           debugName: debugName,
           styleName: styleName,
           innerPatterns: innerPatterns ?? [],
-          begin: begin,
-          end: end,
-          beginCaptures: beginCaptures ?? [],
-          endCaptures: endCaptures ?? [],
+          begin: begin.compile(),
+          end: end.compile(),
+          beginCaptures:
+            (beginCaptures != null)? 
+              _capturesAsPattern(beginCaptures, begin, debugName, "beginCaptures")
+            : const {},
+          endCaptures:
+            (endCaptures != null)? 
+              _capturesAsPattern(endCaptures, end, debugName, "endCaptures")
+            : const {},
         ),
 
       {
@@ -148,6 +155,19 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
       
       _ => throw ArgumentError("Invalid argument pattern."),
     };
+
+  Map<int, CapturePattern> _capturesAsPattern(Map<GroupRef, StyleName> captures, RegExpRecipe recipe, String itemDebugName, String captureKeyName) {
+    var patterns = <int, CapturePattern>{};
+    for (var MapEntry(key: ref, value: styleName) in captures.entries) {
+      var capturePosition = recipe.positionOf(ref);
+      patterns[capturePosition] = 
+        CapturePattern(
+          debugName: "$itemDebugName.$captureKeyName[$capturePosition]",
+          styleName: styleName,
+        );
+    }
+    return patterns;
+  }
 }
 
 // TODO: should this be private...? (Or it should at least control binding to its parent in the constructor)

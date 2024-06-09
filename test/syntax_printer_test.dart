@@ -84,11 +84,11 @@ r"""
 
       test("those with captures", () {
         var result = SyntaxPrinter.instance.print(
-          MatchPattern(debugName: "debugName", match: "abcdef", captures: [
-            CapturePattern(debugName: "debugName1"),
-            CapturePattern(debugName: "debugName2"),
-            CapturePattern(debugName: "debugName3"),
-          ])
+          MatchPattern(debugName: "debugName", match: "abcdef", captures: {
+            1: CapturePattern(debugName: "debugName1"),
+            2: CapturePattern(debugName: "debugName2"),
+            3: CapturePattern(debugName: "debugName3"),
+          })
         );
         expect(
           result,
@@ -246,11 +246,11 @@ r"""
 
       test("those with begin-captures", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(debugName: "debugName", begin: "abc", end: "def", beginCaptures: [
-            CapturePattern(debugName: "debugName1"),
-            CapturePattern(debugName: "debugName2"),
-            CapturePattern(debugName: "debugName3"),
-          ])
+          EnclosurePattern(debugName: "debugName", begin: "abc", end: "def", beginCaptures: {
+            1: CapturePattern(debugName: "debugName1"),
+            2: CapturePattern(debugName: "debugName2"),
+            3: CapturePattern(debugName: "debugName3"),
+          })
         );
         expect(
           result,
@@ -279,11 +279,11 @@ r"""
 
       test("those with end-captures", () {
         var result = SyntaxPrinter.instance.print(
-          EnclosurePattern(debugName: "debugName", begin: "abc", end: "def", endCaptures: [
-            CapturePattern(debugName: "debugName1"),
-            CapturePattern(debugName: "debugName2"),
-            CapturePattern(debugName: "debugName3"),
-          ])
+          EnclosurePattern(debugName: "debugName", begin: "abc", end: "def", endCaptures: {
+            1: CapturePattern(debugName: "debugName1"),
+            2: CapturePattern(debugName: "debugName2"),
+            3: CapturePattern(debugName: "debugName3"),
+          })
         );
         expect(
           result,
