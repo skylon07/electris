@@ -4,15 +4,36 @@ import './regexp_recipes.dart';
 RegExpRecipe normalize(RegExpRecipe recipe) =>
   switch (recipe) {
     EitherRegExpRecipe() => _normalizeEither(recipe),
+    
+    AugmentedRegExpRecipe(:var source) => _replaceSource(recipe, source),
+    JoinedRegExpRecipe(:var sources) => _replaceSources(recipe, sources),
     _ => recipe,
   };
+
+
+RecipeT _replaceSources<RecipeT extends JoinedRegExpRecipe>(RecipeT recipe, List<RegExpRecipe> newSources) {
+  return recipe.copy(
+    sources: [
+      for (var source in newSources)
+      normalize(source),
+    ],
+  ) as RecipeT;
+}
+
+RecipeT _replaceSource<RecipeT extends AugmentedRegExpRecipe>(RecipeT recipe, RegExpRecipe newSource) {
+  return recipe.copy(
+    source: normalize(newSource),
+  ) as RecipeT;
+}
+
 
 EitherRegExpRecipe _normalizeEither(EitherRegExpRecipe recipe) {
   var (chars, notChars, rest) = _flattenEither(recipe);
   var charClass = _combineCharClasses(chars);
   var notCharClass = _combineCharClasses(notChars);
-  return recipe.copy(
-    sources: [
+  return _replaceSources(
+    recipe,
+    [
       if (charClass != null) charClass,
       if (notCharClass != null) notCharClass,
       ...rest,
