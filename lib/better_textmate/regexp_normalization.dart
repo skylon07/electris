@@ -4,12 +4,9 @@ import './regexp_builder_base.dart';
 
 RegExpRecipe normalize(RegExpRecipe recipe) {
   _NormalizedRecipe normalized = switch (recipe) {
-    EitherRegExpRecipe() => _normalizeEither(recipe),
-    BehindIsNotRegExpRecipe() => _normalizeBehindIsNot(recipe),
-    BehindIsRegExpRecipe() => _normalizeBehindIs(recipe),
-    
-    AugmentedRegExpRecipe(:var source) => _replaceSource(recipe, source),
-    JoinedRegExpRecipe(:var sources) => _replaceSources(recipe, sources),
+    JoinedRegExpRecipe(tag: RegExpTag.either) => _normalizeEither(recipe),
+    AugmentedRegExpRecipe(tag: RegExpTag.behindIsNot) => _normalizeBehindIsNot(recipe),
+    AugmentedRegExpRecipe(tag: RegExpTag.behindIs) => _normalizeBehindIs(recipe),
     _ => _NormalizedRecipe(recipe),
   };
   return normalized.recipe;
@@ -68,7 +65,7 @@ final class RecipeConfigurationError extends Error {
 }
 
 
-_NormalizedRecipe _normalizeEither(EitherRegExpRecipe recipe) {
+_NormalizedRecipe _normalizeEither(JoinedRegExpRecipe recipe) {
   var (chars, notChars, rest) = _flattenEither(recipe);
   var charClass = _combineCharClasses(chars);
   var notCharClass = _combineCharClasses(notChars);
@@ -83,34 +80,41 @@ _NormalizedRecipe _normalizeEither(EitherRegExpRecipe recipe) {
 }
 
 typedef EitherFlatClasses = (
-  List<CharClassRegExpRecipe> charsList,
-  List<CharClassRegExpRecipe> notCharsList,
+  List<InvertibleRegExpRecipe> charsList,
+  List<InvertibleRegExpRecipe> notCharsList,
   List<RegExpRecipe>          restList,
 );
-EitherFlatClasses _flattenEither(EitherRegExpRecipe recipe) {
-  var charsList = <CharClassRegExpRecipe>[];
-  var notCharsList = <CharClassRegExpRecipe>[];
+EitherFlatClasses _flattenEither(JoinedRegExpRecipe recipe) {
+  var charsList = <InvertibleRegExpRecipe>[];
+  var notCharsList = <InvertibleRegExpRecipe>[];
   var restList = <RegExpRecipe>[];
 
   for (var source in recipe.sources) {
-    if (source is EitherRegExpRecipe) {
-      var (chars, notChars, rest) = _flattenEither(source);
-      charsList.addAll(chars);
-      notCharsList.addAll(notChars);
-      restList.addAll(rest);
-    } else {
-      var listForSource = switch(source) {
-        CharClassRegExpRecipe(inverted: false) => charsList,
-        CharClassRegExpRecipe(inverted: true) => notCharsList,
-        RegExpRecipe() => restList,
-      };
-      listForSource.add(source);
+    switch (source) {
+      case JoinedRegExpRecipe(tag: RegExpTag.either): {
+        var (chars, notChars, rest) = _flattenEither(source);
+        charsList.addAll(chars);
+        notCharsList.addAll(notChars);
+        restList.addAll(rest);
+      }
+
+      case InvertibleRegExpRecipe(tag: RegExpTag.chars, inverted: false): {
+        charsList.add(source);
+      }
+
+      case InvertibleRegExpRecipe(tag: RegExpTag.chars, inverted: true): {
+        notCharsList.add(source);
+      }
+
+      case RegExpRecipe(): {
+        restList.add(source);
+      }
     }
   }
   return (charsList, notCharsList, restList);
 }
 
-CharClassRegExpRecipe? _combineCharClasses(List<CharClassRegExpRecipe> recipes) {
+InvertibleRegExpRecipe? _combineCharClasses(List<InvertibleRegExpRecipe> recipes) {
   if (recipes.isEmpty) return null;
 
   var (combinedClasses, inverted) = recipes
@@ -121,7 +125,7 @@ CharClassRegExpRecipe? _combineCharClasses(List<CharClassRegExpRecipe> recipes) 
       assert (lastInverted == nextInverted);
       return (lastSource + nextSource, nextInverted);
     });
-  return CharClassRegExpRecipe(
+  return InvertibleRegExpRecipe(
     BaseRegExpRecipe(combinedClasses),
     recipes.first.augment,
     inverted: inverted,
@@ -129,7 +133,7 @@ CharClassRegExpRecipe? _combineCharClasses(List<CharClassRegExpRecipe> recipes) 
 }
 
 
-_NormalizedRecipe _normalizeBehindIsNot(BehindIsNotRegExpRecipe recipe) {
+_NormalizedRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
   return _replaceSubtreeSingle(
     recipe.source,
     (normalizedSource) => 
@@ -142,11 +146,11 @@ _NormalizedRecipe _normalizeBehindIsNot(BehindIsNotRegExpRecipe recipe) {
 }
 
 
-_NormalizedRecipe _normalizeBehindIs(BehindIsRegExpRecipe recipe) {
+_NormalizedRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
   for (var source in recipe.sourcesFlattened) {
-    switch (source) {
-      case AheadIsRegExpRecipe():
-      case AheadIsNotRegExpRecipe(): {
+    switch (source.tag) {
+      case RegExpTag.aheadIs:
+      case RegExpTag.aheadIsNot: {
         throw RecipeConfigurationError(recipe, source);
       }
 

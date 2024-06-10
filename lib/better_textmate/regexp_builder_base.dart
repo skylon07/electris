@@ -23,17 +23,17 @@ abstract base class RegExpBuilder<CollectionT> {
 
   RegExpRecipe notChars(String charSet) => _chars(charSet, invert: true);
 
-  CharClassRegExpRecipe _chars(String charSet, {bool invert = false}) {
+  InvertibleRegExpRecipe _chars(String charSet, {bool invert = false}) {
     var baseRecipe = _escapedPattern(charSet, RegExp(r"[\[\]\^\/]"));
     var augment = (expr) => "[${invert? "^":""}$expr]";
-    return CharClassRegExpRecipe(baseRecipe, augment, inverted: invert);
+    return InvertibleRegExpRecipe(baseRecipe, augment, inverted: invert, tag: RegExpTag.chars);
   }
 
   // basic composition operations
 
   RegExpRecipe capture(RegExpRecipe inner, [GroupRef? ref]) {
     var augment = (expr) => "($expr)";
-    return CaptureRegExpRecipe(inner, augment, ref: ref);
+    return TrackedRegExpRecipe(inner, augment, ref: ref, tag: RegExpTag.capture);
   }
 
   RegExpRecipe concat(List<RegExpRecipe> recipes) => capture(_join(recipes, joinBy: ""));
@@ -41,9 +41,9 @@ abstract base class RegExpBuilder<CollectionT> {
   AugmentedRegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr) =>
     AugmentedRegExpRecipe(recipe, mapExpr);
 
-  JoinedRegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy}) {
+  JoinedRegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy, RegExpTag? tag}) {
     if (recipes.isEmpty) throw ArgumentError("Joining list should not be empty.", "recipes"); 
-    return JoinedRegExpRecipe(recipes, joinBy);
+    return JoinedRegExpRecipe(recipes, joinBy, tag: tag);
   }
 
 
@@ -70,10 +70,8 @@ abstract base class RegExpBuilder<CollectionT> {
   RegExpRecipe repeatBetween(RegExpRecipe inner, int lowTimes, int highTimes) =>
     _augment(inner, (expr) => "$expr{$lowTimes,$highTimes}");
 
-  RegExpRecipe either(List<RegExpRecipe> branches) {
-    var recipe = _join(branches, joinBy: r"|");
-    return capture(EitherRegExpRecipe(recipe.sources, recipe.joinBy));
-  }
+  RegExpRecipe either(List<RegExpRecipe> branches) =>
+    capture(_join(branches, joinBy: r"|", tag: RegExpTag.either));
 
   late final nothing = exactly("");
 
@@ -81,16 +79,16 @@ abstract base class RegExpBuilder<CollectionT> {
   // "look around" operations
 
   RegExpRecipe aheadIs(RegExpRecipe inner) => 
-    AheadIsRegExpRecipe(inner, (expr) => "(?=$expr)");
+    AugmentedRegExpRecipe(inner, (expr) => "(?=$expr)", tag:  RegExpTag.aheadIs);
 
   RegExpRecipe aheadIsNot(RegExpRecipe inner) => 
-    AheadIsNotRegExpRecipe(inner, (expr) => "(?!$expr)");
+    AugmentedRegExpRecipe(inner, (expr) => "(?!$expr)", tag:  RegExpTag.aheadIsNot);
 
   RegExpRecipe behindIs(RegExpRecipe inner) => 
-    BehindIsRegExpRecipe(inner, (expr) => "(?<=$expr)");
+    AugmentedRegExpRecipe(inner, (expr) => "(?<=$expr)", tag:  RegExpTag.behindIs);
 
   RegExpRecipe behindIsNot(RegExpRecipe inner) => 
-    BehindIsNotRegExpRecipe(inner, (expr) => "(?<!$expr)");
+    AugmentedRegExpRecipe(inner, (expr) => "(?<!$expr)", tag:  RegExpTag.behindIsNot);
 
   
   // anchors

@@ -6,8 +6,9 @@ import './regexp_normalization.dart';
 sealed class RegExpRecipe {
   final List<RegExpRecipe> sources;
   final GroupTracker _tracker;
+  final RegExpTag? tag;
 
-  RegExpRecipe(this.sources, this._tracker);
+  RegExpRecipe(this.sources, this._tracker, {this.tag});
 
   String compile() => _expr;
   late final _expr = normalize(this)._createExpr();
@@ -26,10 +27,17 @@ sealed class RegExpRecipe {
   }
 }
 
+enum RegExpTag {
+  capture, either, chars,
+  aheadIs, aheadIsNot,
+  behindIs, behindIsNot,
+}
+
+
 final class BaseRegExpRecipe extends RegExpRecipe {
   final String expr;
 
-  BaseRegExpRecipe(this.expr) : super(const [], GroupTracker());
+  BaseRegExpRecipe(this.expr, {super.tag}) : super(const [], GroupTracker());
 
   @override
   BaseRegExpRecipe copy({
@@ -46,7 +54,7 @@ final class AugmentedRegExpRecipe extends RegExpRecipe {
   final RegExpRecipe source;
   final Augmenter augment;
 
-  AugmentedRegExpRecipe(this.source, this.augment) : super([source], source._tracker);
+  AugmentedRegExpRecipe(this.source, this.augment, {super.tag}) : super([source], source._tracker);
 
   @override
   AugmentedRegExpRecipe copy({
@@ -65,7 +73,7 @@ typedef Augmenter = String Function(String expr);
 final class JoinedRegExpRecipe extends RegExpRecipe {
   final String joinBy;
 
-  JoinedRegExpRecipe(List<RegExpRecipe> sources, this.joinBy) : 
+  JoinedRegExpRecipe(List<RegExpRecipe> sources, this.joinBy, {super.tag}) : 
     super(
       sources,
       GroupTracker.combine(
@@ -91,28 +99,28 @@ final class JoinedRegExpRecipe extends RegExpRecipe {
 }
 
 
-final class CharClassRegExpRecipe extends AugmentedRegExpRecipe {
+final class InvertibleRegExpRecipe extends AugmentedRegExpRecipe {
   final bool inverted;
 
-  CharClassRegExpRecipe(super.source, super.augment, {required this.inverted});
+  InvertibleRegExpRecipe(super.source, super.augment, {required this.inverted, super.tag});
 
   @override
-  CharClassRegExpRecipe copy({
+  InvertibleRegExpRecipe copy({
     RegExpRecipe? source,
     Augmenter? augment,
     bool? inverted,
-  }) => CharClassRegExpRecipe(
+  }) => InvertibleRegExpRecipe(
     source ?? this.source,
     augment ?? this.augment,
     inverted: inverted ?? this.inverted,
   );
 }
 
-final class CaptureRegExpRecipe extends AugmentedRegExpRecipe {
+final class TrackedRegExpRecipe extends AugmentedRegExpRecipe {
   @override
   late final GroupTracker _tracker;
 
-  CaptureRegExpRecipe(super.source, super.augment, {GroupRef? ref}) {
+  TrackedRegExpRecipe(super.source, super.augment, {GroupRef? ref, super.tag}) {
     var newTracker = source._tracker.increment();
     if (ref != null) {
       newTracker = newTracker.startTracking(ref);
@@ -121,79 +129,14 @@ final class CaptureRegExpRecipe extends AugmentedRegExpRecipe {
   }
 
   @override
-  CaptureRegExpRecipe copy({
+  TrackedRegExpRecipe copy({
     RegExpRecipe? source,
     Augmenter? augment,
     GroupRef? ref,
-  }) => CaptureRegExpRecipe(
+  }) => TrackedRegExpRecipe(
     source ?? this.source,
     augment ?? this.augment,
     ref: ref,
-  );
-}
-
-final class EitherRegExpRecipe extends JoinedRegExpRecipe {
-  EitherRegExpRecipe(super.sources, super.joinBy);
-
-  @override
-  EitherRegExpRecipe copy({
-    List<RegExpRecipe>? sources,
-    String? joinBy,
-  }) => EitherRegExpRecipe(
-    sources ?? this.sources,
-    joinBy ?? this.joinBy,
-  );
-}
-
-final class AheadIsRegExpRecipe extends AugmentedRegExpRecipe {
-  AheadIsRegExpRecipe(super.source, super.augment);
-
-  @override
-  AheadIsRegExpRecipe copy({
-    RegExpRecipe? source,
-    Augmenter? augment,
-  }) => AheadIsRegExpRecipe(
-    source ?? this.source,
-    augment ?? this.augment,
-  );
-}
-
-final class AheadIsNotRegExpRecipe extends AugmentedRegExpRecipe {
-  AheadIsNotRegExpRecipe(super.source, super.augment);
-
-  @override
-  AheadIsNotRegExpRecipe copy({
-    RegExpRecipe? source,
-    Augmenter? augment,
-  }) => AheadIsNotRegExpRecipe(
-    source ?? this.source,
-    augment ?? this.augment,
-  );
-}
-
-final class BehindIsRegExpRecipe extends AugmentedRegExpRecipe {
-  BehindIsRegExpRecipe(super.source, super.augment);
-
-  @override
-  BehindIsRegExpRecipe copy({
-    RegExpRecipe? source,
-    Augmenter? augment,
-  }) => BehindIsRegExpRecipe(
-    source ?? this.source,
-    augment ?? this.augment,
-  );
-}
-
-final class BehindIsNotRegExpRecipe extends AugmentedRegExpRecipe {
-  BehindIsNotRegExpRecipe(super.source, super.augment);
-
-  @override
-  BehindIsNotRegExpRecipe copy({
-    RegExpRecipe? source,
-    Augmenter? augment,
-  }) => BehindIsNotRegExpRecipe(
-    source ?? this.source,
-    augment ?? this.augment,
   );
 }
 
