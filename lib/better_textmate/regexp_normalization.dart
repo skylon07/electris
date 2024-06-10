@@ -134,6 +134,9 @@ InvertibleRegExpRecipe? _combineCharClasses(List<InvertibleRegExpRecipe> recipes
 
 
 _NormalizedRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
+  // TODO: maybe only perform this replacement in bad cases:
+  //  - behindIsNot(capture(exactly("string"))),
+  //  - behindIsNot(either([exactly("string"), exactly("string")])),
   return _replaceSubtreeSingle(
     recipe.source,
     (normalizedSource) => 

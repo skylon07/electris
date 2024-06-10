@@ -11,7 +11,7 @@ sealed class RegExpRecipe {
   RegExpRecipe(this.sources, this._tracker, {this.tag});
 
   String compile() => _expr;
-  late final _expr = normalize(this)._createExpr();
+  late final _expr = _createExpr();
 
   int positionOf(GroupRef ref) => _tracker.getPosition(ref);
 

@@ -1,4 +1,5 @@
 import './regexp_recipes.dart';
+import './regexp_normalization.dart';
 
 
 abstract base class RegExpBuilder<CollectionT> {
@@ -9,41 +10,41 @@ abstract base class RegExpBuilder<CollectionT> {
   RegExpRecipe exactly(String string) => 
     _escapedPattern(string, RegExp(r"[.?*+\-()\[\]{}\^$|]"));
 
-  BaseRegExpRecipe _escapedPattern(String exprStr, RegExp? escapeExpr) {
+  RegExpRecipe _escapedPattern(String exprStr, RegExp? escapeExpr) {
     String expr;
     if (escapeExpr != null) {
       expr = exprStr.replaceAllMapped(escapeExpr, (match) => "\\${match[0]}");
     } else {
       expr = exprStr;
     }
-    return BaseRegExpRecipe(expr);
+    return normalize(BaseRegExpRecipe(expr));
   }
 
   RegExpRecipe chars(String charSet) => _chars(charSet, invert: false);
 
   RegExpRecipe notChars(String charSet) => _chars(charSet, invert: true);
 
-  InvertibleRegExpRecipe _chars(String charSet, {bool invert = false}) {
+  RegExpRecipe _chars(String charSet, {bool invert = false}) {
     var baseRecipe = _escapedPattern(charSet, RegExp(r"[\[\]\^\/]"));
     var augment = (expr) => "[${invert? "^":""}$expr]";
-    return InvertibleRegExpRecipe(baseRecipe, augment, inverted: invert, tag: RegExpTag.chars);
+    return normalize(InvertibleRegExpRecipe(baseRecipe, augment, inverted: invert, tag: RegExpTag.chars));
   }
 
   // basic composition operations
 
   RegExpRecipe capture(RegExpRecipe inner, [GroupRef? ref]) {
     var augment = (expr) => "($expr)";
-    return TrackedRegExpRecipe(inner, augment, ref: ref, tag: RegExpTag.capture);
+    return normalize(TrackedRegExpRecipe(inner, augment, ref: ref, tag: RegExpTag.capture));
   }
 
   RegExpRecipe concat(List<RegExpRecipe> recipes) => capture(_join(recipes, joinBy: ""));
 
-  AugmentedRegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr) =>
-    AugmentedRegExpRecipe(recipe, mapExpr);
+  RegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr, {RegExpTag? tag}) =>
+    normalize(AugmentedRegExpRecipe(recipe, mapExpr, tag: tag));
 
-  JoinedRegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy, RegExpTag? tag}) {
+  RegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy, RegExpTag? tag}) {
     if (recipes.isEmpty) throw ArgumentError("Joining list should not be empty.", "recipes"); 
-    return JoinedRegExpRecipe(recipes, joinBy, tag: tag);
+    return normalize(JoinedRegExpRecipe(recipes, joinBy, tag: tag));
   }
 
 
@@ -79,16 +80,16 @@ abstract base class RegExpBuilder<CollectionT> {
   // "look around" operations
 
   RegExpRecipe aheadIs(RegExpRecipe inner) => 
-    AugmentedRegExpRecipe(inner, (expr) => "(?=$expr)", tag:  RegExpTag.aheadIs);
+    _augment(inner, (expr) => "(?=$expr)", tag: RegExpTag.aheadIs);
 
   RegExpRecipe aheadIsNot(RegExpRecipe inner) => 
-    AugmentedRegExpRecipe(inner, (expr) => "(?!$expr)", tag:  RegExpTag.aheadIsNot);
+    _augment(inner, (expr) => "(?!$expr)", tag: RegExpTag.aheadIsNot);
 
   RegExpRecipe behindIs(RegExpRecipe inner) => 
-    AugmentedRegExpRecipe(inner, (expr) => "(?<=$expr)", tag:  RegExpTag.behindIs);
+    _augment(inner, (expr) => "(?<=$expr)", tag: RegExpTag.behindIs);
 
   RegExpRecipe behindIsNot(RegExpRecipe inner) => 
-    AugmentedRegExpRecipe(inner, (expr) => "(?<!$expr)", tag:  RegExpTag.behindIsNot);
+    _augment(inner, (expr) => "(?<!$expr)", tag: RegExpTag.behindIsNot);
 
   
   // anchors
