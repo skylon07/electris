@@ -89,6 +89,7 @@ EitherFlatClasses _flattenEither(JoinedRegExpRecipe recipe) {
   var notCharsList = <InvertibleRegExpRecipe>[];
   var restList = <RegExpRecipe>[];
 
+  // TODO: replace with functions like `_traverse()` and `_map` once they are added
   for (var source in recipe.sources) {
     switch (source) {
       case JoinedRegExpRecipe(tag: RegExpTag.either): {
@@ -134,26 +135,48 @@ InvertibleRegExpRecipe? _combineCharClasses(List<InvertibleRegExpRecipe> recipes
 
 
 _NormalizedRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
-  // TODO: maybe only perform this replacement in bad cases:
-  //  - behindIsNot(capture(exactly("string"))),
-  //  - behindIsNot(either([exactly("string"), exactly("string")])),
-  return _replaceSubtreeSingle(
-    recipe.source,
-    (normalizedSource) => 
-      regExpBuilder.aheadIsNot(
-        regExpBuilder.behindIs(
-          normalizedSource
+  var shouldTransform = false;
+  sourcesLoop: for (var source in recipe.sourcesFlattened) {
+    switch (source.tag) {
+      case RegExpTag.capture:
+      case RegExpTag.either: {
+        shouldTransform = true;
+        break sourcesLoop;
+      }
+
+      // TODO: aheadIs nodes could just be clipped out/mapped to their children...
+      case RegExpTag.aheadIs:
+      case RegExpTag.aheadIsNot: {
+        throw RecipeConfigurationError(recipe, source);
+      }
+
+      default: continue;
+    }
+  }
+
+  if (shouldTransform) {
+    return _replaceSubtreeSingle(
+      recipe.source,
+      (normalizedSource) => 
+        regExpBuilder.aheadIsNot(
+          regExpBuilder.behindIs(
+            normalizedSource
+          ),
         ),
-      ),
-  );
+    );
+  } else {
+    return _NormalizedRecipe(recipe);
+  }
 }
 
 
 _NormalizedRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
   for (var source in recipe.sourcesFlattened) {
     switch (source.tag) {
+      // TODO: aheadIs nodes could just be clipped out/mapped to their children...
       case RegExpTag.aheadIs:
-      case RegExpTag.aheadIsNot: {
+      case RegExpTag.aheadIsNot:
+      case RegExpTag.behindIsNot: {
         throw RecipeConfigurationError(recipe, source);
       }
 
