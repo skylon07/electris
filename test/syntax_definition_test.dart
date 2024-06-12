@@ -202,6 +202,11 @@ void main() {
       });
     });
 
+    // TODO: add tests for
+    //  - behindIs/Not(aheadIsNot) throws errors
+    //  - behindIs/Not(aheadIs) prunes aheadIs nodes
+    //  - behindIsNot transforms correctly to aheadIsNot(behindIs)
+
 
     group("`behindIsNot` patterns, like", () {
       test("those with `either` clauses inside them", () {
@@ -213,7 +218,7 @@ void main() {
             ])
           )
           .compile();
-        expect(result, equals("(?<!abc)(?<!def)"));
+        expect(result, equals("(?!(?<=abc|def))"));
       });
       test("those with `concat` clauses inside them", () {
         var result = builder

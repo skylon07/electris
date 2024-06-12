@@ -3,39 +3,13 @@ import './regexp_builder_base.dart';
 
 
 RegExpRecipe normalize(RegExpRecipe recipe) {
-  _NormalizedRecipe normalized = switch (recipe) {
+  return switch (recipe) {
     JoinedRegExpRecipe(tag: RegExpTag.either) => _normalizeEither(recipe),
     AugmentedRegExpRecipe(tag: RegExpTag.behindIsNot) => _normalizeBehindIsNot(recipe),
     AugmentedRegExpRecipe(tag: RegExpTag.behindIs) => _normalizeBehindIs(recipe),
-    _ => _NormalizedRecipe(recipe),
+    _ => recipe,
   };
-  return normalized.recipe;
 }
-
-
-// TODO: document how this class reminds normalizing functions to use `_replace...()` functions,
-//  which handle normalizing subtrees, instead of just using `recipe.copy()`
-extension type _NormalizedRecipe(RegExpRecipe recipe) {}
-_NormalizedRecipe _replaceSubtree(List<RegExpRecipe> newSources, RegExpRecipe Function(List<RegExpRecipe> normalizedSources) createRecipe, {bool normalizeHead = true}) {
-  var normalizedSources = [
-    for (var source in newSources)
-      normalize(source),
-  ];
-  var recipe = createRecipe(normalizedSources);
-  if (normalizeHead) {
-    recipe = normalize(recipe);
-  }
-  return _NormalizedRecipe(recipe);
-}
-
-_NormalizedRecipe _replaceSubtreeSingle(RegExpRecipe newSource, RegExpRecipe Function(RegExpRecipe normalizedSource) createRecipe, {bool normalizeHead = true}) =>
-  _replaceSubtree([newSource], (normalizedSources) => createRecipe(normalizedSources.single), normalizeHead: normalizeHead);
-
-_NormalizedRecipe _replaceSource(AugmentedRegExpRecipe recipe, RegExpRecipe newSource) =>
-  _replaceSubtreeSingle(newSource, (normalizedSource) => recipe.copy(source: normalizedSource), normalizeHead: false);
-
-_NormalizedRecipe _replaceSources(JoinedRegExpRecipe recipe, List<RegExpRecipe> newSources) =>
-  _replaceSubtree(newSources, (normalizedSources) => recipe.copy(sources: normalizedSources), normalizeHead: false);
 
 
 final class RecipeConfigurationError extends Error {
@@ -65,13 +39,12 @@ final class RecipeConfigurationError extends Error {
 }
 
 
-_NormalizedRecipe _normalizeEither(JoinedRegExpRecipe recipe) {
+RegExpRecipe _normalizeEither(JoinedRegExpRecipe recipe) {
   var (chars, notChars, rest) = _flattenEither(recipe);
   var charClass = _combineCharClasses(chars);
   var notCharClass = _combineCharClasses(notChars);
-  return _replaceSources(
-    recipe,
-    [
+  return recipe.copy(
+    sources: [
       if (charClass != null) charClass,
       if (notCharClass != null) notCharClass,
       ...rest,
@@ -134,7 +107,7 @@ InvertibleRegExpRecipe? _combineCharClasses(List<InvertibleRegExpRecipe> recipes
 }
 
 
-_NormalizedRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
+RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
   var shouldTransform = false;
   sourcesLoop: for (var source in recipe.sourcesFlattened) {
     switch (source.tag) {
@@ -155,22 +128,20 @@ _NormalizedRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
   }
 
   if (shouldTransform) {
-    return _replaceSubtreeSingle(
-      recipe.source,
-      (normalizedSource) => 
-        regExpBuilder.aheadIsNot(
-          regExpBuilder.behindIs(
-            normalizedSource
-          ),
+    return normalize(
+      regExpBuilder.aheadIsNot(
+        regExpBuilder.behindIs(
+          recipe.source,
         ),
+      )
     );
   } else {
-    return _NormalizedRecipe(recipe);
+    return recipe;
   }
 }
 
 
-_NormalizedRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
+RegExpRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
   for (var source in recipe.sourcesFlattened) {
     switch (source.tag) {
       // TODO: aheadIs nodes could just be clipped out/mapped to their children...
@@ -183,5 +154,5 @@ _NormalizedRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
       default: continue;
     }
   }
-  return _NormalizedRecipe(recipe);
+  return recipe;
 }
