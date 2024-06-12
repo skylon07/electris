@@ -12,6 +12,38 @@ RegExpRecipe normalize(RegExpRecipe recipe) {
 }
 
 
+extension _RecipeTraversal on RegExpRecipe {
+  RegExpRecipe traverseTransform(RegExpRecipe? Function(RegExpRecipe) transform) {
+    RegExpRecipe? prevRecipe = null;
+    RegExpRecipe newRecipe = this;
+    while (newRecipe != prevRecipe) {
+      var result = transform(this);
+      if (result == null) return newRecipe;
+      prevRecipe = newRecipe;
+      newRecipe = result;
+    }
+    
+    switch (newRecipe) {
+      case AugmentedRegExpRecipe(:var source): {
+        var newSource = source.traverseTransform(transform);
+        newRecipe = newRecipe.copy(source: newSource);
+      }
+
+      case JoinedRegExpRecipe(:var sources): {
+        var newSources = [
+          for (var source in sources)
+            source.traverseTransform(transform)
+        ];
+        newRecipe = newRecipe.copy(sources: newSources);
+      }
+
+      default: break;
+    }
+    
+    return newRecipe;
+  }
+}
+
 final class RecipeConfigurationError extends Error {
   final RegExpRecipe topRecipe;
   final RegExpRecipe containedRecipe;
@@ -62,29 +94,26 @@ EitherFlatClasses _flattenEither(JoinedRegExpRecipe recipe) {
   var notCharsList = <InvertibleRegExpRecipe>[];
   var restList = <RegExpRecipe>[];
 
-  // TODO: replace with functions like `_traverse()` and `_map` once they are added
-  for (var source in recipe.sources) {
+  recipe.traverseTransform((source) {
     switch (source) {
-      case JoinedRegExpRecipe(tag: RegExpTag.either): {
-        var (chars, notChars, rest) = _flattenEither(source);
-        charsList.addAll(chars);
-        notCharsList.addAll(notChars);
-        restList.addAll(rest);
-      }
-
       case InvertibleRegExpRecipe(tag: RegExpTag.chars, inverted: false): {
         charsList.add(source);
+        return null;
       }
 
       case InvertibleRegExpRecipe(tag: RegExpTag.chars, inverted: true): {
         notCharsList.add(source);
+        return null;
       }
 
       case RegExpRecipe(): {
-        restList.add(source);
+        if (source.tag != RegExpTag.either) {
+          restList.add(source);
+        }
+        return source;
       }
     }
-  }
+  });
   return (charsList, notCharsList, restList);
 }
 
@@ -109,23 +138,25 @@ InvertibleRegExpRecipe? _combineCharClasses(List<InvertibleRegExpRecipe> recipes
 
 RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
   var shouldTransform = false;
-  sourcesLoop: for (var source in recipe.sourcesFlattened) {
+  recipe.traverseTransform((source) {
     switch (source.tag) {
       case RegExpTag.capture:
       case RegExpTag.either: {
         shouldTransform = true;
-        break sourcesLoop;
+        return null;
       }
 
-      // TODO: aheadIs nodes could just be clipped out/mapped to their children...
-      case RegExpTag.aheadIs:
+      case RegExpTag.aheadIs: {
+        return (source as AugmentedRegExpRecipe).source;
+      }
+
       case RegExpTag.aheadIsNot: {
         throw RecipeConfigurationError(recipe, source);
       }
 
-      default: continue;
+      default: return source;
     }
-  }
+  });
 
   if (shouldTransform) {
     return normalize(
@@ -142,17 +173,18 @@ RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
 
 
 RegExpRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
-  for (var source in recipe.sourcesFlattened) {
+  return recipe.traverseTransform((source) {
     switch (source.tag) {
-      // TODO: aheadIs nodes could just be clipped out/mapped to their children...
-      case RegExpTag.aheadIs:
+      case RegExpTag.aheadIs: {
+        return (source as AugmentedRegExpRecipe).source;
+      }
+
       case RegExpTag.aheadIsNot:
       case RegExpTag.behindIsNot: {
         throw RecipeConfigurationError(recipe, source);
       }
 
-      default: continue;
+      default: return source;
     }
-  }
-  return recipe;
+  });
 }

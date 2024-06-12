@@ -146,13 +146,13 @@ abstract base class RegExpBuilder<CollectionT> {
         space(req: true),
       ])),
       either([
-        concat([inner, aheadIsNot(_wordChar)]),
+        concat([inner, aheadIs(_nonWordChar)]),
         endsWith(inner),
       ]),
     ]);
   }
 
-  late final _wordChar = chars(r"a-zA-Z0-9_$"); // dart chars -- should work for most languages
+  late final _nonWordChar = notChars(r"a-zA-Z0-9_$"); // dart chars -- should work for most languages
 }
 
 

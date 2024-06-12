@@ -1,7 +1,5 @@
 import 'package:meta/meta.dart';
 
-import './regexp_normalization.dart';
-
 
 sealed class RegExpRecipe {
   final List<RegExpRecipe> sources;
