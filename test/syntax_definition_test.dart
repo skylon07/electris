@@ -204,6 +204,8 @@ void main() {
 
     // TODO: add tests for
     //  - behindIs/Not(aheadIsNot) throws errors
+    //  - behindIs(behindIsNot) throws errors
+    //  - behindIsNot(behindIs) does NOT throw errors
     //  - behindIs/Not(aheadIs) prunes aheadIs nodes
     //  - behindIsNot transforms correctly to aheadIsNot(behindIs)
 

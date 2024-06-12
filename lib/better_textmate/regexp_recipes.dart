@@ -6,9 +6,9 @@ import './regexp_normalization.dart';
 sealed class RegExpRecipe {
   final List<RegExpRecipe> sources;
   final GroupTracker _tracker;
-  final RegExpTag? tag;
+  final RegExpTag tag;
 
-  RegExpRecipe(this.sources, this._tracker, {this.tag});
+  RegExpRecipe(this.sources, this._tracker, {this.tag = RegExpTag.none});
 
   String compile() => _expr;
   late final _expr = _createExpr();
@@ -16,18 +16,12 @@ sealed class RegExpRecipe {
   int positionOf(GroupRef ref) => _tracker.getPosition(ref);
 
   @mustBeOverridden
-  RegExpRecipe copy();
+  RegExpRecipe copy({RegExpTag? tag});
   String _createExpr();
-
-  Iterable<RegExpRecipe> get sourcesFlattened sync* {
-    for (var source in sources) {
-      yield source;
-      yield* source.sourcesFlattened;
-    }
-  }
 }
 
 enum RegExpTag {
+  none,
   capture, either, chars,
   aheadIs, aheadIsNot,
   behindIs, behindIsNot,
@@ -42,8 +36,10 @@ final class BaseRegExpRecipe extends RegExpRecipe {
   @override
   BaseRegExpRecipe copy({
     String? expr,
+    RegExpTag? tag,
   }) => BaseRegExpRecipe(
     expr ?? this.expr,
+    tag: tag ?? this.tag,
   );
   
   @override
@@ -59,10 +55,12 @@ final class AugmentedRegExpRecipe extends RegExpRecipe {
   @override
   AugmentedRegExpRecipe copy({
     RegExpRecipe? source,
-    Augmenter? augment
+    Augmenter? augment,
+    RegExpTag? tag,
   }) => AugmentedRegExpRecipe(
     source ?? this.source,
     augment ?? this.augment,
+    tag: tag ?? this.tag,
   );
 
   @override
@@ -85,9 +83,11 @@ final class JoinedRegExpRecipe extends RegExpRecipe {
   JoinedRegExpRecipe copy({
     List<RegExpRecipe>? sources,
     String? joinBy,
+    RegExpTag? tag,
   }) => JoinedRegExpRecipe(
     sources ?? this.sources,
     joinBy ?? this.joinBy,
+    tag: tag ?? this.tag,
   );
 
   @override
@@ -109,10 +109,12 @@ final class InvertibleRegExpRecipe extends AugmentedRegExpRecipe {
     RegExpRecipe? source,
     Augmenter? augment,
     bool? inverted,
+    RegExpTag? tag,
   }) => InvertibleRegExpRecipe(
     source ?? this.source,
     augment ?? this.augment,
     inverted: inverted ?? this.inverted,
+    tag: tag ?? this.tag,
   );
 }
 
@@ -133,10 +135,12 @@ final class TrackedRegExpRecipe extends AugmentedRegExpRecipe {
     RegExpRecipe? source,
     Augmenter? augment,
     GroupRef? ref,
+    RegExpTag? tag,
   }) => TrackedRegExpRecipe(
     source ?? this.source,
     augment ?? this.augment,
     ref: ref,
+    tag: tag ?? this.tag,
   );
 }
 

@@ -39,10 +39,10 @@ abstract base class RegExpBuilder<CollectionT> {
 
   RegExpRecipe concat(List<RegExpRecipe> recipes) => capture(_join(recipes, joinBy: ""));
 
-  RegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr, {RegExpTag? tag}) =>
+  RegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr, {RegExpTag tag = RegExpTag.none}) =>
     normalize(AugmentedRegExpRecipe(recipe, mapExpr, tag: tag));
 
-  RegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy, RegExpTag? tag}) {
+  RegExpRecipe _join(List<RegExpRecipe> recipes, {required String joinBy, RegExpTag tag = RegExpTag.none}) {
     if (recipes.isEmpty) throw ArgumentError("Joining list should not be empty.", "recipes"); 
     return normalize(JoinedRegExpRecipe(recipes, joinBy, tag: tag));
   }
