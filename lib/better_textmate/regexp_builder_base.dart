@@ -37,7 +37,7 @@ abstract base class RegExpBuilder<CollectionT> {
     return normalize(TrackedRegExpRecipe(inner, augment, ref: ref, tag: RegExpTag.capture));
   }
 
-  RegExpRecipe concat(List<RegExpRecipe> recipes) => capture(_join(recipes, joinBy: ""));
+  RegExpRecipe concat(List<RegExpRecipe> recipes) => capture(_join(recipes, joinBy: "", tag: RegExpTag.concat));
 
   RegExpRecipe _augment(RegExpRecipe recipe, String Function(String expr) mapExpr, {RegExpTag tag = RegExpTag.none}) =>
     normalize(AugmentedRegExpRecipe(recipe, mapExpr, tag: tag));

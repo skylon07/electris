@@ -206,7 +206,8 @@ void main() {
     //  - behindIs/Not(aheadIsNot) throws errors
     //  - behindIs(behindIsNot) throws errors
     //  - behindIsNot(behindIs) does NOT throw errors
-    //  - behindIs/Not(aheadIs) prunes aheadIs nodes
+    //  - behindIs/Not(concat(..., aheadIs)) prunes aheadIs nodes
+    //  - behindIs/Not(concat(aheadIs, ...)) throws errors
     //  - behindIsNot transforms correctly to aheadIsNot(behindIs)
 
 

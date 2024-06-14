@@ -12,8 +12,9 @@ RegExpRecipe normalize(RegExpRecipe recipe) {
 }
 
 
+typedef TransformFn = RegExpRecipe? Function(RegExpRecipe);
 extension _RecipeTraversal on RegExpRecipe {
-  RegExpRecipe traverseTransform(RegExpRecipe? Function(RegExpRecipe) transform) {
+  RegExpRecipe traverseTransform(TransformFn transform) {
     RegExpRecipe? prevRecipe = null;
     RegExpRecipe newRecipe = this;
     while (newRecipe != prevRecipe) {
@@ -43,6 +44,39 @@ extension _RecipeTraversal on RegExpRecipe {
     return newRecipe;
   }
 }
+
+TransformFn _combineTransforms(List<TransformFn> functions) {
+  return (RegExpRecipe source) {
+    for (var function in functions) {
+      var newSource = function(source);
+      if (newSource != source) return newSource;
+    }
+    return source;
+  };
+}
+
+TransformFn _transform_pruneAheadIs() {
+  var toPrune = <RegExpRecipe>{};
+  return (recipe) {
+    switch (recipe) {
+      case AugmentedRegExpRecipe(tag: RegExpTag.aheadIs, :var source): {
+        return toPrune.contains(recipe)? 
+          source : recipe;
+      }
+
+      case JoinedRegExpRecipe(tag: RegExpTag.concat, :var sources): {
+        var lastSource = sources.last;
+        if (lastSource.tag == RegExpTag.aheadIs) {
+          toPrune.add(lastSource);
+        }
+      }
+
+      default: break;
+    }
+    return recipe;
+  };
+}
+
 
 final class RecipeConfigurationError extends Error {
   final RegExpRecipe topRecipe;
@@ -138,25 +172,30 @@ InvertibleRegExpRecipe? _combineCharClasses(List<InvertibleRegExpRecipe> recipes
 
 RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
   var shouldTransform = false;
-  recipe.traverseTransform((source) {
-    switch (source.tag) {
-      case RegExpTag.capture:
-      case RegExpTag.either: {
-        shouldTransform = true;
-        return null;
-      }
+  recipe.traverseTransform(
+    _combineTransforms([
+      _transform_pruneAheadIs(),
+      (source) {
+        switch (source.tag) {
+          case RegExpTag.capture:
+          case RegExpTag.either: {
+            shouldTransform = true;
+            return null;
+          }
 
-      case RegExpTag.aheadIs: {
-        return (source as AugmentedRegExpRecipe).source;
-      }
+          case RegExpTag.aheadIs: {
+            throw RecipeConfigurationError(recipe, source);
+          }
 
-      case RegExpTag.aheadIsNot: {
-        throw RecipeConfigurationError(recipe, source);
-      }
+          case RegExpTag.aheadIsNot: {
+            throw RecipeConfigurationError(recipe, source);
+          }
 
-      default: return source;
-    }
-  });
+          default: return source;
+        }
+      },
+    ])
+  );
 
   if (shouldTransform) {
     return normalize(
@@ -173,18 +212,23 @@ RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
 
 
 RegExpRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
-  return recipe.traverseTransform((source) {
-    switch (source.tag) {
-      case RegExpTag.aheadIs: {
-        return (source as AugmentedRegExpRecipe).source;
-      }
+  return recipe.traverseTransform(
+    _combineTransforms([
+      _transform_pruneAheadIs(),
+      (source) {
+        switch (source.tag) {
+          case RegExpTag.aheadIs: {
+            throw RecipeConfigurationError(recipe, source, );
+          }
 
-      case RegExpTag.aheadIsNot:
-      case RegExpTag.behindIsNot: {
-        throw RecipeConfigurationError(recipe, source);
-      }
+          case RegExpTag.aheadIsNot:
+          case RegExpTag.behindIsNot: {
+            throw RecipeConfigurationError(recipe, source);
+          }
 
-      default: return source;
-    }
-  });
+          default: return source;
+        }
+      }
+    ])
+  );
 }

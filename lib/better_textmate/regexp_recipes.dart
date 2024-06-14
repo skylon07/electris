@@ -21,6 +21,7 @@ sealed class RegExpRecipe {
 enum RegExpTag {
   none,
   capture, either, chars,
+  concat,
   aheadIs, aheadIsNot,
   behindIs, behindIsNot,
 }
