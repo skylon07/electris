@@ -81,15 +81,17 @@ TransformFn _transform_pruneAheadIs() {
 final class RecipeConfigurationError extends Error {
   final RegExpRecipe topRecipe;
   final RegExpRecipe containedRecipe;
+  final String? details;
 
-  RecipeConfigurationError(this.topRecipe, this.containedRecipe);
+  RecipeConfigurationError(this.topRecipe, this.containedRecipe, [this.details]);
 
   @override
   String toString() {
     var topRecipeRep = _prettyRepOf(topRecipe, "...");
     var containedRecipeRep = _prettyRepOf(containedRecipe, "...");
     var fullRep = _prettyRepOf(topRecipe, "...$containedRecipeRep...");
-    return "Invalid regex configuration `$fullRep`: `$topRecipeRep` cannot contain `$containedRecipeRep";
+    var detailsStr = (details != null)? " ($details)" : "";
+    return "Invalid regex configuration `$fullRep`: `$topRecipeRep` cannot contain `$containedRecipeRep$detailsStr";
   }
 
   static String _prettyRepOf(RegExpRecipe recipe, String innerRep) {
@@ -184,7 +186,7 @@ RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
           }
 
           case RegExpTag.aheadIs: {
-            throw RecipeConfigurationError(recipe, source);
+            throw RecipeConfigurationError(recipe, source, "only allowed at the end of a `concat()`");
           }
 
           case RegExpTag.aheadIsNot: {
@@ -218,7 +220,7 @@ RegExpRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
       (source) {
         switch (source.tag) {
           case RegExpTag.aheadIs: {
-            throw RecipeConfigurationError(recipe, source, );
+            throw RecipeConfigurationError(recipe, source, "only allowed at the end of a `concat()`");
           }
 
           case RegExpTag.aheadIsNot:
