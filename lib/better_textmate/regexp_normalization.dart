@@ -140,11 +140,11 @@ EitherFlatClasses _flattenEither(JoinedRegExpRecipe recipe) {
         return null;
       }
 
-      case RegExpRecipe(): {
-        if (source.tag != RegExpTag.either) {
-          restList.add(source);
-        }
-        return source;
+      case RegExpRecipe(:var tag): {
+        if (tag == RegExpTag.either) return source;
+
+        restList.add(source);
+        return null;
       }
     }
   });
