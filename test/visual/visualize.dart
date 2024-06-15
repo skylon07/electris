@@ -6,6 +6,7 @@ part of 'something';
   part of 'something';
   part    of 'something';
 partof 'something';
+of 'something';
 
 void main() {
   var myVariable;
@@ -23,6 +24,13 @@ void main() {
 
   late final FIXED = 0xabcd;
   TESTextension type;
+  List<int> someNumbers = [
+    1.5,    !1.
+    0x5afd, !0xfghj
+    1e-567, !1.e+445,
+    1.2E51, !.E215,
+
+  ]
 
   var my_var$ = "test";
   var my_var_ = "test";
@@ -37,6 +45,8 @@ extension type MyInt(int n) {}
  extension type MyInt2(int n) {}
  extension   type MyInt3(int n) {}
 
+@myAnnotation
+  @myAnnotation.Yay2
 class MyClass {
   // hard keywords
   for(){}
@@ -55,4 +65,13 @@ class MyClass {
   part  of () {}
   part(){}
   part () {}
+
+  operator +() {}
+  operator +=() {}
+
+  operatorThingy() {
+    this.operatorOperations = 8;
+    performFunction(myDataType? something);
+    performFunction(isRequired? requiredThing : notRequiredThing);
+  }
 }
