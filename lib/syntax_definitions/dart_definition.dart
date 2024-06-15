@@ -44,6 +44,10 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     "keyword",
     styleName: ElectrisStyleName.sourceCode_operator,
     match: collection.keyword,
+    captures: {
+      collection.keywordOperator_valid: ElectrisStyleName.sourceCode_functionCall,
+      collection.keywordOperator_invalid: ElectrisStyleName.sourceCode_escape,
+    },
   );
 
   late final annotation = createItem(
@@ -108,9 +112,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe variableType;
   late final RegExpRecipe variableConst;
   late final RegExpRecipe keyword;
-  late final RegExpRecipe operatorOperations;
-  late final GroupRef     operatorOperations_valid = GroupRef();
-  late final GroupRef     operatorOperations_invalid = GroupRef();
+  late final GroupRef     keywordOperator_valid = GroupRef();
+  late final GroupRef     keywordOperator_invalid = GroupRef();
   late final RegExpRecipe annotation;
   late final RegExpRecipe literalNumber;
   late final RegExpRecipe literalString_begin;
@@ -168,6 +171,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("throw"),    phrase("rethrow"),  phrase("assert"), phrase("this"),
       phrase("new"),      phrase("return"),
     ]);
+    
     var keywordSoft = concat([
       either([
         phrase("import"),     phrase("export"),     phrase("library"),    phrase("hide"),
@@ -178,41 +182,40 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         phrase("extension"),  phrase("when"),       phrase("on"),         phrase("async"),
         phrase("await"),      phrase("sync"),       phrase("get"),        phrase("set"),
         phrase("yield"),      phrase("external"),   phrase("required"),   phrase("factory"),
-        phrase("operator"),   phrase("macro"),
+        phrase("macro"),
       ]),
       // TODO: this should probably be a variable or two... ("function params" and "function type params")
       aheadIsNot(spaceBefore(chars("(<"))),
     ]);
-    this.keyword = either([keywordHard, keywordSoft]);
 
-    this.operatorOperations = concat([
-      behindIs(phrase("operator")),
+    var validOperator = concat([
       either([
-        capture(
-          concat([
-            either([
-              exactly(">"),   exactly(">="),  exactly("<"),   exactly("<="),  exactly("=="),
-              exactly("+"),   exactly("-"),   exactly("*"),   exactly("/"),   exactly("~/"),  exactly("%"),
-              exactly("<<"),  exactly(">>"),  exactly(">>>"),
-              exactly("^"),   exactly("&"),   exactly("|"),   exactly("~"),
-              exactly("[]"),  exactly("[]="),
-            ]),
-            aheadIs(either([
-              spaceBefore(chars("(<")),
-              endsWith(space(req: false)),
-            ])),
-          ]),
-          operatorOperations_valid,
-        ),
-        capture(
-          either([
-            zeroOrMore(notChars(r"(\s")),
-            endsWith(nothing),
-          ]),
-          operatorOperations_invalid,
-        ),
+        exactly(">"),   exactly(">="),  exactly("<"),   exactly("<="),  exactly("=="),
+        exactly("+"),   exactly("-"),   exactly("*"),   exactly("/"),   exactly("~/"),  exactly("%"),
+        exactly("<<"),  exactly(">>"),  exactly(">>>"),
+        exactly("^"),   exactly("&"),   exactly("|"),   exactly("~"),
+        exactly("[]"),  exactly("[]="),
+      ]),
+      aheadIs(either([
+        // TODO: this should probably be a variable or two... ("function params" and "function type params")
+        spaceBefore(chars("(<")),
+        endsWith(space(req: false)),
+      ])),
+    ]);
+    var invalidOperator = either([
+      zeroOrMore(notChars(r"(\s")),
+      endsWith(nothing),
+    ]);
+    var keywordOperator = concat([
+      phrase("operator"),
+      space(req: false),
+      either([
+        capture(validOperator, this.keywordOperator_valid),
+        capture(invalidOperator, this.keywordOperator_invalid),
       ]),
     ]);
+
+    this.keyword = either([keywordHard, keywordSoft, keywordOperator]);
 
     this.annotation = concat([
       exactly("@"),
