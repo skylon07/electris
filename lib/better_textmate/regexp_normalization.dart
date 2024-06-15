@@ -43,32 +43,39 @@ extension _RecipeTraversal on RegExpRecipe {
     
     return newRecipe;
   }
-}
 
-TransformFn _combineTransforms(List<TransformFn> functions) {
-  return (RegExpRecipe source) {
-    for (var function in functions) {
-      var newSource = function(source);
-      if (newSource != source) return newSource;
+  RegExpRecipe traverseTransformAll(Iterable<TransformFn> transforms) {
+    var newRecipe = this;
+    for (var transform in transforms) {
+      newRecipe = newRecipe.traverseTransform(transform);
     }
-    return source;
-  };
+    return newRecipe;
+  }
 }
 
-TransformFn _transform_pruneAheadIs() {
-  var toPrune = <RegExpRecipe>{};
+TransformFn _transform_pruneAheadIs(RegExpRecipe rootRecipe) {
+  var sourcesToCheck = <RegExpRecipe>{rootRecipe, rootRecipe.sources.first};
   return (recipe) {
+    if (!sourcesToCheck.contains(recipe)) return null;
+
     switch (recipe) {
+      // pruning case
       case AugmentedRegExpRecipe(tag: RegExpTag.aheadIs, :var source): {
-        return toPrune.contains(recipe)? 
-          source : recipe;
+        return source;
       }
 
+      // recursive checking cases
+
+      case AugmentedRegExpRecipe(tag: RegExpTag.capture, :var source): {
+        sourcesToCheck.add(source);
+      }
+      
       case JoinedRegExpRecipe(tag: RegExpTag.concat, :var sources): {
-        var lastSource = sources.last;
-        if (lastSource.tag == RegExpTag.aheadIs) {
-          toPrune.add(lastSource);
-        }
+        sourcesToCheck.add(sources.last);
+      }
+
+      case JoinedRegExpRecipe(tag: RegExpTag.either, :var sources): {
+        sourcesToCheck.addAll(sources);
       }
 
       default: break;
@@ -173,33 +180,31 @@ InvertibleRegExpRecipe? _combineCharClasses(List<InvertibleRegExpRecipe> recipes
 
 
 RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
-  var shouldTransform = false;
-  recipe.traverseTransform(
-    _combineTransforms([
-      _transform_pruneAheadIs(),
-      (source) {
-        switch (source.tag) {
-          case RegExpTag.capture:
-          case RegExpTag.either: {
-            shouldTransform = true;
-            return null;
-          }
-
-          case RegExpTag.aheadIs: {
-            throw RecipeConfigurationError(recipe, source, "only allowed at the end of a `concat()`");
-          }
-
-          case RegExpTag.aheadIsNot: {
-            throw RecipeConfigurationError(recipe, source);
-          }
-
-          default: return source;
+  var useAlternateRecipe = false;
+  recipe.traverseTransformAll([
+    _transform_pruneAheadIs(recipe),
+    (source) {
+      switch (source.tag) {
+        case RegExpTag.capture:
+        case RegExpTag.either: {
+          useAlternateRecipe = true;
+          return null;
         }
-      },
-    ])
-  );
 
-  if (shouldTransform) {
+        case RegExpTag.aheadIs: {
+          throw RecipeConfigurationError(recipe, source, "only allowed in the last position of this expression");
+        }
+
+        case RegExpTag.aheadIsNot: {
+          throw RecipeConfigurationError(recipe, source);
+        }
+
+        default: return source;
+      }
+    },
+  ]);
+
+  if (useAlternateRecipe) {
     return normalize(
       regExpBuilder.aheadIsNot(
         regExpBuilder.behindIs(
@@ -214,23 +219,21 @@ RegExpRecipe _normalizeBehindIsNot(AugmentedRegExpRecipe recipe) {
 
 
 RegExpRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
-  return recipe.traverseTransform(
-    _combineTransforms([
-      _transform_pruneAheadIs(),
-      (source) {
-        switch (source.tag) {
-          case RegExpTag.aheadIs: {
-            throw RecipeConfigurationError(recipe, source, "only allowed at the end of a `concat()`");
-          }
-
-          case RegExpTag.aheadIsNot:
-          case RegExpTag.behindIsNot: {
-            throw RecipeConfigurationError(recipe, source);
-          }
-
-          default: return source;
+  return recipe.traverseTransformAll([
+    _transform_pruneAheadIs(recipe),
+    (source) {
+      switch (source.tag) {
+        case RegExpTag.aheadIs: {
+          throw RecipeConfigurationError(recipe, source, "only allowed in the last position of this expression");
         }
+
+        case RegExpTag.aheadIsNot:
+        case RegExpTag.behindIsNot: {
+          throw RecipeConfigurationError(recipe, source);
+        }
+
+        default: return source;
       }
-    ])
-  );
+    }
+  ]);
 }
