@@ -35,7 +35,7 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
       List<DefinitionItem>? Function()? createInnerItems,
     }
   ) {
-    var item = DefinitionItem(
+    var item = DefinitionItem._(
       identifier,
       parent: this,
       createBody: createBody,
@@ -170,14 +170,13 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
   }
 }
 
-// TODO: should this be private...? (Or it should at least control binding to its parent in the constructor)
 final class DefinitionItem {
   final SyntaxDefinition parent;
   final String identifier;
   final Pattern Function(String debugName, List<Pattern> innerPatterns) createBody;
   final List<DefinitionItem>? Function()? createInnerItems;
 
-  DefinitionItem(
+  DefinitionItem._(
     this.identifier,
     {
       required this.parent,
