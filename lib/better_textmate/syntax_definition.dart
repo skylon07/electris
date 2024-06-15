@@ -201,3 +201,8 @@ final class DefinitionItem {
   IncludePattern asIncludePattern() => _includePattern;
   late final _includePattern = IncludePattern(identifier: identifier);
 }
+
+
+abstract interface class StyleName {
+  String get scope;
+}
