@@ -5,7 +5,7 @@ sealed class RegExpRecipe {
   final List<RegExpRecipe> sources;
   final GroupTracker _tracker;
   final RegExpTag tag;
-  bool _hasCompiled = false;
+  var _hasCompiled = false;
 
   RegExpRecipe(this.sources, this._tracker, {this.tag = RegExpTag.none});
 
@@ -149,7 +149,10 @@ final class TrackedRegExpRecipe extends AugmentedRegExpRecipe {
 }
 
 
-class GroupRef {}
+class GroupRef {
+  var _positionUsed = false;
+  bool get positionUsed => _positionUsed;
+}
 
 // TODO: document operation meanings
 final class GroupTracker {
@@ -172,6 +175,7 @@ final class GroupTracker {
 
   int getPosition(GroupRef ref) {
     if (!_positions.containsKey(ref)) throw ArgumentError("Position not tracked for ref!", "ref");
+    ref._positionUsed = true;
     return _positions[ref]!;
   }
 

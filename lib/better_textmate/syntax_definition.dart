@@ -185,8 +185,13 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
       if (collectionDeclaration is VariableMirror) {
         try {
           var collectionValue = collectionInstance.delegate(Invocation.getter(collectionDeclaration.simpleName));
-          if (collectionValue is RegExpRecipe && !collectionValue.hasCompiled) {
-            offendingCollectionDeclarations.add((collectionDeclaration, "unused recipe"));
+          var offendingReason = switch (collectionValue) {
+            RegExpRecipe(hasCompiled: false) => "unused recipe",
+            GroupRef(positionUsed: false) => "unused ref",
+            _ => null,
+          };
+          if (offendingReason != null) {
+            offendingCollectionDeclarations.add((collectionDeclaration, offendingReason));
           }
         } catch (error) {
           offendingCollectionDeclarations.add((collectionDeclaration, "access error"));
