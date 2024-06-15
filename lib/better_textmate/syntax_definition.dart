@@ -1,3 +1,5 @@
+import 'dart:mirrors';
+
 import './syntax_printer.dart';
 import './regexp_builder_base.dart';
 import './regexp_recipes.dart';
@@ -21,12 +23,18 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
 
   List<DefinitionItem> get rootItems;
 
-  late final mainBody = MainBody(
-    fileTypes: fileTypes,
-    langName: langName,
-    topLevelPatterns: [for (var item in rootItems) item.asIncludePattern()],
-    repository: [for (var item in _items) item.asRepositoryItem()],
-  );
+  late final mainBody = _createMainBody();
+  // TODO: is there a way to add tests for this?
+  MainBody _createMainBody() {
+    var body = MainBody(
+      fileTypes: fileTypes,
+      langName: langName,
+      topLevelPatterns: [for (var item in rootItems) item.asIncludePattern()],
+      repository: [for (var item in _items) item.asRepositoryItem()],
+    );
+    _warnBadCollectionDeclarations();
+    return body;
+  }
 
   DefinitionItem createItemDirect(
     String identifier,
@@ -168,6 +176,30 @@ abstract base class SyntaxDefinition<BuilderT extends RegExpBuilder<CollectionT>
     }
     return patterns;
   }
+
+  void _warnBadCollectionDeclarations() {
+    var collectionInstance = reflect(collection);
+    var offendingCollectionDeclarations = <(VariableMirror, String)>[];
+    for (var collectionDeclaration in collectionInstance.type.declarations.values) {
+      // check it isn't a constructor, method, etc.
+      if (collectionDeclaration is VariableMirror) {
+        try {
+          var collectionValue = collectionInstance.delegate(Invocation.getter(collectionDeclaration.simpleName));
+          if (collectionValue is RegExpRecipe && !collectionValue.hasCompiled) {
+            offendingCollectionDeclarations.add((collectionDeclaration, "unused recipe"));
+          }
+        } catch (error) {
+          offendingCollectionDeclarations.add((collectionDeclaration, "access error"));
+        }
+      }
+    }
+    if (offendingCollectionDeclarations.isNotEmpty) {
+      print("Warning: Bad declarations found in collection '${collectionInstance.type.simpleName.toPrettyString()}':");
+      for (var (offendingDeclaration, reason) in offendingCollectionDeclarations) {
+        print("  - '${offendingDeclaration.simpleName.toPrettyString()}': $reason");
+      }
+    }
+  }
 }
 
 final class DefinitionItem {
@@ -205,4 +237,12 @@ final class DefinitionItem {
 
 abstract interface class StyleName {
   String get scope;
+}
+
+
+extension _SymbolPrettyStrings on Symbol {
+  String toPrettyString() {
+    var str = toString();
+    return str.substring("Symbol(\"".length, str.length - "\")".length);
+  }
 }

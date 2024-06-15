@@ -5,11 +5,16 @@ sealed class RegExpRecipe {
   final List<RegExpRecipe> sources;
   final GroupTracker _tracker;
   final RegExpTag tag;
+  bool _hasCompiled = false;
 
   RegExpRecipe(this.sources, this._tracker, {this.tag = RegExpTag.none});
 
-  String compile() => _expr;
+  String compile() {
+    _hasCompiled = true;
+    return _expr;
+  }
   late final _expr = _createExpr();
+  bool get hasCompiled => _hasCompiled;
 
   int positionOf(GroupRef ref) => _tracker.getPosition(ref);
 
