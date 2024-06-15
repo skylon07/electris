@@ -1,7 +1,8 @@
 import 'dart:isolate';
 
+import 'package:vscode_theming/vscode_theming.dart';
+
 import './syntax_definitions/dart_definition.dart';
-import './better_textmate/syntax_printer.dart';
 
 
 void main() async {

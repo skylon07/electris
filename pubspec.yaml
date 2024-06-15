@@ -3,5 +3,7 @@ name: electris_generator
 environment:
   sdk: '^3.4.0'
 
-dev_dependencies:
-  test: ^1.25.2
+dependencies:
+  vscode_theming:
+    path: /Users/skylon07/Code/vscode_theming/
+
