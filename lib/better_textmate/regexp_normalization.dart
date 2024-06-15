@@ -237,3 +237,5 @@ RegExpRecipe _normalizeBehindIs(AugmentedRegExpRecipe recipe) {
     }
   ]);
 }
+
+// TODO: normalize redundant capture()s, checking for reused refs along the way
