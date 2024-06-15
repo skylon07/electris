@@ -97,8 +97,8 @@ sealed class Pattern extends SyntaxElement {
   Map toJson() {
     final styleName = this.styleName;
     var name =
-      "${styleName != null ? "electris.${styleName.scope} " : ""}"
-      "${debugName.isNotEmpty ? "electris.syntax.$debugName" : ""}";
+      "${(styleName != null)? "electris.${styleName.scope} " : ""}"
+      "${debugName.isNotEmpty? "electris.syntax.$debugName" : ""}";
     return {
       if (name.isNotEmpty)
         'name': name,
@@ -250,7 +250,7 @@ final class IncludePattern extends Pattern {
     var shouldTreatAsReference = identifier.isNotEmpty && identifier[0] != "%";
     return {
       ...super.toJson(),
-      'include': shouldTreatAsReference ? "#$identifier" : identifier.substring(1),
+      'include': shouldTreatAsReference? "#$identifier" : identifier.substring(1),
     };
   }
 }
