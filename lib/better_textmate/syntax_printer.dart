@@ -56,7 +56,7 @@ final class MainBody extends SyntaxElement {
   Map toJson() {
     return {
       "fileTypes": fileTypes,
-      "scopeName": "electris.source.$langName",
+      "scopeName": "source.$langName",
       "patterns": topLevelPatterns,
       "repository": {
         for (var item in repository)
@@ -100,8 +100,8 @@ sealed class Pattern extends SyntaxElement {
   Map toJson() {
     final styleName = this.styleName;
     var name =
-      "${(styleName != null)? "electris.${styleName.scope} " : ""}"
-      "${debugName.isNotEmpty? "electris.syntax.$debugName" : ""}";
+      "${(styleName != null)? "${styleName.scope} " : ""}"
+      "${debugName.isNotEmpty? "debugName.$debugName" : ""}";
     return {
       if (name.isNotEmpty)
         'name': name,
