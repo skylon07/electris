@@ -14,7 +14,7 @@ void main() async {
     // TODO: make sure second "$" is recognized as operator in new dart syntax
     // (old recognizes it as part of the variable `basePath$`)
     Isolate.run(() {
-      var fullPath = "$basePath${definition.langName}-${definition.isTextSyntax? "text":"source"}-generated.tmLanguage.json";
+      var fullPath = "$basePath${definition.langName}-${definition.isTextSyntax ? "text":"source"}-generated.tmLanguage.json";
       var syntax = definition.mainBody;
       return SyntaxPrinter.instance.printToFile(syntax, fullPath);
     });
