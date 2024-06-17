@@ -11,7 +11,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   );
 
   @override
-  late final rootItems = [
+  late final rootUnits = [
     keyword,
 
     literalNumber,
@@ -22,25 +22,25 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     variablePlain,
   ];
 
-  late final variablePlain = createItem(
+  late final variablePlain = createUnit(
     "variablePlain",
     styleName: ElectrisStyleName.sourceCode_variable,
     match: collection.variablePlain,
   );
 
-  late final variableType = createItem(
+  late final variableType = createUnit(
     "variableType",
     styleName: ElectrisStyleName.sourceCode_types_type,
     match: collection.variableType,
   );
 
-  late final variableConst = createItem(
+  late final variableConst = createUnit(
     "variableConst",
     styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
     match: collection.variableConst,
   );
 
-  late final keyword = createItem(
+  late final keyword = createUnit(
     "keyword",
     styleName: ElectrisStyleName.sourceCode_operator,
     match: collection.keyword,
@@ -50,13 +50,13 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     },
   );
 
-  late final annotation = createItem(
+  late final annotation = createUnit(
     "annotation",
     styleName: ElectrisStyleName.sourceCode_operator,
     match: collection.annotation,
   );
 
-  late final literalNumber = createItem(
+  late final literalNumber = createUnit(
     "literalNumber",
     styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
     match: collection.literalNumber,
@@ -116,8 +116,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final GroupRef     keywordOperator_invalid = GroupRef();
   late final RegExpRecipe annotation;
   late final RegExpRecipe literalNumber;
-  late final RegExpRecipe literalString_begin;
-  late final RegExpRecipe literalString_end;
+  late final RegExpPair   literalString_double;
 
   @override
   DartRegExpCollector createCollection() {
