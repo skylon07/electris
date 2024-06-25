@@ -15,6 +15,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     keyword,
 
     literalNumber,
+    literalString,
 
     annotation,
     variableConst,
@@ -60,6 +61,71 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     "literalNumber",
     styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
     match: collection.literalNumber,
+  );
+
+  late final literalString = createUnit(
+    "literalString",
+    styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
+    innerUnits: () => [
+      createUnitInline(
+        matchPair: collection.literalStringDouble,
+        innerUnits: () => literalStringInnerUnits,
+      ),
+      createUnitInline(
+        matchPair: collection.literalStringSingle,
+        innerUnits: () => literalStringInnerUnits,
+      ),
+      createUnitInline(
+        matchPair: collection.literalStringTripleDouble,
+        innerUnits: () => literalStringInnerUnits,
+      ),
+      createUnitInline(
+        matchPair: collection.literalStringTripleSingle,
+        innerUnits: () => literalStringInnerUnits,
+      ),
+      createUnitInline(matchPair: collection.rawStringDouble),
+      createUnitInline(matchPair: collection.rawStringSingle),
+      createUnitInline(matchPair: collection.rawStringTripleDouble),
+      createUnitInline(matchPair: collection.rawStringTripleSingle),
+    ]
+  );
+
+  late final literalStringInnerUnits = [
+    literalStringInterpOper,
+    literalStringEscapeSequence,
+  ];
+
+  late final literalStringInterpOper = createUnit(
+    "literalStringInterpOper",
+    innerUnits: () => [
+      createUnitInline(
+        matchPair: collection.literalStringInterpOperExpression,
+        beginCaptures: {
+          collection.literalStringInterpOperExpression_brace: ElectrisStyleName.sourceCode_operator,
+        },
+        endCaptures: {
+          collection.literalStringInterpOperExpression_brace: ElectrisStyleName.sourceCode_operator,
+        },
+        innerUnits: () => [self],
+      ),
+      // this unit must be last; it handles the base `$` case
+      createUnitInline(
+        styleName: ElectrisStyleName.sourceCode_operator,
+        matchPair: collection.literalStringInterpOperIdentifier,
+        innerUnits: () => [
+          createUnitInline(
+            styleName: ElectrisStyleName.sourceCode_variable,
+            match: collection.variablePlainNoDollar,
+          ),
+        ],
+      ),
+    ],
+  );
+
+  late final literalStringEscapeSequence = createUnit(
+    "literalStringEscapeSequence",
+    styleName: ElectrisStyleName.sourceCode_escape,
+    match: collection.literalStringEscapeSequence,
   );
 
 
@@ -109,14 +175,30 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
 final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe variablePlain;
+  late final RegExpRecipe variablePlainNoDollar;
   late final RegExpRecipe variableType;
   late final RegExpRecipe variableConst;
+
   late final RegExpRecipe keyword;
   late final GroupRef     keywordOperator_valid = GroupRef();
   late final GroupRef     keywordOperator_invalid = GroupRef();
+
   late final RegExpRecipe annotation;
+
   late final RegExpRecipe literalNumber;
-  late final RegExpPair   literalString_double;
+
+  late final RegExpPair   literalStringDouble;
+  late final RegExpPair   literalStringSingle;
+  late final RegExpPair   literalStringTripleDouble;
+  late final RegExpPair   literalStringTripleSingle;
+  late final RegExpPair   rawStringDouble;
+  late final RegExpPair   rawStringSingle;
+  late final RegExpPair   rawStringTripleDouble;
+  late final RegExpPair   rawStringTripleSingle;
+  late final RegExpPair   literalStringInterpOperIdentifier;
+  late final RegExpPair   literalStringInterpOperExpression;
+  late final GroupRef     literalStringInterpOperExpression_brace = GroupRef();
+  late final RegExpRecipe literalStringEscapeSequence;
 
   @override
   DartRegExpCollector createCollection() {
@@ -125,12 +207,19 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     var identifierLowerHexChar  = chars(r"a-f");
     var identifierUpperHexChar  = chars(r"A-F");
     var identifierNumberChar    = chars(r"0-9");
-    var identifierSpecialChar   = chars(r"_$");
-    var identifierChar = either([
+    var identifierSpacerChar    = chars(r"_");
+    var identifierDollarChar    = chars(r"$");
+    var identifierCharWithoutDollar = either([
       identifierLowerChar,
       identifierUpperChar,
       identifierNumberChar,
-      identifierSpecialChar,
+      identifierSpacerChar,
+    ]);
+    // TODO: this produces [$]|([a-z...]); it thinks capture(either(chars(...))) is a "rest";
+    //  it should instead combine all of them
+    var identifierChar = either([
+      identifierCharWithoutDollar,
+      identifierDollarChar,
     ]);
     var identifierCharOrDot = either([
       identifierChar,
@@ -143,8 +232,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
 
     this.variablePlain = oneOrMore(identifierChar);
+    this.variablePlainNoDollar = oneOrMore(identifierCharWithoutDollar);
     this.variableType = concat([
-      zeroOrMore(identifierSpecialChar),
+      zeroOrMore(identifierSpacerChar),
       identifierUpperChar,
       zeroOrMore(identifierChar),
     ]);
@@ -244,6 +334,83 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       concat([
         literalNumberDecimal,
         optional(literalNumberScientific)
+      ]),
+    ]);
+
+    RegExpPair stringPattern(RegExpRecipe pattern, {required bool eolTerminates, required bool isRaw}) {
+      var patterns = pair(begin: pattern, end: pattern);
+      if (eolTerminates) {
+        patterns = pair(
+          begin: patterns.begin,
+          end: either([patterns.end, endsWith(nothing)]),
+        );
+      }
+      if (isRaw) {
+        patterns = pair(
+          begin: concat([exactly("r"), patterns.begin]),
+          end: patterns.end,
+        );
+      }
+      return patterns;
+    }
+    RegExpPair stringPattern_singlePair(RegExpRecipe pattern, {required bool isRaw}) =>
+      stringPattern(
+        pattern,
+        eolTerminates: true,
+        isRaw: isRaw,
+      );
+    RegExpPair stringPattern_triplePair(RegExpRecipe pattern, {required bool isRaw}) =>
+      stringPattern(
+        pattern,
+        eolTerminates: false,
+        isRaw: isRaw,
+      );
+    var stringDQuote = exactly('"');
+    var stringSQuote = exactly("'");
+    var stringTDQuote = exactly('"""');
+    var stringTSQuote = exactly("'''");
+    this.literalStringDouble       = stringPattern_singlePair(stringDQuote,   isRaw: false);
+    this.literalStringSingle       = stringPattern_singlePair(stringSQuote,   isRaw: false);
+    this.literalStringTripleDouble = stringPattern_triplePair(stringTDQuote,  isRaw: false);
+    this.literalStringTripleSingle = stringPattern_triplePair(stringTSQuote,  isRaw: false);
+    this.rawStringDouble           = stringPattern_singlePair(stringDQuote,   isRaw: true);
+    this.rawStringSingle           = stringPattern_singlePair(stringSQuote,   isRaw: true);
+    this.rawStringTripleDouble     = stringPattern_triplePair(stringTDQuote,  isRaw: true);
+    this.rawStringTripleSingle     = stringPattern_triplePair(stringTSQuote,  isRaw: true);
+
+    this.literalStringInterpOperIdentifier = pair( 
+      begin: exactly(r"$"),
+      end: aheadIsNot(identifierCharWithoutDollar),
+    );
+    this.literalStringInterpOperExpression = pair(
+      begin: capture(
+        exactly(r"${"),
+        this.literalStringInterpOperExpression_brace,
+      ),
+      end: capture(
+        exactly(r"}"),
+        this.literalStringInterpOperExpression_brace,
+      ),
+    );
+    this.literalStringEscapeSequence = either([
+      concat([
+        exactly(r"\x"),
+        repeatAtMost(identifierHexChar, 2),
+      ]),
+      // \u{...} case must be above general \u... case
+      concat([
+        exactly(r"\u{"),
+        zeroOrMore(identifierHexChar),
+        exactly(r"}"),
+      ]),
+      concat([
+        exactly(r"\u"),
+        repeatAtMost(identifierHexChar, 4),
+      ]),
+      // general/usual case has to be last
+      concat([
+        exactly(r"\"),
+        optional(anything),
       ]),
     ]);
 
