@@ -15,6 +15,7 @@ void main() async {
     // (old recognizes it as part of the variable `basePath$`)
     Isolate.run(() {
       var fullPath = "$basePath${definition.langName}-${definition.isTextSyntax ? "text":"source"}-generated.tmLanguage.json";
+      // TODO: is this the best UX? maybe have the definition be able to print directly...?
       var syntax = definition.mainBody;
       return SyntaxPrinter.instance.printToFile(syntax, fullPath);
     });
