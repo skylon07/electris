@@ -16,6 +16,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
     literalNumber,
     literalString,
+    literalKeyword,
 
     annotation,
     variableConst,
@@ -128,6 +129,12 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.literalStringEscapeSequence,
   );
 
+  late final literalKeyword = createUnit(
+    "literalKeyword",
+    styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
+    match: collection.literalKeyword,
+  );
+  
 
   /// Detects non-[Record] pairs of parentheses, like `(...) {...}`.
   /// 
@@ -199,6 +206,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair   literalStringInterpOperExpression;
   late final GroupRef     literalStringInterpOperExpression_brace = GroupRef();
   late final RegExpRecipe literalStringEscapeSequence;
+  late final RegExpRecipe literalKeyword;
 
   @override
   DartRegExpCollector createCollection() {
@@ -412,6 +420,12 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         exactly(r"\"),
         optional(anything),
       ]),
+    ]);
+
+    this.literalKeyword = either([
+      phrase("true"),
+      phrase("false"),
+      phrase("null"),
     ]);
 
     return this;
