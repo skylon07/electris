@@ -1,44 +1,133 @@
+// keywords
 import 'dart:async';
   import 'dart:async';
 
+// keywords with spaces
 part 'something';
 part of 'something';
   part of 'something';
   part    of 'something';
+
+// not actually keywords
 partof 'something';
 of 'something';
 
-void main() {
-  var myVariable;
-  var __$_myVariable_yay;
-  
-  var __$_MyType_yay;
-  var __$_MY_TYPE_yay;
-  var T;
+// operators (valid)
+operator <() {}
+operator >() {}
+operator ==() {}
+operator []() {}
+operator []=() {}
 
-  var __$_MY_CONST_YAY;
-  var CN;
+// operators (invalid)
+operator []==() {}
+operator asdf() {}
+
+
+
+// variables
+var myVariable;
+var __$_myVariable_yay;
+
+// type variables
+var __$_MyType_yay;
+var __$_MY_TYPE_yay;
+var T;
+
+// const variables
+var __$_MY_CONST_YAY;
+var CN;
+
+
+
+// number literals (good, !bad)
+var someNumbers = [
+  1.5,    !1.
+  0x5afd, !0xfghj
+  1e-567, !1.e+445,
+  1.2E51, !.E215,
+];
+
+// string literals
+str = "test";
+str = 'test';
+str = "$my_var_";
+str = "$my_var$"; // second `$` should be an operator
+str = "$my_var_$my_var_";
+str = "${my_var_}$my_var_";
+str = "$my_var_${my_var_}";
+str = "strstr\n\"; // this comment is actually part of the string!
+str = "strstr\n\""; // this comment is not a part of the string either
+str = "strstr\n\\"; // this comment is not a part of the string
+str = "strstr\n\\\"; // ...but this one is again!
+str = "strstr\n\\\\"; // this comment is not a part of the string
+str = "strstr\n\\\\\"; // ...but this one is again!
+str = "strstr\n\\\\\\"; // this comment is not a part of the string
+str = "strstr\n\\\\\\\"; // ...but this one is again!
+str = "something\xab";
+str = "something\u{abcd}";
+str = r"rawstrstr\n\";
+str = r"rawstrstr\n\\";
+str = r"rawstrstr\n\\\";
+str = r"rawstrstr\n\\\\";
+str = r"rawstrstr\n\\\\\";
+str = r"rawstrstr\n\\\\\\";
+str = r"rawstrstr\n\\\\\\\";
+str = r"somethingraw\xab";
+str = r"somethingraw\u{abcd}";
+
+// keyword literals
+true == false == null
+
+
+
+
+// functions
+...
+
+// hard keywords as functions (should look like keywords)
+for(){}
+for <type> () {}
+for () {}
+while(){}
+while <type> () {}
+while () {}
+this(){}
+this <type> () {}
+this () {}
+
+// soft keywords as functions (should look like functions)
+extension(){}
+extension <type> () {}
+extension () {}
+import(){}
+import <type> () {}
+import () {}
+part(){}
+part <type> () {}
+part () {}
+// (should recognize `part` as a keyword, not a type)
+part of(){}
+part of <type> () {}
+part  of () {}
+
+
+
+
+
+
+
+void main() {
+  // make sure `thing2` is light green
+  (String thing, String? thing2) someRecord;
   
   var vars = Type? "str-literal" : int;
   vars = null;
 
   late final FIXED = 0xabcd;
-  TESTextension type;
-  List<int> someNumbers = [
-    1.5,    !1.
-    0x5afd, !0xfghj
-    1e-567, !1.e+445,
-    1.2E51, !.E215,
+  TESTextension type; "asdf"
+  asdf123456the_end
 
-  ]
-
-  var my_var$ = "test";
-  var my_var_ = "test";
-  STRING STRING1 = "$my_var_";
-  STRING STRING2 = "$my_var$"; // second `$` should be an operator
-  STRING STRING3 = "$my_var_$my_var_";
-  STRING STRING4 = "${my_var_}$my_var_";
-  STRING STRING5 = "$my_var_${my_var_}";
 }
 
 extension type MyInt(int n) {}
@@ -66,12 +155,13 @@ class MyClass {
   part(){}
   part () {}
 
+
   operator +() {}
   operator +=() {}
 
   operatorThingy() {
     this.operatorOperations = 8;
     performFunction(myDataType? something);
-    performFunction(isRequired? requiredThing : notRequiredThing);
+    performFunction(isRequired ? requiredThing : notRequiredThing);
   }
 }
