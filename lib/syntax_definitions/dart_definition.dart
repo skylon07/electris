@@ -12,6 +12,8 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
   @override
   late final rootUnits = [
+    comments,
+
     keyword,
 
     literalNumber,
@@ -135,6 +137,26 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.literalKeyword,
   );
   
+  late final ScopeUnit comments = createUnit(
+    "comments",
+    innerUnits: () => [
+      // this unit must be above singleLineComment, since it is a substring
+      createUnitInline(
+        styleName: ElectrisStyleName.sourceCode_documentation,
+        match: collection.singleLineDocComment,
+      ),
+      createUnitInline(
+        styleName: ElectrisStyleName.sourceCode_comment,
+        match: collection.singleLineComment,
+      ),
+      createUnitInline(
+        styleName: ElectrisStyleName.sourceCode_comment,
+        matchPair: collection.multiLineComment,
+        innerUnits: () => [comments],
+      ),
+    ]
+  );
+
 
   /// Detects non-[Record] pairs of parentheses, like `(...) {...}`.
   /// 
@@ -207,6 +229,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final GroupRef     literalStringInterpOperExpression_brace = GroupRef();
   late final RegExpRecipe literalStringEscapeSequence;
   late final RegExpRecipe literalKeyword;
+  late final RegExpRecipe singleLineComment;
+  late final RegExpRecipe singleLineDocComment;
+  late final RegExpPair   multiLineComment;
 
   @override
   DartRegExpCollector createCollection() {
@@ -427,6 +452,19 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("false"),
       phrase("null"),
     ]);
+
+    this.singleLineComment = concat([
+      exactly("//"),
+      zeroOrMore(anything),
+    ]);
+    this.singleLineDocComment = concat([
+      exactly("///"),
+      zeroOrMore(anything),
+    ]);
+    this.multiLineComment = pair(
+      begin: exactly("/*"),
+      end: exactly("*/"),
+    );
 
     return this;
   }

@@ -1,3 +1,18 @@
+/// This is a file intended to test syntax recognition visually;
+/// it contains various syntactic elements and stress-tests the definition's matcher expressions
+
+/*
+  Comments are used to explain sections;
+  here, a test is made for checking that
+  /* 
+    nested comments are handled correctly
+  */
+
+  this should still be commented!
+  "asdf" + 456 = export function()
+*/
+
+
 // keywords
 import 'dart:async';
   import 'dart:async';
