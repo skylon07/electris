@@ -19,10 +19,11 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     literalNumber,
     literalString,
     literalKeyword,
+    variableConst,
+
+    variableType,
 
     annotation,
-    variableConst,
-    variableType,
     variablePlain,
   ];
 
@@ -228,7 +229,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair   literalStringInterpOperExpression;
   late final GroupRef     literalStringInterpOperExpression_brace = GroupRef();
   late final RegExpRecipe literalStringEscapeSequence;
+
   late final RegExpRecipe literalKeyword;
+
   late final RegExpRecipe singleLineComment;
   late final RegExpRecipe singleLineDocComment;
   late final RegExpPair   multiLineComment;
@@ -242,16 +245,13 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     var identifierNumberChar    = chars(r"0-9");
     var identifierSpacerChar    = chars(r"_");
     var identifierDollarChar    = chars(r"$");
-    var identifierCharWithoutDollar = either([
+    // TODO: this produces [$]|([a-z...]); it thinks capture(either(chars(...))) is a "rest";
+    //  it should instead combine all of them
+    var identifierChar = either([
       identifierLowerChar,
       identifierUpperChar,
       identifierNumberChar,
       identifierSpacerChar,
-    ]);
-    // TODO: this produces [$]|([a-z...]); it thinks capture(either(chars(...))) is a "rest";
-    //  it should instead combine all of them
-    var identifierChar = either([
-      identifierCharWithoutDollar,
       identifierDollarChar,
     ]);
     var identifierCharOrDot = either([
@@ -265,9 +265,18 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
 
     this.variablePlain = oneOrMore(identifierChar);
-    this.variablePlainNoDollar = oneOrMore(identifierCharWithoutDollar);
+    this.variablePlainNoDollar = oneOrMore(concat([
+      aheadIsNot(identifierDollarChar),
+      identifierChar,
+    ]));
     this.variableType = concat([
-      zeroOrMore(identifierSpacerChar),
+      zeroOrMore(concat([
+        aheadIsNot(either([
+          identifierUpperChar,
+          identifierLowerChar,
+        ])),
+        identifierChar,
+      ])),
       identifierUpperChar,
       zeroOrMore(identifierChar),
     ]);
@@ -413,7 +422,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     this.literalStringInterpOperIdentifier = pair( 
       begin: exactly(r"$"),
-      end: aheadIsNot(identifierCharWithoutDollar),
+      end: aheadIsNot(variablePlainNoDollar),
     );
     this.literalStringInterpOperExpression = pair(
       begin: capture(
