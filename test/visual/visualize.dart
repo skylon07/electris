@@ -20,7 +20,7 @@ import 'dart:async';
 // keywords with spaces
 part 'something';
 part of 'something';
-  part of 'something';
+ part of 'something';
   part    of 'something';
 
 // not actually keywords
@@ -48,6 +48,9 @@ var __$_myVariable_yay;
 var __$_MyType_yay;
 var __$_MY_TYPE_yay;
 var T;
+class MyClass<ItemT> {}
+var myThing           = MyClass<dynamic>();
+var myThingRecursive  = MyClass<List<List<List<List<void>>>>>();
 
 // const variables
 var __$_MY_CONST_YAY;
@@ -93,8 +96,6 @@ str = r"somethingraw\u{abcd}";
 
 // keyword literals
 true == false == null
-
-
 
 
 // functions

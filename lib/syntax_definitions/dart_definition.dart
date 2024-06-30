@@ -21,6 +21,8 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     literalKeyword,
     variableConst,
 
+    builtinType,
+    variableTypeGeneric,
     variableType,
 
     annotation,
@@ -158,6 +160,47 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     ]
   );
 
+  late final builtinType = createUnit(
+    "builtinType",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.builtinType,
+  );
+
+  late final ScopeUnit recursiveTypeParameter = createUnit(
+    "recursiveTypeParameter",
+    innerUnits: () => [
+      typeParameterKeyword,
+      genericList,
+      // TODO: records,
+      // TODO: functions,
+    ],
+  );
+
+  late final typeParameterKeyword = createUnit(
+    "typeParameterKeyword",
+    styleName: ElectrisStyleName.sourceCode_operator,
+    match: collection.typeParameterKeyword,
+  );
+
+  late final genericList = createUnit(
+    "genericList",
+    styleName: ElectrisStyleName.sourceCode_types_typeRecursive,
+    matchPair: collection.genericList,
+    innerUnits: () => [
+      // TODO: records -- "reason": "not recursive to avoid excessive shading"
+      recursiveTypeParameter,
+    ],
+  );
+  
+  late final variableTypeGeneric = createUnit(
+    "variableTypeGeneric",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    matchPair: collection.variableTypeGeneric,
+    innerUnits: () => [
+      genericList,
+    ],
+  );
+
 
   /// Detects non-[Record] pairs of parentheses, like `(...) {...}`.
   /// 
@@ -235,6 +278,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe singleLineComment;
   late final RegExpRecipe singleLineDocComment;
   late final RegExpPair   multiLineComment;
+
+  late final RegExpRecipe builtinType;
+  late final RegExpRecipe typeParameterKeyword;
+  late final RegExpPair   genericList;
+  late final RegExpPair   variableTypeGeneric;
 
   @override
   DartRegExpCollector createCollection() {
@@ -457,9 +505,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
 
     this.literalKeyword = either([
-      phrase("true"),
-      phrase("false"),
-      phrase("null"),
+      phrase("true"), phrase("false"), phrase("null"),
     ]);
 
     this.singleLineComment = concat([
@@ -474,6 +520,49 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       begin: exactly("/*"),
       end: exactly("*/"),
     );
+
+    var nullableOperator = concat([
+      exactly("?"),
+    ]);
+    this.builtinType = concat([
+      either([
+        phrase("num"), phrase("int"), phrase("double"), phrase("bool"), phrase("void"),
+      ]),
+      optional(
+        nullableOperator
+      ),
+    ]);
+
+    var validGenericChars = notChars(r"+-*/^|&~=");
+    this.genericList = pair(
+      begin: spaceBefore(concat([
+        exactly("<"),
+        aheadIs(either([
+          concat([
+            zeroOrMore(validGenericChars),
+            exactly(">"),
+          ]),
+          concat([
+            oneOrMore(validGenericChars),
+            endsWith(space(req: false)),
+          ]),
+        ])),
+      ])),
+      end: exactly(">"),
+    );
+    this.variableTypeGeneric = pair(
+      begin: concat([
+        variableType,
+        aheadIs(genericList.begin),
+      ]),
+      end: concat([
+        behindIs(genericList.end),
+        optional(nullableOperator)
+      ]),
+    );
+    this.typeParameterKeyword = either([
+      phrase("dynamic"), phrase("extends"),
+    ]);
 
     return this;
   }
