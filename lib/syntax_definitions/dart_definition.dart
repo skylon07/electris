@@ -238,11 +238,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
   @override
   DartRegExpCollector createCollection() {
-    var identifierLowerChar     = chars(r"a-z");
-    var identifierUpperChar     = chars(r"A-Z");
-    var identifierLowerHexChar  = chars(r"a-f");
-    var identifierUpperHexChar  = chars(r"A-F");
-    var identifierNumberChar    = chars(r"0-9");
+    var identifierLowerChar     = chars(r"a..z");
+    var identifierUpperChar     = chars(r"A..Z");
+    var identifierLowerHexChar  = chars(r"a..f");
+    var identifierUpperHexChar  = chars(r"A..F");
+    var identifierNumberChar    = chars(r"0..9");
     var identifierSpacerChar    = chars(r"_");
     var identifierDollarChar    = chars(r"$");
     // TODO: this produces [$]|([a-z...]); it thinks capture(either(chars(...))) is a "rest";
