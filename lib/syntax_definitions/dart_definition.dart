@@ -12,7 +12,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
   @override
   late final rootUnits = [
-    comments,
+    comment,
 
     keyword,
 
@@ -138,7 +138,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.literalKeyword,
   );
   
-  late final ScopeUnit comments = createUnit(
+  late final ScopeUnit comment = createUnit(
     "comments",
     innerUnits: () => [
       // this unit must be above singleLineComment, since it is a substring
@@ -153,7 +153,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       createUnitInline(
         styleName: ElectrisStyleName.sourceCode_comment,
         matchPair: collection.multiLineComment,
-        innerUnits: () => [comments],
+        innerUnits: () => [comment],
       ),
     ]
   );
