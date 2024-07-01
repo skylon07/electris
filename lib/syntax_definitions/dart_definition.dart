@@ -12,6 +12,27 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
   @override
   late final rootUnits = [
+    typeDefinitionContext,
+    defaultContext,
+  ];
+
+  late final typeDefinitionContext = createUnit(
+    "typeDefinitionContext",
+    matchPair: collection.typeDefinitionContext,
+    innerUnits: () => typeContextUnits,
+  );
+
+  late final defaultContext = createUnit(
+    "defaultContext",
+    innerUnits: () => defaultContextUnits,
+  );
+
+  late final typeContextUnits = [
+    variableTypeGeneric,
+    variableType,
+  ];
+
+  late final defaultContextUnits = [
     comment,
 
     keyword,
@@ -22,7 +43,6 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     variableConst,
 
     builtinType,
-    variableTypeGeneric,
     variableType,
 
     annotation,
@@ -69,7 +89,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.literalNumber,
   );
 
-  late final literalString = createUnit(
+  late final ScopeUnit literalString = createUnit(
     "literalString",
     styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
     innerUnits: () => [
@@ -112,7 +132,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
         endCaptures: {
           collection.literalStringInterpOperExpression_brace: ElectrisStyleName.sourceCode_operator,
         },
-        innerUnits: () => [self],
+        innerUnits: () => defaultContextUnits,
       ),
       // this unit must be last; it handles the base `$` case
       createUnitInline(
@@ -247,6 +267,8 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
 
 final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
+  late final RegExpPair typeDefinitionContext;
+  
   late final RegExpRecipe variablePlain;
   late final RegExpRecipe variablePlainNoDollar;
   late final RegExpRecipe variableType;
@@ -286,58 +308,85 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
   @override
   DartRegExpCollector createCollection() {
+    var numberChar          = chars(r"0..9");
+    var numberLowerHexChar  = chars(r"a..f");
+    var numberUpperHexChar  = chars(r"A..F");
+    var literalNumberDecimal = concat([
+      exactly("."),
+      oneOrMore(numberChar),
+    ]);
+    var literalNumberScientific = concat([
+      chars("eE"),
+      optional(chars("+-")),
+      oneOrMore(numberChar),
+    ]);
+    var hexNumberChar = either([
+      numberChar,
+      numberLowerHexChar,
+      numberUpperHexChar,
+    ]);
+    this.literalNumber = either([
+      concat([
+        exactly("0"),
+        chars("xX"),
+        zeroOrMore(hexNumberChar),
+      ]),
+      concat([
+        oneOrMore(numberChar),
+        optional(literalNumberDecimal),
+        optional(literalNumberScientific),
+      ]),
+      concat([
+        literalNumberDecimal,
+        optional(literalNumberScientific)
+      ]),
+    ]);
+
     var identifierLowerChar     = chars(r"a..z");
     var identifierUpperChar     = chars(r"A..Z");
-    var identifierLowerHexChar  = chars(r"a..f");
-    var identifierUpperHexChar  = chars(r"A..F");
-    var identifierNumberChar    = chars(r"0..9");
     var identifierSpacerChar    = chars(r"_");
     var identifierDollarChar    = chars(r"$");
-    // TODO: this produces [$]|([a-z...]); it thinks capture(either(chars(...))) is a "rest";
-    //  it should instead combine all of them
-    var identifierChar = either([
+    var identifierCharsSet      = [
       identifierLowerChar,
       identifierUpperChar,
-      identifierNumberChar,
       identifierSpacerChar,
       identifierDollarChar,
-    ]);
+      numberChar,
+    ];
+    var identifierChar = either(identifierCharsSet);
     var identifierCharOrDot = either([
       identifierChar,
       chars("."),
     ]);
-    var identifierHexChar = either([
-      identifierNumberChar,
-      identifierLowerHexChar,
-      identifierUpperHexChar,
-    ]);
 
     this.variablePlain = oneOrMore(identifierChar);
-    this.variablePlainNoDollar = oneOrMore(concat([
-      aheadIsNot(identifierDollarChar),
-      identifierChar,
+    this.variablePlainNoDollar = oneOrMore(either([
+      for (var char in identifierCharsSet)
+        if (char != identifierDollarChar) char
     ]));
     this.variableType = concat([
-      zeroOrMore(concat([
-        aheadIsNot(either([
-          identifierUpperChar,
-          identifierLowerChar,
-        ])),
-        identifierChar,
+      zeroOrMore(either([
+        for (var char in identifierCharsSet)
+          if (char != identifierUpperChar && char != identifierLowerChar) char
       ])),
       identifierUpperChar,
       zeroOrMore(identifierChar),
     ]);
     this.variableConst = concat([
-      aheadIsNot(concat([
-        zeroOrMore(identifierChar),
-        identifierLowerChar,
-        zeroOrMore(identifierChar),
-      ])),
-      variableType,
       // must be at least two letters long; single uppercase should be type color
       // (to avoid flashing const color when typing out type names)
-      identifierChar,
+      repeatAtLeast(2, concat([
+        zeroOrMore(either([
+          for (var char in identifierCharsSet)
+            if (char != identifierUpperChar && char != identifierLowerChar) char
+        ])),
+        identifierUpperChar,
+      ])),
+      zeroOrMore(either([
+        for (var char in identifierCharsSet)
+          if (char != identifierLowerChar) char
+      ])),
+      aheadIsNot(identifierChar),
     ]);
 
     var keywordHard = either([
@@ -399,32 +448,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.annotation = concat([
       exactly("@"),
       zeroOrMore(identifierCharOrDot),
-    ]);
-
-    var literalNumberDecimal = concat([
-      exactly("."),
-      oneOrMore(identifierNumberChar),
-    ]);
-    var literalNumberScientific = concat([
-      chars("eE"),
-      optional(chars("+-")),
-      oneOrMore(identifierNumberChar),
-    ]);
-    this.literalNumber = either([
-      concat([
-        exactly("0"),
-        chars("xX"),
-        zeroOrMore(identifierHexChar),
-      ]),
-      concat([
-        oneOrMore(identifierNumberChar),
-        optional(literalNumberDecimal),
-        optional(literalNumberScientific),
-      ]),
-      concat([
-        literalNumberDecimal,
-        optional(literalNumberScientific)
-      ]),
     ]);
 
     RegExpPair stringPattern(RegExpRecipe pattern, {required bool eolTerminates, required bool isRaw}) {
@@ -490,7 +513,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       // \u{...} case must be above general \u... case
       concat([
         exactly(r"\u{"),
-        zeroOrMore(identifierHexChar),
+        zeroOrMore(hexNumberChar),
         exactly(r"}"),
       ]),
       concat([
@@ -563,6 +586,18 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.typeParameterKeyword = either([
       phrase("dynamic"), phrase("extends"),
     ]);
+
+    this.typeDefinitionContext = pair(
+      begin: behindIs(either([
+        phrase("class"),
+        phrase("mixin"),
+        phrase("typedef"),
+      ])),
+      end: behindIs(either([
+        variableTypeGeneric.end,
+        variableType,
+      ])),
+    );
 
     return this;
   }
