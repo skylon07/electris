@@ -485,7 +485,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.literalStringEscapeSequence = either([
       concat([
         exactly(r"\x"),
-        repeatAtMost(identifierHexChar, 2),
+        repeatAtMost(2, hexNumberChar),
       ]),
       // \u{...} case must be above general \u... case
       concat([
@@ -495,7 +495,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
       concat([
         exactly(r"\u"),
-        repeatAtMost(identifierHexChar, 4),
+        repeatAtMost(4, hexNumberChar),
       ]),
       // general/usual case has to be last
       concat([
