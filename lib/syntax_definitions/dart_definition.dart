@@ -35,10 +35,10 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   );
 
   late final typeContextUnits = [
-    builtinType,
-    variableTypeGeneric,
-    variableType,
+    genericList,
+    nullableOperator,
     libTypePrefix,
+    typeIdentifier,
   ];
 
   late final defaultContextUnits = [
@@ -52,7 +52,6 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     variableConst,
 
     builtinType,
-    variableTypeGeneric,
     variableType,
 
     annotation,
@@ -196,6 +195,34 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.builtinType,
   );
 
+  late final typeIdentifier = createUnit(
+    "typeIdentifier",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.typeIdentifier,
+  );
+
+  late final nullableOperator = createUnit(
+    "nullableOperator",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.nullableOperator,
+  );
+
+  late final libTypePrefix = createUnit(
+    "libTypePrefix",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.libTypePrefix,
+  );
+
+  late final genericList = createUnit(
+    "genericList",
+    styleName: ElectrisStyleName.sourceCode_types_typeRecursive,
+    matchPair: collection.genericList,
+    innerUnits: () => [
+      // TODO: records -- "reason": "not recursive to avoid excessive shading"
+      recursiveTypeParameter,
+    ],
+  );
+
   late final ScopeUnit recursiveTypeParameter = createUnit(
     "recursiveTypeParameter",
     innerUnits: () => [
@@ -212,30 +239,6 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.typeParameterKeyword,
   );
 
-  late final genericList = createUnit(
-    "genericList",
-    styleName: ElectrisStyleName.sourceCode_types_typeRecursive,
-    matchPair: collection.genericList,
-    innerUnits: () => [
-      // TODO: records -- "reason": "not recursive to avoid excessive shading"
-      recursiveTypeParameter,
-    ],
-  );
-  
-  late final variableTypeGeneric = createUnit(
-    "variableTypeGeneric",
-    styleName: ElectrisStyleName.sourceCode_types_type,
-    matchPair: collection.variableTypeGeneric,
-    innerUnits: () => [
-      genericList,
-    ],
-  );
-
-  late final libTypePrefix = createUnit(
-    "libTypePrefix",
-    styleName: ElectrisStyleName.sourceCode_types_type,
-    match: collection.libTypePrefix,
-  );
 
 
   /// Detects non-[Record] pairs of parentheses, like `(...) {...}`.
@@ -319,10 +322,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair   multiLineComment;
 
   late final RegExpRecipe builtinType;
-  late final RegExpRecipe typeParameterKeyword;
-  late final RegExpPair   genericList;
-  late final RegExpPair   variableTypeGeneric;
+  late final RegExpRecipe typeIdentifier;
+  late final RegExpRecipe nullableOperator;
   late final RegExpRecipe libTypePrefix;
+  late final RegExpPair   genericList;
+  late final RegExpRecipe typeParameterKeyword;
 
   @override
   DartRegExpCollector createCollection() {
@@ -382,6 +386,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       for (var char in identifierCharsSet)
         if (char != identifierDollarChar) char
     ]));
+    this.nullableOperator = exactly("?");
     this.variableType = concat([
       zeroOrMore(either([
         for (var char in identifierCharsSet)
@@ -407,7 +412,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       aheadIsNot(identifierChar),
     ]);
 
-    var keywordHard = either([
+    var keywordHardWord = either([
       phrase("class"),    phrase("extends"),  phrase("with"),   phrase("super"),
       phrase("is"),       phrase("as"),       phrase("enum"),   phrase("var"),
       phrase("const"),    phrase("final"),    phrase("if"),     phrase("else"),
@@ -417,19 +422,21 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("throw"),    phrase("rethrow"),  phrase("assert"), phrase("this"),
       phrase("new"),      phrase("return"),
     ]);
+    var keywordHard = keywordHardWord;
     
+    var keywordSoftWord = either([
+      phrase("import"),     phrase("export"),     phrase("library"),    phrase("hide"),
+      phrase("show"),       phrase("deferred"),   phrase("part of"),    phrase("part"),
+      phrase("abstract"),   phrase("interface"),  phrase("implements"), phrase("mixin"),
+      phrase("base"),       phrase("sealed"),     phrase("typedef"),    phrase("dynamic"),
+      phrase("static"),     phrase("covariant"),  phrase("late"),       phrase("extension type"),
+      phrase("extension"),  phrase("when"),       phrase("on"),         phrase("async"),
+      phrase("await"),      phrase("sync"),       phrase("get"),        phrase("set"),
+      phrase("yield"),      phrase("external"),   phrase("required"),   phrase("factory"),
+      phrase("macro"),
+    ]);
     var keywordSoft = concat([
-      either([
-        phrase("import"),     phrase("export"),     phrase("library"),    phrase("hide"),
-        phrase("show"),       phrase("deferred"),   phrase("part of"),    phrase("part"),
-        phrase("abstract"),   phrase("interface"),  phrase("implements"), phrase("mixin"),
-        phrase("base"),       phrase("sealed"),     phrase("typedef"),    phrase("dynamic"),
-        phrase("static"),     phrase("covariant"),  phrase("late"),       phrase("extension type"),
-        phrase("extension"),  phrase("when"),       phrase("on"),         phrase("async"),
-        phrase("await"),      phrase("sync"),       phrase("get"),        phrase("set"),
-        phrase("yield"),      phrase("external"),   phrase("required"),   phrase("factory"),
-        phrase("macro"),
-      ]),
+      keywordSoftWord,
       // TODO: this should probably be a variable or two... ("function params" and "function type params")
       aheadIsNot(spaceBefore(chars("(<"))),
     ]);
@@ -452,8 +459,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       zeroOrMore(notChars(r"(\s")),
       endsWith(nothing),
     ]);
+    var keywordOperatorWord = phrase("operator");
     var keywordOperator = concat([
-      phrase("operator"),
+      keywordOperatorWord,
       space(req: false),
       either([
         capture(validOperator, this.keywordOperator_valid),
@@ -461,6 +469,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
     ]);
 
+    var keywordWord = either([keywordHardWord, keywordSoftWord, keywordOperatorWord]);
     this.keyword = either([keywordHard, keywordSoft, keywordOperator]);
 
     this.annotation = concat([
@@ -562,11 +571,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       end: exactly("*/"),
     );
 
-    RegExpRecipe nullableOf(RegExpRecipe typeRecipe) =>
-      concat([typeRecipe, optional(exactly("?"))]);
-    this.builtinType = nullableOf(either([
+    this.builtinType = either([
       phrase("num"), phrase("int"), phrase("double"), phrase("bool"), phrase("void"),
-    ]));
+    ]);
     var validGenericChars = notChars(r"+-*/^|&~=");
     this.genericList = pair(
       begin: spaceBefore(concat([
@@ -584,13 +591,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ])),
       end: exactly(">"),
     );
-    this.variableTypeGeneric = pair(
-      begin: concat([
-        variableType,
-        aheadIs(genericList.begin),
-      ]),
-      end: nullableOf(behindIs(genericList.end)),
-    );
+    this.typeIdentifier = variablePlain;
     this.libTypePrefix = concat([
       zeroOrMore(identifierCharOrDot),
       chars("."),
@@ -605,7 +606,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         phrase("mixin"),
         phrase("typedef"),
       ])),
-      end: behindIs(notChars(" ")),
+      end: aheadIs(space(req: true)),
     );
 
     var variablePrefixKeyword = either([
@@ -615,12 +616,15 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.typeAnnotationContext = pair(
       begin: concat([
         either([
-          startsWith(space(req: false)),
-          behindIs(spaceAfter(variablePrefixKeyword)),
+          startsWith(nothing),
+          behindIs(variablePrefixKeyword),
         ]),
+        space(req: false),
+        aheadIsNot(keywordWord),
         aheadIs(concat([
-          optional(libTypePrefix),
-          variableType,
+          aheadIs(notChars(" ")),
+          oneOrMore(notChars("+-*/=")),
+          behindIs(notChars(".")),
           space(req: true),
           identifierChar,
         ])),
