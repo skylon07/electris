@@ -605,6 +605,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         phrase("mixin"),
         phrase("typedef"),
       ])),
+      end: behindIs(notChars(" ")),
+    );
 
     var variablePrefixKeyword = either([
       phrase("var"),      phrase("final"),      phrase("const"),
