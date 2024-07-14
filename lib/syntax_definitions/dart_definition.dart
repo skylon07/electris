@@ -13,6 +13,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   @override
   late final rootUnits = [
     typeDefinitionContext,
+    typeAnnotationContext,
     defaultContext,
   ];
 
@@ -22,14 +23,22 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     innerUnits: () => typeContextUnits,
   );
 
+  late final typeAnnotationContext = createUnit(
+    "typeAnnotationContext",
+    matchPair: collection.typeAnnotationContext,
+    innerUnits: () => typeContextUnits,
+  );
+
   late final defaultContext = createUnit(
     "defaultContext",
     innerUnits: () => defaultContextUnits,
   );
 
   late final typeContextUnits = [
+    builtinType,
     variableTypeGeneric,
     variableType,
+    libTypePrefix,
   ];
 
   late final defaultContextUnits = [
@@ -43,6 +52,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     variableConst,
 
     builtinType,
+    variableTypeGeneric,
     variableType,
 
     annotation,
@@ -221,6 +231,12 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     ],
   );
 
+  late final libTypePrefix = createUnit(
+    "libTypePrefix",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.libTypePrefix,
+  );
+
 
   /// Detects non-[Record] pairs of parentheses, like `(...) {...}`.
   /// 
@@ -268,6 +284,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
 final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair typeDefinitionContext;
+  late final RegExpPair typeAnnotationContext;
   
   late final RegExpRecipe variablePlain;
   late final RegExpRecipe variablePlainNoDollar;
@@ -305,6 +322,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe typeParameterKeyword;
   late final RegExpPair   genericList;
   late final RegExpPair   variableTypeGeneric;
+  late final RegExpRecipe libTypePrefix;
 
   @override
   DartRegExpCollector createCollection() {
@@ -544,18 +562,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       end: exactly("*/"),
     );
 
-    var nullableOperator = concat([
-      exactly("?"),
-    ]);
-    this.builtinType = concat([
-      either([
-        phrase("num"), phrase("int"), phrase("double"), phrase("bool"), phrase("void"),
-      ]),
-      optional(
-        nullableOperator
-      ),
-    ]);
-
+    RegExpRecipe nullableOf(RegExpRecipe typeRecipe) =>
+      concat([typeRecipe, optional(exactly("?"))]);
+    this.builtinType = nullableOf(either([
+      phrase("num"), phrase("int"), phrase("double"), phrase("bool"), phrase("void"),
+    ]));
     var validGenericChars = notChars(r"+-*/^|&~=");
     this.genericList = pair(
       begin: spaceBefore(concat([
@@ -578,11 +589,12 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         variableType,
         aheadIs(genericList.begin),
       ]),
-      end: concat([
-        behindIs(genericList.end),
-        optional(nullableOperator)
-      ]),
+      end: nullableOf(behindIs(genericList.end)),
     );
+    this.libTypePrefix = concat([
+      zeroOrMore(identifierCharOrDot),
+      chars("."),
+    ]);
     this.typeParameterKeyword = either([
       phrase("dynamic"), phrase("extends"),
     ]);
@@ -593,10 +605,25 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         phrase("mixin"),
         phrase("typedef"),
       ])),
-      end: behindIs(either([
-        variableTypeGeneric.end,
-        variableType,
-      ])),
+
+    var variablePrefixKeyword = either([
+      phrase("var"),      phrase("final"),      phrase("const"),
+      phrase("dynamic"),  phrase("covariant"),  phrase("static"),
+    ]);
+    this.typeAnnotationContext = pair(
+      begin: concat([
+        either([
+          startsWith(space(req: false)),
+          behindIs(spaceAfter(variablePrefixKeyword)),
+        ]),
+        aheadIs(concat([
+          optional(libTypePrefix),
+          variableType,
+          space(req: true),
+          identifierChar,
+        ])),
+      ]),
+      end: aheadIs(space(req: true)),
     );
 
     return this;
