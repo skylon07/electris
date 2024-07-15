@@ -81,8 +81,8 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     styleName: ElectrisStyleName.sourceCode_operator,
     match: collection.keyword,
     captures: {
-      collection.keywordOperator_valid: ElectrisStyleName.sourceCode_functionCall,
-      collection.keywordOperator_invalid: ElectrisStyleName.sourceCode_escape,
+      collection.keywordOperator_$valid: ElectrisStyleName.sourceCode_functionCall,
+      collection.keywordOperator_$invalid: ElectrisStyleName.sourceCode_escape,
     },
   );
 
@@ -136,10 +136,10 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       createUnitInline(
         matchPair: collection.literalStringInterpOperExpression,
         beginCaptures: {
-          collection.literalStringInterpOperExpression_brace: ElectrisStyleName.sourceCode_operator,
+          collection.literalStringInterpOperExpression_$brace: ElectrisStyleName.sourceCode_operator,
         },
         endCaptures: {
-          collection.literalStringInterpOperExpression_brace: ElectrisStyleName.sourceCode_operator,
+          collection.literalStringInterpOperExpression_$brace: ElectrisStyleName.sourceCode_operator,
         },
         innerUnits: () => defaultContextUnits,
       ),
@@ -295,8 +295,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe variableConst;
 
   late final RegExpRecipe keyword;
-  late final GroupRef     keywordOperator_valid = GroupRef();
-  late final GroupRef     keywordOperator_invalid = GroupRef();
+  late final GroupRef     keywordOperator_$valid = GroupRef();
+  late final GroupRef     keywordOperator_$invalid = GroupRef();
 
   late final RegExpRecipe annotation;
 
@@ -464,8 +464,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       keywordOperatorWord,
       space(req: false),
       either([
-        capture(validOperator, this.keywordOperator_valid),
-        capture(invalidOperator, this.keywordOperator_invalid),
+        capture(validOperator, this.keywordOperator_$valid),
+        capture(invalidOperator, this.keywordOperator_$invalid),
       ]),
     ]);
 
@@ -525,11 +525,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.literalStringInterpOperExpression = pair(
       begin: capture(
         exactly(r"${"),
-        this.literalStringInterpOperExpression_brace,
+        this.literalStringInterpOperExpression_$brace,
       ),
       end: capture(
         exactly(r"}"),
-        this.literalStringInterpOperExpression_brace,
+        this.literalStringInterpOperExpression_$brace,
       ),
     );
     this.literalStringEscapeSequence = either([
