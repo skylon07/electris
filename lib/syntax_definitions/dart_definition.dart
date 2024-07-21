@@ -576,7 +576,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
     var validGenericChars = notChars(r"+-*/^|&~=");
     this.genericList = pair(
-      begin: spaceBefore(concat([
+      begin: concat([
         exactly("<"),
         aheadIs(either([
           concat([
@@ -588,7 +588,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             endsWith(space(req: false)),
           ]),
         ])),
-      ])),
+      ]),
       end: exactly(">"),
     );
     this.typeIdentifier = variablePlain;
@@ -620,14 +620,21 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           behindIs(variablePrefixKeyword),
         ]),
         space(req: false),
-        aheadIsNot(keywordWord),
         aheadIs(concat([
-          aheadIs(notChars(" ")),
-          oneOrMore(notChars("+-*/=")),
-          behindIs(notChars(".")),
-          space(req: true),
-          identifierChar,
+          oneOrMore(either([
+            typeIdentifier,
+            libTypePrefix,
+          ])),
+          either([
+            genericList.begin,
+            concat([
+              optional(nullableOperator),
+              space(req: true),
+              identifierChar,
+            ])
+          ]),
         ])),
+        aheadIsNot(keywordWord), // don't match `final` in `final myVar`
       ]),
       end: aheadIs(space(req: true)),
     );
