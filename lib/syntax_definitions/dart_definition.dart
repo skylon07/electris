@@ -684,8 +684,8 @@ enum ElectrisStyleName implements StyleName {
   gitignore_operator("gitignore.operator");
 
   
-  final String _scope;
-  String get scope => "electris.$_scope";
+  final String scope;
 
-  const ElectrisStyleName(this._scope);
+  const ElectrisStyleName(String specificScope) :
+    scope = "electris.$specificScope";
 }
