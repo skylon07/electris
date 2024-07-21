@@ -312,7 +312,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair   rawStringTripleSingle;
   late final RegExpPair   literalStringInterpOperIdentifier;
   late final RegExpPair   literalStringInterpOperExpression;
-  late final GroupRef     literalStringInterpOperExpression_brace = GroupRef();
+  late final GroupRef     literalStringInterpOperExpression_$brace = GroupRef();
   late final RegExpRecipe literalStringEscapeSequence;
 
   late final RegExpRecipe literalKeyword;
