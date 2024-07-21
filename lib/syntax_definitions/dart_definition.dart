@@ -17,6 +17,9 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     defaultContext,
   ];
 
+  
+  // -- contexts and their units --
+
   late final typeDefinitionContext = createUnit(
     "typeDefinitionContext",
     matchPair: collection.typeDefinitionContext,
@@ -57,6 +60,56 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     annotation,
     variablePlain,
   ];
+
+
+  // -- type context units --
+
+  late final typeIdentifier = createUnit(
+    "typeIdentifier",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.typeIdentifier,
+  );
+
+  late final nullableOperator = createUnit(
+    "nullableOperator",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.nullableOperator,
+  );
+
+  late final libTypePrefix = createUnit(
+    "libTypePrefix",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.libTypePrefix,
+  );
+
+  late final genericList = createUnit(
+    "genericList",
+    styleName: ElectrisStyleName.sourceCode_types_typeRecursive,
+    matchPair: collection.genericList,
+    innerUnits: () => [
+      // TODO: records -- "reason": "not recursive to avoid excessive shading"
+      recursiveTypeParameter,
+    ],
+  );
+
+  late final ScopeUnit recursiveTypeParameter = createUnit(
+    "recursiveTypeParameter",
+    innerUnits: () => [
+      typeParameterKeyword,
+      genericList,
+      // TODO: records,
+      // TODO: functions,
+    ],
+  );
+
+  late final typeParameterKeyword = createUnit(
+    "typeParameterKeyword",
+    styleName: ElectrisStyleName.sourceCode_operator,
+    match: collection.typeParameterKeyword,
+  );
+
+
+  // -- default context units --
 
   late final variablePlain = createUnit(
     "variablePlain",
@@ -193,50 +246,6 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     "builtinType",
     styleName: ElectrisStyleName.sourceCode_types_type,
     match: collection.builtinType,
-  );
-
-  late final typeIdentifier = createUnit(
-    "typeIdentifier",
-    styleName: ElectrisStyleName.sourceCode_types_type,
-    match: collection.typeIdentifier,
-  );
-
-  late final nullableOperator = createUnit(
-    "nullableOperator",
-    styleName: ElectrisStyleName.sourceCode_types_type,
-    match: collection.nullableOperator,
-  );
-
-  late final libTypePrefix = createUnit(
-    "libTypePrefix",
-    styleName: ElectrisStyleName.sourceCode_types_type,
-    match: collection.libTypePrefix,
-  );
-
-  late final genericList = createUnit(
-    "genericList",
-    styleName: ElectrisStyleName.sourceCode_types_typeRecursive,
-    matchPair: collection.genericList,
-    innerUnits: () => [
-      // TODO: records -- "reason": "not recursive to avoid excessive shading"
-      recursiveTypeParameter,
-    ],
-  );
-
-  late final ScopeUnit recursiveTypeParameter = createUnit(
-    "recursiveTypeParameter",
-    innerUnits: () => [
-      typeParameterKeyword,
-      genericList,
-      // TODO: records,
-      // TODO: functions,
-    ],
-  );
-
-  late final typeParameterKeyword = createUnit(
-    "typeParameterKeyword",
-    styleName: ElectrisStyleName.sourceCode_operator,
-    match: collection.typeParameterKeyword,
   );
 
 
