@@ -741,19 +741,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           exactly("="),
         ])),
       ]),
-      end: aheadIs(either([
-        concat([
-          space(req: true),
-          // ensure we haven't just started at `begin`
-          behindIsNot(concat([
-            either([
-              typeAfterKeywordPrefixKeyword,
-              exactly("="),
-            ]),
-            zeroOrMore(space(req: false)),
-          ])),
-        ]),
-        endsWith(nothing),
+      end: behindIsNot(either([
+        space(req: true),
+        // ensure we haven't just started at `begin`
+        typeAfterKeywordPrefixKeyword,
+        exactly("="),
       ])),
     );
 
