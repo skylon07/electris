@@ -49,26 +49,26 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   late final typeContextUnits = [
     genericList,
     nullableOperator,
-    libTypePrefix,
+    libTypePrefix, // `ident.` must be above `ident`
     typeIdentifier,
   ];
 
   late final defaultContextUnits = [
     comment,
 
-    keyword,
+    keyword, // `var` must be above `var_iable`
 
-    literalNumber,
+    literalNumber, // `10` must be above `someVar_10`
     literalString,
-    literalKeyword,
-    variableConst,
+    literalKeyword, // `true` must be above `true_thy`
+    variableConst, // `MY_CONST` must be above `MyConst` and `myConst`
 
-    builtinType,
-    variableType,
+    builtinType, // `int` must be above `int_eger`
+    variableType, // `MyType` must be above `myType`
 
-    simpleOperation,
-    conditionalOperation,
-    mapLiteralPunctuation,
+    simpleOperation, // `?` in `_?._` must be above `_ ? _ : _`
+    conditionalOperation, // `:` in `_ ? _ : _` must be above `{_: _}`
+    mapLiteralPunctuation, // `{}` must be above `{`, `}` (ie general punctuation)
 
     annotation,
     organizationalPunctuation,
