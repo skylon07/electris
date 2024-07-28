@@ -49,6 +49,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     nullableOperator,
     libTypePrefix,
     typeIdentifier,
+    organizationalPunctuation,
   ];
 
   late final defaultContextUnits = [
@@ -64,7 +65,12 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     builtinType,
     variableType,
 
+    simpleOperation,
+    conditionalOperation,
+    mapLiteralPunctuation,
+
     annotation,
+    organizationalPunctuation,
     variablePlain,
   ];
 
@@ -150,6 +156,45 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     "annotation",
     styleName: ElectrisStyleName.sourceCode_operator,
     match: collection.annotation,
+  );
+
+  late final organizationalPunctuation = createUnit(
+    "organizationalPunctuation",
+    styleName: ElectrisStyleName.sourceCode_punctuation,
+    match: collection.organizationalPunctuation,
+  );
+
+  late final mapLiteralPunctuation = createUnit(
+    "mapLiteralPunctuation",
+    beginCaptures: {
+      collection.mapLiteralPunctuation_$enter: ElectrisStyleName.sourceCode_punctuation,
+    },
+    endCaptures: {
+      collection.mapLiteralPunctuation_$exit: ElectrisStyleName.sourceCode_punctuation,
+    },
+    matchPair: collection.mapLiteralPunctuation,
+    innerUnits: () => [
+      organizationalPunctuation, // overrides conditional `:` operation
+      self,
+    ],
+  );
+
+  late final simpleOperation = createUnit(
+    "simpleOperation",
+    styleName: ElectrisStyleName.sourceCode_operator,
+    match: collection.simpleOperation,
+  );
+  
+  late final conditionalOperation = createUnit(
+    "conditionalOperation",
+    matchPair: collection.conditionalOperation,
+    beginCaptures: {
+      collection.conditionalOperation_$test: ElectrisStyleName.sourceCode_operator
+    },
+    endCaptures: {
+      collection.conditionalOperation_$else: ElectrisStyleName.sourceCode_operator
+    },
+    innerUnits: () => [self],
   );
 
   late final literalNumber = createUnit(
@@ -316,6 +361,14 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final GroupRef     keywordOperator_$invalid = GroupRef();
 
   late final RegExpRecipe annotation;
+  late final RegExpRecipe organizationalPunctuation;
+  late final RegExpPair   mapLiteralPunctuation;
+  late final GroupRef     mapLiteralPunctuation_$enter = GroupRef();
+  late final GroupRef     mapLiteralPunctuation_$exit = GroupRef();
+  late final RegExpRecipe simpleOperation;
+  late final RegExpPair   conditionalOperation;
+  late final GroupRef     conditionalOperation_$test = GroupRef();
+  late final GroupRef     conditionalOperation_$else = GroupRef();
 
   late final RegExpRecipe literalNumber;
 
@@ -493,6 +546,62 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       exactly("@"),
       zeroOrMore(identifierCharOrDot),
     ]);
+
+    var propertyAccess = exactly(".");
+    this.organizationalPunctuation = either([
+      exactly("("), exactly(")"),
+      exactly("["), exactly("]"),
+      exactly("{"), exactly("}"),
+      exactly(":"), exactly(","),
+      exactly(";"), propertyAccess,
+    ]);
+    this.mapLiteralPunctuation = pair(
+      begin:  capture(exactly("{"), this.mapLiteralPunctuation_$enter),
+      end:    capture(exactly("}"), this.mapLiteralPunctuation_$exit),
+    );
+
+    this.simpleOperation = either([
+      // arithmetic operations
+      exactly("++"),  exactly("--"),
+      exactly("+"),   exactly("-"),
+      exactly("*"),   exactly("/"),
+      exactly("~/"),  exactly("%"),
+      exactly("!"),
+      exactly("<<"),  exactly(">>"),
+      exactly(">>>"),
+      exactly("&"),   exactly("|"),
+      exactly("^"),   exactly("~"),
+
+      // assignment operations
+      exactly("="),   exactly("??="),
+      exactly("+="),  exactly("-="),
+      exactly("*="),  exactly("/="),
+      exactly("~/="), exactly("%="),
+      exactly("<<="), exactly(">>="),
+      exactly(">>>="),
+      exactly("&="),  exactly("|="),
+      exactly("^="),  exactly("~="),
+
+      // comparative operations
+      exactly(">"),   exactly(">="),
+      exactly("<"),   exactly("<="),
+      exactly("=="),  exactly("!="),
+      exactly("??"),
+      concat([exactly("?"), aheadIs(propertyAccess)]),
+
+      // symbol operator
+      exactly("#"),
+
+      // spread operator
+      exactly("..."),
+
+      // lambda operator
+      exactly("=>"),
+    ]);
+    this.conditionalOperation = pair(
+      begin:  capture(exactly("?"), this.conditionalOperation_$test),
+      end:    capture(exactly(":"), this.conditionalOperation_$else),
+    );
 
     RegExpPair stringPattern(RegExpRecipe pattern, {required bool eolTerminates, required bool isRaw}) {
       var patterns = pair(begin: pattern, end: pattern);
@@ -712,7 +821,7 @@ enum ElectrisStyleName implements StyleName {
   sourceCode_types_type("source-code.types.type"),
   sourceCode_types_typeRecursive("source-code.types.type-recursive"),
   sourceCode_functionCall("source-code.function-call"),
-  sourceCode_punctuation("source-code.types.punctuation"),
+  sourceCode_punctuation("source-code.punctuation"),
   
   text("text"),
   sourceText("source-text"),
