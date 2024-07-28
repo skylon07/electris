@@ -48,9 +48,6 @@ var __$_myVariable_yay;
 var __$_MyType_yay;
 var __$_MY_TYPE_yay;
 var T;
-class MyClass<ItemT> {}
-var myThing           = MyClass<dynamic>();
-var myThingRecursive  = MyClass<List<List<List<List<void>>>>>();
 
 // const variables
 var __$_MY_CONST_YAY;
@@ -96,6 +93,53 @@ str = r"somethingraw\u{abcd}";
 
 // keyword literals
 true == false == null
+
+
+
+// contextual type highlighting: declarations and casts (after certain keywords)
+class MyClass<ItemT> with someMixin implements someInterface {}
+class notAGoodClassName extends alsoNotAGoodClassName {}
+test = myThing is something;
+test = myThing is   something;
+test = myThing as something;
+test = myThing as   something;
+typedef something = somethingElse;
+typedef   something =   somethingElse;
+extension type myint(int val) {}
+
+// contextual type highlighting: annotations
+MyClass   myThing;
+MyClass?  myThing;
+MyClass<List<MyType>>   myThing;
+MyClass<List<MyType>>?  myThing;
+final mylib.MyThing myThing;
+stillShouldBeAType? myThing;
+final WithMultiline<
+  Type,
+  Params,
+  Here,
+> someVariable;
+final notAType < someVariable;
+
+// contextual type highlighting: type parameters
+var myThing   = MyClass<dynamic>();
+var myThing2  = MyClass<List<List<List<List<void>>>>>();
+var myThing3  = <List<List<List<List<void>>>>>{};
+var myThing4  = myFn<Map<(int, int), dynamic>>();
+
+
+
+// punctuation edge-cases
+var something = false ? 1 : 2; // `:` should be an operator
+var thing = {asdf?.asdf : asdf}; // `:` should be punctuation
+var mapThing = true ? 
+  //  punct   punct   punct            punct           oper     oper
+  //  v       v       v                v               v        v
+  {"a": 1, "b": 2, "c": 3, "insideTest": true ? "true" : false} : 
+  //punct   punct   punct              punct           oper
+  //v       v       v                  v               v      
+  {1: "a", 2: "b", 3: "c", "insideTest": true ? "true" : false};
+
 
 
 // functions
