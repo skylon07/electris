@@ -33,7 +33,7 @@ enum ElectrisStyleName implements StyleName {
   markdown_extended_subscript     ("markdown.extended.subscript"),
 
   xml_tagBrace            ("xml.tag-brace"),
-  xml_tagLabel            ("xml.tagLabel"),
+  xml_tagLabel            ("xml.tag-label"),
   xml_property            ("xml.property"),
   xml_propertyPunctuation ("xml.property-punctuation"),
   xml_propertyInvalid     ("xml.property-invalid"),
