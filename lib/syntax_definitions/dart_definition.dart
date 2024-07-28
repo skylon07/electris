@@ -51,7 +51,6 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     nullableOperator,
     libTypePrefix,
     typeIdentifier,
-    organizationalPunctuation,
   ];
 
   late final defaultContextUnits = [
