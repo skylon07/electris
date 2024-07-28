@@ -12,7 +12,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
   @override
   late final rootUnits = [
-    typeDefinitionContext,
+    typeAfterKeywordContext,
     typeAnnotationContext,
     typeParameterContext,
     defaultContext,
@@ -21,9 +21,9 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   
   // -- contexts and their units --
 
-  late final typeDefinitionContext = createUnit(
-    "typeDefinitionContext",
-    matchPair: collection.typeDefinitionContext,
+  late final typeAfterKeywordContext = createUnit(
+    "typeAfterKeywordContext",
+    matchPair: collection.typeAfterKeywordContext,
     innerUnits: () => typeContextUnits,
   );
 
@@ -302,7 +302,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
 
 final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
-  late final RegExpPair typeDefinitionContext;
+  late final RegExpPair typeAfterKeywordContext;
   late final RegExpPair typeAnnotationContext;
   late final RegExpPair typeParameterContext;
   
@@ -617,13 +617,34 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("dynamic"), phrase("extends"),
     ]);
 
-    this.typeDefinitionContext = pair(
-      begin: behindIs(either([
-        phrase("class"),
-        phrase("mixin"),
-        phrase("typedef"),
+    var typeAfterKeywordPrefixKeyword = either([
+      phrase("class"),    phrase("mixin"),      phrase("extension type"),
+      phrase("extends"),  phrase("implements"), phrase("with"),
+      phrase("typedef"),  phrase("is"),         phrase("as"),
+    ]);
+    this.typeAfterKeywordContext = pair(
+      begin: either([
+        behindIs(typeAfterKeywordPrefixKeyword),
+        behindIs(concat([
+          phrase("typedef"),
+          zeroOrMore(anything),
+          exactly("="),
+        ])),
+      ]),
+      end: aheadIs(either([
+        concat([
+          space(req: true),
+          // ensure we haven't just started at `begin`
+          behindIsNot(concat([
+            either([
+              typeAfterKeywordPrefixKeyword,
+              exactly("="),
+            ]),
+            zeroOrMore(space(req: false)),
+          ])),
+        ]),
+        endsWith(nothing),
       ])),
-      end: aheadIs(space(req: true)),
     );
 
     var variablePrefixKeyword = either([
