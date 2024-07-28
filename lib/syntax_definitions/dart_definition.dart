@@ -14,6 +14,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   late final rootUnits = [
     typeDefinitionContext,
     typeAnnotationContext,
+    typeParameterContext,
     defaultContext,
   ];
 
@@ -29,6 +30,12 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   late final typeAnnotationContext = createUnit(
     "typeAnnotationContext",
     matchPair: collection.typeAnnotationContext,
+    innerUnits: () => typeContextUnits,
+  );
+
+  late final typeParameterContext = createUnit(
+    "typeParameterContext",
+    matchPair: collection.typeParameterContext,
     innerUnits: () => typeContextUnits,
   );
 
@@ -297,6 +304,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair typeDefinitionContext;
   late final RegExpPair typeAnnotationContext;
+  late final RegExpPair typeParameterContext;
   
   late final RegExpRecipe variablePlain;
   late final RegExpRecipe variablePlainNoDollar;
@@ -646,6 +654,25 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         aheadIsNot(keywordWord), // don't match `final` in `final myVar`
       ]),
       end: aheadIs(space(req: true)),
+    );
+    
+    this.typeParameterContext = pair(
+      begin: either([
+        concat([
+          behindIs(typeIdentifier),
+          aheadIs(genericList.begin),
+        ]),
+        aheadIs(
+          concat([
+            genericList.asSingleRecipe(), // because there is no way to tell if `<` in `<\n...\n>[]` is for type params
+            either([
+              exactly("["),
+              exactly("{"),
+            ]),
+          ])
+        ),
+      ]),
+      end: behindIs(genericList.end),
     );
 
     return this;
