@@ -70,6 +70,8 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     conditionalOperation, // `:` in `_ ? _ : _` must be above `{_: _}`
     mapLiteralPunctuation, // `{}` must be above `{`, `}` (ie general punctuation)
 
+    functionCall, // `myFunction()` must be above `myFunction_noCall`
+
     annotation,
     organizationalPunctuation,
     variablePlain,
@@ -196,6 +198,17 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       collection.conditionalOperation_$else: ElectrisStyleName.sourceCode_operator
     },
     innerUnits: () => [self],
+  );
+
+  late final functionCall = createUnit(
+    "functionCall",
+    beginCaptures: {
+      collection.functionCall_$name: ElectrisStyleName.sourceCode_functionCall,
+    },
+    matchPair: collection.functionCall,
+    innerUnits: () => [
+      self,
+    ],
   );
 
   late final literalNumber = createUnit(
@@ -348,9 +361,9 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
 
 final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
-  late final RegExpPair typeAfterKeywordContext;
-  late final RegExpPair typeAnnotationContext;
-  late final RegExpPair typeParameterContext;
+  late final RegExpPair   typeAfterKeywordContext;
+  late final RegExpPair   typeAnnotationContext;
+  late final RegExpPair   typeParameterContext;
   
   late final RegExpRecipe variablePlain;
   late final RegExpRecipe variablePlainNoDollar;
@@ -398,6 +411,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe libTypePrefix;
   late final RegExpPair   genericList;
   late final RegExpRecipe typeParameterKeyword;
+
+  late final RegExpPair   functionCall;
+  late final GroupRef     functionCall_$name = GroupRef();
 
   @override
   DartRegExpCollector createCollection() {
@@ -483,6 +499,58 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       aheadIsNot(identifierChar),
     ]);
 
+    this.builtinType = either([
+      phrase("num"), phrase("int"), phrase("double"), phrase("bool"), phrase("void"),
+    ]);
+    var validGenericChars = notChars(r"+-*/^|&~=");
+    this.genericList = pair(
+      begin: concat([
+        exactly("<"),
+        aheadIs(either([
+          concat([
+            zeroOrMore(validGenericChars),
+            exactly(">"),
+          ]),
+          concat([
+            oneOrMore(validGenericChars),
+            endsWith(space(req: false)),
+          ]),
+        ])),
+      ]),
+      end: exactly(">"),
+    );
+    this.typeIdentifier = variablePlain;
+    this.libTypePrefix = concat([
+      zeroOrMore(identifierCharOrDot),
+      chars("."),
+    ]);
+    this.typeParameterKeyword = either([
+      phrase("dynamic"), phrase("extends"),
+    ]);
+
+    var functionCallParametersStart = concat([
+      space(req: false),
+      optional(genericList.asSingleRecipe()),
+      space(req: false),
+      optional(exactly("!")),
+      space(req: false),
+      exactly("(")
+    ]);
+    var multilineGenericListStart = concat([
+      genericList.begin,
+      endsWith(space(req: false)),
+    ]);
+    this.functionCall = pair(
+      begin: concat([
+        capture(variablePlain, functionCall_$name),
+        aheadIs(either([
+          functionCallParametersStart,
+          multilineGenericListStart,
+        ])),
+      ]),
+      end: behindIs(exactly(")")),
+    );
+
     var keywordHardWord = either([
       phrase("class"),    phrase("extends"),  phrase("with"),   phrase("super"),
       phrase("is"),       phrase("as"),       phrase("enum"),   phrase("var"),
@@ -508,8 +576,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
     var keywordSoft = concat([
       keywordSoftWord,
-      // TODO: this should probably be a variable or two... ("function params" and "function type params")
-      aheadIsNot(spaceBefore(chars("(<"))),
+      aheadIsNot(functionCallParametersStart),
     ]);
 
     var validOperator = concat([
@@ -521,8 +588,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         exactly("[]"),  exactly("[]="),
       ]),
       aheadIs(either([
-        // TODO: this should probably be a variable or two... ("function params" and "function type params")
-        spaceBefore(chars("(<")),
+        functionCallParametersStart,
         endsWith(space(req: false)),
       ])),
     ]);
@@ -698,35 +764,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       end: exactly("*/"),
     );
 
-    this.builtinType = either([
-      phrase("num"), phrase("int"), phrase("double"), phrase("bool"), phrase("void"),
-    ]);
-    var validGenericChars = notChars(r"+-*/^|&~=");
-    this.genericList = pair(
-      begin: concat([
-        exactly("<"),
-        aheadIs(either([
-          concat([
-            zeroOrMore(validGenericChars),
-            exactly(">"),
-          ]),
-          concat([
-            oneOrMore(validGenericChars),
-            endsWith(space(req: false)),
-          ]),
-        ])),
-      ]),
-      end: exactly(">"),
-    );
-    this.typeIdentifier = variablePlain;
-    this.libTypePrefix = concat([
-      zeroOrMore(identifierCharOrDot),
-      chars("."),
-    ]);
-    this.typeParameterKeyword = either([
-      phrase("dynamic"), phrase("extends"),
-    ]);
-
     var typeAfterKeywordPrefixKeyword = either([
       phrase("class"),    phrase("mixin"),      phrase("extension type"),
       phrase("extends"),  phrase("implements"), phrase("with"),
@@ -757,33 +794,45 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       begin: concat([
         either([
           startsWith(nothing),
-          behindIs(variablePrefixKeyword),
+          behindIs(either([
+            variablePrefixKeyword,
+            exactly("("), exactly(","),
+          ])),
         ]),
-        space(req: false),
         aheadIs(concat([
+          space(req: false),
           oneOrMore(either([
             typeIdentifier,
             libTypePrefix,
           ])),
-          either([
-            genericList.begin,
-            concat([
-              optional(nullableOperator),
-              space(req: true),
-              identifierChar,
-            ])
+          optional(genericList.asSingleRecipe()),
+          concat([
+            optional(nullableOperator),
+            space(req: true),
+            identifierChar,
           ]),
         ])),
-        aheadIsNot(keywordWord), // don't match `final` in `final myVar`
+        // don't match `final` in `late final myVar`
+        aheadIsNot(spaceBefore(keywordWord)),
       ]),
-      end: aheadIs(space(req: true)),
+      end: concat([
+        aheadIs(space(req: true)),
+        behindIs(either([
+          typeIdentifier,
+          genericList.end,
+          nullableOperator,
+        ])),
+      ]),
     );
     
     this.typeParameterContext = pair(
       begin: either([
         concat([
           behindIs(typeIdentifier),
-          aheadIs(genericList.begin),
+          aheadIs(either([
+            genericList.asSingleRecipe(),
+            multilineGenericListStart,
+          ])),
         ]),
         aheadIs(
           concat([
