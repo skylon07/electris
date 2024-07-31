@@ -122,10 +122,11 @@ final WithMultiline<
 final notAType < someVariable;
 
 // contextual type highlighting: type parameters
+// (`void`s should be shaded as errors)
 var myThing   = MyClass<dynamic>();
 var myThing2  = MyClass<List<List<List<List<void>>>>>();
 var myThing3  = <List<List<List<List<void>>>>>{};
-var myThing4  = myFn<Map<(int, int), dynamic>>();
+var myThing4  = myFn<List<List<List<List<void>>>>>();
 
 
 
@@ -143,85 +144,198 @@ var mapThing = true ?
 
 
 // functions
-...
+void myFn(
+  abc def,
+  abc ghi,
+  abc jkl,
+) {
+  myLongFnName<
+    really,
+    long,
+    dynamic,
+    param,
+    list
+  >();
+  if (something<1) {
+    doAnotherFn!<intgrr>();
+    fnCallButHaventTypedParensYet<int>
+  }
+
+  myType someFunction<T>(type1 id1, id2, type3 id3) {
+    mytype mything;
+  }
+  var callback = (abc def, abc ghi, abc jkl) {};
+  
+  // shading should all be the same level
+  something Function(abc, def) Function(abc, def) Function(abc, def) Function(abc, def) myFunction() {
+    
+  }
+
+  // `void` should be shaded as an error
+  hi Function(hi Function(hi Function(hi Function(hi Function(hi Function(void)))))) myFunction() {
+
+  }
+
+  // `void` should be shaded as an error
+  (asdf, (asdf, (asdf, (asdf, (asdf, (void,)))))) myThing;
+  
+  // everything should be at the same level in this parameter list
+  <int Function(int)>[];
+
+  // `(String, String)` should be the only thing shaded darker in this parameter list
+  <(int, (String, String))>[];
+  // the inside of this wrapper `(_,)` should match the above
+  ((int, (String, String)),) something;
+}
 
 // hard keywords as functions (should look like keywords)
 for(){}
-for <type> () {}
+for<type>() {}
 for () {}
 while(){}
-while <type> () {}
+while<type>() {}
 while () {}
 this(){}
-this <type> () {}
+this<type>() {}
 this () {}
 
 // soft keywords as functions (should look like functions)
 extension(){}
-extension <type> () {}
+extension<type>() {}
 extension () {}
 import(){}
-import <type> () {}
+import<type>() {}
 import () {}
 part(){}
-part <type> () {}
+part<type>() {}
 part () {}
 // (should recognize `part` as a keyword, not a type)
 part of(){}
-part of <type> () {}
+part of<type>() {}
 part  of () {}
 
 
 
+// records
+typedef myLongType = (
+  aaa,
+  bbb,
+  ccc,
+  ddd,
+);
 
 
 
+// many much records/functions testing
 
-void main() {
-  // make sure `thing2` is light green
-  (String thing, String? thing2) someRecord;
-  
-  var vars = Type? "str-literal" : int;
-  vars = null;
-
-  late final FIXED = 0xabcd;
-  TESTextension type; "asdf"
-  asdf123456the_end
-
-}
-
-extension type MyInt(int n) {}
- extension type MyInt2(int n) {}
- extension   type MyInt3(int n) {}
-
-@myAnnotation
-  @myAnnotation.Yay2
+type       fn      ((rec, rec) id) {
+type<type> fn      ((rec, rec) id) {
+type       fn<type>((rec, rec) id) {
+type<type> fn<type>((rec, rec) id) {
+   
+var fn = ((rec, rec) id) =>
+var fn = ((rec, rec) id) {
+var fn = (((rec, rec), rec) id) =>
+var fn = (((rec, rec), rec) id) {
+var fn = (type Function() id) =>
+var fn = (type Function() id) {
+var fn = (type Function() fn()) =>
+var fn = (type Function() fn()) {
+var fn = (type Function() fn(), id) =>
+var fn = (type Function() fn(), id) {
+   
+(type Function() id) =>
+(type Function() id) {
+// no way to tell these aren't `(rec, rec) funcDef() {`, but seeing these without previous text would be unusual...
+(type Function() fn()) =>
+(type Function() fn()) {
+(type Function() fn(), asdf) =>
+(type Function() fn(), asdf) {
+   
+(rec, rec)  syn
+(rec, rec)  asyn
+(rec, rec)? syn
+(rec, rec)? asyn
+(id, id)    sync
+(id, id)    async
+(rec, rec)? sync
+(rec, rec)? async
+   
 class MyClass {
-  // hard keywords
-  for(){}
-  for () {}
-  while(){}
-  while () {}
-  this(){}
-  this () {}
-
-  // soft keywords
-  extension(){}
-  extension () {}
-  import(){}
-  import () {}
-  part of(){}
-  part  of () {}
-  part(){}
-  part () {}
-
-
-  operator +() {}
-  operator +=() {}
-
-  operatorThingy() {
-    this.operatorOperations = 8;
-    performFunction(myDataType? something);
-    performFunction(isRequired ? requiredThing : notRequiredThing);
-  }
+         (type, type)      get something                      => (5, 5);
+         (type, type)      set something((rec, rec) newThing) => (5, 5);
+  type Function((int, int))       makeCb()                    => ((int, int) test) {};
+  type Function((int, int))       makeCb()              { return ((int, int) test) {}; }
+         type                   fn      (((rec, rec), rec) id) {}
+         type<type>             fn      (((rec, rec), rec) id) {}
+         type                   fn<type>(((rec, rec), rec) id) {}
+         type<type>             fn<type>(((rec, rec), rec) id) {}
+         (type, type)           fn      (((rec, rec), rec) id) {}
+         (type, type)           fn<type>(((rec, rec), rec) id) {}
+         ((type,), type)        fn      (((rec, rec), rec) id) {}
+         (type, (type, type))   fn<type>(((rec, rec), rec) id) {}
+  static (type, type)      get something                      => (5, 5);
+  static (type, type)      set something((rec, rec) newThing) => (5, 5);
+  static type                   fn      (((rec, rec), rec) id) {}
+  static type<type>             fn      (((rec, rec), rec) id) {}
+  static type                   fn<type>(((rec, rec), rec) id) {}
+  static type<type>             fn<type>(((rec, rec), rec) id) {}
+  static (type, type)           fn      (((rec, rec), rec) id) {}
+  static (type, type)           fn<type>(((rec, rec), rec) id) {}
+  static ((type,), type)        fn      (((rec, rec), rec) id) {}
+  static (type, (type, type))   fn<type>(((rec, rec), rec) id) {}
 }
+   
+fn      (((rec, rec), rec) id) {
+fn      ((( id,  id),  id))
+fn<type>(((rec, rec), rec) id) {
+fn<type>((( id,  id),  id))
+   
+fn      (    (id, id), id)
+fn<type>(    (id, id), id)
+fn      (id, (id, id), id)
+fn<type>(id, (id, id), id)
+   
+fn      ( fn( (     id ,      id ) ), ((rec, rec) id) {return id} )
+fn<type>( fn( (     id ,      id ) ), ((rec, rec) id) {return id} )
+fn      ( fn( ((id, id), (id, id)) ), ((rec, rec) id) {return id} )
+fn<type>( fn( ((id, id), (id, id)) ), ((rec, rec) id) {return id} )
+   
+fn       ( ((rec, rec) id) { return id },      id )
+fn<type> ( ((rec, rec) id) { return id },      id )
+fn       ( ((rec, rec) id) { return id }, (id, id))
+fn<type> ( ((rec, rec) id) { return id }, (id, id))
+fn!      ( ((rec, rec) id) { return id },      id )
+fn!<type>( ((rec, rec) id) { return id },      id )
+fn!      ( ((rec, rec) id) { return id }, (id, id))
+fn!<type>( ((rec, rec) id) { return id }, (id, id))
+fn       ( ((rec, rec) id) { return id },      id ).then(() {
+fn<type> ( ((rec, rec) id) { return id },      id ).then(() {
+fn!      ( ((rec, rec) id) { return id },      id ).then(() {
+fn!<type>( ((rec, rec) id) { return id },      id ).then(() {
+   
+extension type id      .id((rec, rec) Function() id) {
+class          id      .id((rec, rec) Function() id) {
+extension type id<type>.id((rec, rec) Function() id) {
+class          id<type>.id((rec, rec) Function() id) {
+   
+fn      (      id            , ((rec, rec) id) { return id } )
+fn<type>(      id            , ((rec, rec) id) { return id } )
+fn      ((     id ,      id ), ((rec, rec) id) { return id } )
+fn<type>((     id ,      id ), ((rec, rec) id) { return id } )
+fn      (((id, id), (id, id)), ((rec, rec) id) { return id } )
+fn<type>(((id, id), (id, id)), ((rec, rec) id) { return id } )
+   
+fn      ( ((      rec ,       rec ) id) { return id }, ((rec, rec) id) { return id } )
+fn<type>( ((      rec ,       rec ) id) { return id }, ((rec, rec) id) { return id } )
+fn      ( (((rec, rec),       rec ) id) { return id }, ((rec, rec) id) { return id } )
+fn<type>( (((rec, rec),       rec ) id) { return id }, ((rec, rec) id) { return id } )
+fn      ( (((rec, rec), (rec, rec)) id) { return id }, ((rec, rec) id) { return id } )
+fn<type>( (((rec, rec), (rec, rec)) id) { return id }, ((rec, rec) id) { return id } )
+   
+fn      ( ((      rec ,       rec ) id) { return id }( (     id ,      id ) ), ((rec, rec) id) { return id } )
+fn<type>( ((      rec ,       rec ) id) { return id }( (     id ,      id ) ), ((rec, rec) id) { return id } )
+fn      ( (((rec, rec),       rec ) id) { return id }( ((id, id),      id ) ), ((rec, rec) id) { return id } )
+fn<type>( (((rec, rec),       rec ) id) { return id }( ((id, id),      id ) ), ((rec, rec) id) { return id } )
+fn      ( (((rec, rec), (rec, rec)) id) { return id }( ((id, id), (id, id)) ), ((rec, rec) id) { return id } )
+fn<type>( (((rec, rec), (rec, rec)) id) { return id }( ((id, id), (id, id)) ), ((rec, rec) id) { return id } )

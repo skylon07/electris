@@ -613,7 +613,16 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
     var keywordSoft = concat([
       keywordSoftWord,
-      aheadIsNot(functionCallParametersStart),
+      aheadIsNot(concat([
+        functionCallParametersStart,
+        // don't treat "static" as a function in `static (int, int) myFn() {}`
+        aheadIsNot(concat([
+          zeroOrMore(anything),
+          recordList.end,
+          space(req: false),
+          variablePlain,
+        ])),
+      ])),
     ]);
 
     var validOperator = concat([
@@ -832,7 +841,18 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.typeAnnotationContext = pair(
       begin: concat([
         either([
-          startsWith(nothing),
+          concat([
+            startsWith(nothing),
+            // fixes recognizing anonymous functions like `(void Function() callback) {...}` as records
+            aheadIsNot(concat([
+              recordList.asSingleRecipe(),
+              zeroOrMore(anything),
+              either([
+                exactly("=>"),
+                exactly("{"),
+              ]),
+            ])),
+          ]),
           behindIs(either([
             variablePrefixKeyword,
             recordList.begin, exactly(","),
