@@ -47,9 +47,11 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   );
 
   late final typeContextUnits = [
+    typeParameterKeyword, // `extends` must be above `extends_var`
     genericList,
     nullableOperator,
-    libTypePrefix, // `ident.` must be above `ident`
+    functionType, // `someType Function()` must be above `someType`
+    recordListTop,
     typeIdentifier,
   ];
 
@@ -71,6 +73,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     mapLiteralPunctuation, // `{}` must be above `{`, `}` (ie general punctuation)
 
     functionCall, // `myFunction()` must be above `myFunction_noCall`
+    functionCallArgumentList, // not inner unit for `functionCall` since it also applies to anonymous functions
 
     annotation,
     organizationalPunctuation,
@@ -92,29 +95,43 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.nullableOperator,
   );
 
-  late final libTypePrefix = createUnit(
-    "libTypePrefix",
-    styleName: ElectrisStyleName.sourceCode_types_type,
-    match: collection.libTypePrefix,
-  );
-
-  late final genericList = createUnit(
+  late final ScopeUnit genericList = createUnit(
     "genericList",
     styleName: ElectrisStyleName.sourceCode_types_typeRecursive,
     matchPair: collection.genericList,
     innerUnits: () => [
-      // TODO: records -- "reason": "not recursive to avoid excessive shading"
-      recursiveTypeParameter,
+      recordListNoStyle, // not recursive to avoid excessive shading
+      recursiveTypeContextUnits,
     ],
   );
 
-  late final ScopeUnit recursiveTypeParameter = createUnit(
+  ScopeUnit recordListFactory(String identifier, ElectrisStyleName? styleName) =>
+    createUnit(
+      identifier,
+      styleName: styleName,
+      matchPair: collection.recordList,
+      innerUnits: () => [
+        recursiveTypeContextUnits,
+      ],
+    );
+  late final recordListNoStyle    = recordListFactory("recordListNoStyle",    null);
+  late final recordListTop        = recordListFactory("recordListTop",        ElectrisStyleName.sourceCode_types_type);
+  late final recordListRecursive  = recordListFactory("recordListRecursive",  ElectrisStyleName.sourceCode_types_typeRecursive);
+
+  late final ScopeUnit functionType = createUnit(
+    "functionType",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    matchPair: collection.functionType,
+    innerUnits: () => typeContextUnits,
+  );
+
+  late final ScopeUnit recursiveTypeContextUnits = createUnit(
     "recursiveTypeParameter",
     innerUnits: () => [
       typeParameterKeyword,
       genericList,
-      // TODO: records,
-      // TODO: functions,
+      recordListRecursive,
+      // not all type context units are included since they break the scopes that shade nested items
     ],
   );
 
@@ -170,14 +187,14 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   late final mapLiteralPunctuation = createUnit(
     "mapLiteralPunctuation",
     beginCaptures: {
-      collection.mapLiteralPunctuation_$enter: ElectrisStyleName.sourceCode_punctuation,
+      entireRecipe: ElectrisStyleName.sourceCode_punctuation,
     },
     endCaptures: {
-      collection.mapLiteralPunctuation_$exit: ElectrisStyleName.sourceCode_punctuation,
+      entireRecipe: ElectrisStyleName.sourceCode_punctuation,
     },
     matchPair: collection.mapLiteralPunctuation,
     innerUnits: () => [
-      organizationalPunctuation, // overrides conditional `:` operation
+      organizationalPunctuation, // overrides "else" operator `:` in conditionals `_ ? _ : _`
       self,
     ],
   );
@@ -206,9 +223,19 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       collection.functionCall_$name: ElectrisStyleName.sourceCode_functionCall,
     },
     matchPair: collection.functionCall,
-    innerUnits: () => [
-      self,
-    ],
+    innerUnits: () => [self],
+  );
+
+  late final functionCallArgumentList = createUnit(
+    "functionCallArgumentList",
+    beginCaptures: {
+      entireRecipe: ElectrisStyleName.sourceCode_punctuation,
+    },
+    endCaptures: {
+      entireRecipe: ElectrisStyleName.sourceCode_punctuation,
+    },
+    matchPair: collection.recordList,
+    innerUnits: () => [self],
   );
 
   late final literalNumber = createUnit(
@@ -377,8 +404,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe annotation;
   late final RegExpRecipe organizationalPunctuation;
   late final RegExpPair   mapLiteralPunctuation;
-  late final GroupRef     mapLiteralPunctuation_$enter = GroupRef();
-  late final GroupRef     mapLiteralPunctuation_$exit = GroupRef();
   late final RegExpRecipe simpleOperation;
   late final RegExpPair   conditionalOperation;
   late final GroupRef     conditionalOperation_$test = GroupRef();
@@ -408,12 +433,14 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe builtinType;
   late final RegExpRecipe typeIdentifier;
   late final RegExpRecipe nullableOperator;
-  late final RegExpRecipe libTypePrefix;
   late final RegExpPair   genericList;
   late final RegExpRecipe typeParameterKeyword;
 
+  late final RegExpPair   recordList;
+
   late final RegExpPair   functionCall;
   late final GroupRef     functionCall_$name = GroupRef();
+  late final RegExpPair   functionType;
 
   @override
   DartRegExpCollector createCollection() {
@@ -519,22 +546,23 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
       end: exactly(">"),
     );
-    this.typeIdentifier = variablePlain;
-    this.libTypePrefix = concat([
-      zeroOrMore(identifierCharOrDot),
-      chars("."),
-    ]);
+    this.typeIdentifier = oneOrMore(identifierCharOrDot);
     this.typeParameterKeyword = either([
       phrase("dynamic"), phrase("extends"),
     ]);
 
+    this.recordList = pair(
+      begin: exactly("("),
+      end: exactly(")"),
+    );
+
     var functionCallParametersStart = concat([
-      space(req: false),
-      optional(genericList.asSingleRecipe()),
       space(req: false),
       optional(exactly("!")),
       space(req: false),
-      exactly("(")
+      optional(genericList.asSingleRecipe()),
+      space(req: false),
+      recordList.begin,
     ]);
     var multilineGenericListStart = concat([
       genericList.begin,
@@ -546,9 +574,18 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         aheadIs(either([
           functionCallParametersStart,
           multilineGenericListStart,
+          genericList.begin,
         ])),
       ]),
-      end: behindIs(exactly(")")),
+      end: behindIs(recordList.end),
+    );
+
+    this.functionType = pair(
+      begin: concat([
+        phrase("Function"),
+        aheadIs(functionCallParametersStart),
+      ]),
+      end: behindIs(recordList.end),
     );
 
     var keywordHardWord = either([
@@ -616,15 +653,17 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     var propertyAccess = exactly(".");
     this.organizationalPunctuation = either([
-      exactly("("), exactly(")"),
+      // breaks records when included here; handled in function call grammar instead
+      // exactly("("), 
+      exactly(")"),
       exactly("["), exactly("]"),
       exactly("{"), exactly("}"),
       exactly(":"), exactly(","),
       exactly(";"), propertyAccess,
     ]);
     this.mapLiteralPunctuation = pair(
-      begin:  capture(exactly("{"), this.mapLiteralPunctuation_$enter),
-      end:    capture(exactly("}"), this.mapLiteralPunctuation_$exit),
+      begin: exactly("{"),
+      end: exactly("}"),
     );
 
     this.simpleOperation = either([
@@ -796,21 +835,21 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           startsWith(nothing),
           behindIs(either([
             variablePrefixKeyword,
-            exactly("("), exactly(","),
+            recordList.begin, exactly(","),
           ])),
         ]),
         aheadIs(concat([
           space(req: false),
-          oneOrMore(either([
-            typeIdentifier,
-            libTypePrefix,
-          ])),
-          optional(genericList.asSingleRecipe()),
-          concat([
-            optional(nullableOperator),
-            space(req: true),
-            identifierChar,
+          either([
+            concat([
+              typeIdentifier,
+              optional(genericList.asSingleRecipe()),
+            ]),
+            recordList.asSingleRecipe(),
           ]),
+          optional(nullableOperator),
+          space(req: true),
+          identifierChar,
         ])),
         // don't match `final` in `late final myVar`
         aheadIsNot(spaceBefore(keywordWord)),
@@ -821,6 +860,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           typeIdentifier,
           genericList.end,
           nullableOperator,
+          recordList.end,
+        ])),
+        aheadIsNot(concat([
+          space(req: false),
+          functionType.begin,
         ])),
       ]),
     );
@@ -828,7 +872,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.typeParameterContext = pair(
       begin: either([
         concat([
-          behindIs(typeIdentifier),
+          behindIs(concat([
+            typeIdentifier,
+            space(req: false),
+            optional(exactly("!")),
+          ])),
           aheadIs(either([
             genericList.asSingleRecipe(),
             multilineGenericListStart,
