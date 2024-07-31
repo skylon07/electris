@@ -295,7 +295,8 @@ fn      (    (id, id), id)
 fn<type>(    (id, id), id)
 fn      (id, (id, id), id)
 fn<type>(id, (id, id), id)
-   
+
+// TODO: `(id, id)` should not be showing as a type
 fn      ( fn( (     id ,      id ) ), ((rec, rec) id) {return id} )
 fn<type>( fn( (     id ,      id ) ), ((rec, rec) id) {return id} )
 fn      ( fn( ((id, id), (id, id)) ), ((rec, rec) id) {return id} )
