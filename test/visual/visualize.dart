@@ -143,7 +143,7 @@ var mapThing = true ?
 
 
 
-// functions
+// functions and records
 void myFn(
   abc def,
   abc ghi,
@@ -161,10 +161,10 @@ void myFn(
     fnCallButHaventTypedParensYet<int>
   }
 
-  myType someFunction<T>(type1 id1, id2, type3 id3) {
+  myType someFunction<T>(type1 id1, id2, type3 id3, [type4 id4, type5 id5]) {
     mytype mything;
   }
-  var callback = (abc def, abc ghi, abc jkl) {};
+  var callback = (abc def, abc ghi, abc jkl, {abc xyz, required abc bbc,}) {};
   
   // shading should all be the same level
   something Function(abc, def) Function(abc, def) Function(abc, def) Function(abc, def) myFunction() {
