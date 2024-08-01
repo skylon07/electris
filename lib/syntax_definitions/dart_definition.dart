@@ -553,12 +553,12 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     // fixes recognizing record related stuff inside strings, ex `{ (0, false): "(match) yes", }`
     var knownInvalidRecordChars = zeroOrMore(notChars("\"'"));
-    // any `recordList.asSingleRecipe()` should instead be this
-    var recordListAsSingleRecipe = recordList.asSingleRecipe(knownInvalidRecordChars);
     this.recordList = pair(
       begin: exactly("("),
       end: exactly(")"),
     );
+    // any `recordList.asSingleRecipe()` should instead be this
+    var recordListAsSingleRecipe = recordList.asSingleRecipe(knownInvalidRecordChars);
 
     var functionCallParametersStart = concat([
       space(req: false),
@@ -841,6 +841,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     var variablePrefixKeyword = either([
       phrase("var"),      phrase("final"),      phrase("const"),
       phrase("dynamic"),  phrase("covariant"),  phrase("static"),
+      phrase("required"),
     ]);
     this.typeAnnotationContext = pair(
       begin: concat([
@@ -860,6 +861,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           behindIs(either([
             variablePrefixKeyword,
             recordList.begin, exactly(","),
+            // don't forget optional and named function parameters!
+            exactly("["), exactly("{"),
           ])),
         ]),
         aheadIs(concat([
@@ -869,9 +872,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
               typeIdentifier,
               optional(genericList.asSingleRecipe()),
             ]),
-            concat([
-              recordListAsSingleRecipe,
-            ]),
+            recordListAsSingleRecipe,
           ]),
           optional(nullableOperator),
           space(req: true),
