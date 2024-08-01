@@ -551,6 +551,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("dynamic"), phrase("extends"),
     ]);
 
+    // fixes recognizing record related stuff inside strings, ex `{ (0, false): "(match) yes", }`
+    var knownInvalidRecordChars = zeroOrMore(notChars("\"'"));
+    // any `recordList.asSingleRecipe()` should instead be this
+    var recordListAsSingleRecipe = recordList.asSingleRecipe(knownInvalidRecordChars);
     this.recordList = pair(
       begin: exactly("("),
       end: exactly(")"),
@@ -845,7 +849,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             startsWith(nothing),
             // fixes recognizing anonymous functions like `(void Function() callback) {...}` as records
             aheadIsNot(concat([
-              recordList.asSingleRecipe(),
+              recordListAsSingleRecipe,
               zeroOrMore(anything),
               either([
                 exactly("=>"),
@@ -865,7 +869,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
               typeIdentifier,
               optional(genericList.asSingleRecipe()),
             ]),
-            recordList.asSingleRecipe(),
+            concat([
+              recordListAsSingleRecipe,
+            ]),
           ]),
           optional(nullableOperator),
           space(req: true),

@@ -224,6 +224,13 @@ typedef myLongType = (
   ddd,
 );
 
+var mapMaker = () => {
+  (0, false): "(match) yes",
+  (0, true): "does not match",
+  (1, false): "(the parens are important) and this",
+  (1, true): null,
+},
+
 
 
 // many much records/functions testing
