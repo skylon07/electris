@@ -9,10 +9,10 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.15.0"
-  vscode_theming:
+  vscode_theming_tools:
     dependency: "direct main"
     description:
-      path: "/Users/skylon07/Code/vscode_theming"
+      path: "/Users/skylon07/Code/vscode_theming_tools"
       relative: false
     source: path
     version: "0.0.0"

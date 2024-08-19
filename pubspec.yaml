@@ -4,6 +4,6 @@ environment:
   sdk: '^3.4.0'
 
 dependencies:
-  vscode_theming:
-    path: /Users/skylon07/Code/vscode_theming/
+  vscode_theming_tools:
+    path: /Users/skylon07/Code/vscode_theming_tools/
 
