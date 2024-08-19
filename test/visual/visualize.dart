@@ -347,3 +347,9 @@ fn      ( (((rec, rec),       rec ) id) { return id }( ((id, id),      id ) ), (
 fn<type>( (((rec, rec),       rec ) id) { return id }( ((id, id),      id ) ), ((rec, rec) id) { return id } )
 fn      ( (((rec, rec), (rec, rec)) id) { return id }( ((id, id), (id, id)) ), ((rec, rec) id) { return id } )
 fn<type>( (((rec, rec), (rec, rec)) id) { return id }( ((id, id), (id, id)) ), ((rec, rec) id) { return id } )
+
+
+
+// other edge-cases
+for (var thing in mything) {}
+item in myList;

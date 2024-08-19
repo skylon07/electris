@@ -876,6 +876,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           ]),
           optional(nullableOperator),
           space(req: true),
+          // don't allow keywords after identifiers like `item in someList`
+          aheadIsNot(keywordWord),
           identifierChar,
         ])),
         // don't match `final` in `late final myVar`
