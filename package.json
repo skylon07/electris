@@ -75,7 +75,7 @@
         },
         "grammars": [
             {
-                "path": "./syntaxes/dart-source.tmLanguage.json",
+                "path": "./syntaxes/dart-source-generated.tmLanguage.json",
                 "scopeName": "electris.source.dart",
                 "language": "dart"
             },
