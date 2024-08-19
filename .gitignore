@@ -2,3 +2,5 @@ node_modules
 *.vsix
 .dart_tool
 !.vscode
+
+reference
