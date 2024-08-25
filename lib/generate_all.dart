@@ -1,6 +1,6 @@
 import 'dart:isolate';
 
-import 'package:vscode_theming/vscode_theming.dart';
+import 'package:vscode_theming_tools/vscode_theming_tools.dart';
 
 import './syntax_definitions/dart_definition.dart';
 

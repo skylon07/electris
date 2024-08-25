@@ -1,4 +1,4 @@
-import 'package:vscode_theming/vscode_theming.dart';
+import 'package:vscode_theming_tools/vscode_theming_tools.dart';
 
 import '../style_names.dart';
 
