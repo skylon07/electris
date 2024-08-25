@@ -196,6 +196,9 @@
             "name": "electris.source-code.types.type debugName.dart.recordListTop",
             "patterns": [
                 {
+                    "include": "#recordVariable"
+                },
+                {
                     "include": "#recursiveTypeParameter"
                 }
             ],
@@ -436,6 +439,9 @@
             "name": "debugName.dart.recordListNoStyle",
             "patterns": [
                 {
+                    "include": "#recordVariable"
+                },
+                {
                     "include": "#recursiveTypeParameter"
                 }
             ],
@@ -455,6 +461,10 @@
                     "include": "#recordListRecursive"
                 }
             ]
+        },
+        "recordVariable": {
+            "name": "electris.source-code.variable debugName.dart.recordVariable",
+            "match": "((?<=([.]|([a-zA-Z_$0-9]))+\\s+)([a-zA-Z_$0-9])+)"
         },
         "literalStringInterpOper": {
             "name": "debugName.dart.literalStringInterpOper",
@@ -544,6 +554,9 @@
         "recordListRecursive": {
             "name": "electris.source-code.types.type-recursive debugName.dart.recordListRecursive",
             "patterns": [
+                {
+                    "include": "#recordVariable"
+                },
                 {
                     "include": "#recursiveTypeParameter"
                 }

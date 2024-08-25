@@ -111,12 +111,19 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       styleName: styleName,
       matchPair: collection.recordList,
       innerUnits: () => [
+        recordVariable,
         recursiveTypeContextUnits,
       ],
     );
   late final recordListNoStyle    = recordListFactory("recordListNoStyle",    null);
   late final recordListTop        = recordListFactory("recordListTop",        ElectrisStyleName.sourceCode_types_type);
   late final recordListRecursive  = recordListFactory("recordListRecursive",  ElectrisStyleName.sourceCode_types_typeRecursive);
+
+  late final recordVariable = createUnit(
+    "recordVariable",
+    styleName: ElectrisStyleName.sourceCode_variable,
+    match: collection.recordVariable,
+  );
 
   late final ScopeUnit functionType = createUnit(
     "functionType",
@@ -437,6 +444,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe typeParameterKeyword;
 
   late final RegExpPair   recordList;
+  late final RegExpRecipe recordVariable;
 
   late final RegExpPair   functionCall;
   late final GroupRef     functionCall_$name = GroupRef();
@@ -559,6 +567,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     );
     // any `recordList.asSingleRecipe()` should instead be this
     var recordListAsSingleRecipe = recordList.asSingleRecipe(knownInvalidRecordChars);
+    this.recordVariable = concat([
+      behindIs(spaceReqAfter(typeIdentifier)),
+      variablePlain,
+    ]);
 
     var functionCallParametersStart = concat([
       space(req: false),
