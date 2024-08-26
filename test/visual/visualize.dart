@@ -168,6 +168,7 @@ void myFn(
 
   // `<asdf>` should be a type parameter list; `(max, value)` should not be recognized as a record
   var thing = [].reduce(<asdf>(max, value) => (max < value)? value : max);
+  <something extends > // `>` should be an operator, not in the "unrecognized" style
   
   // shading should all be the same level
   something Function(abc, def) Function(abc, def) Function(abc, def) Function(abc, def) myFunction() {

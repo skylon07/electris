@@ -53,6 +53,8 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     functionType, // `someType Function()` must be above `someType`
     recordListTop,
     typeIdentifier,
+
+    ...defaultContextUnits, // default style for any unrecognized things so it doesn't look ugly
   ];
 
   late final defaultContextUnits = [
