@@ -560,7 +560,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
 
     // fixes recognizing record related stuff inside strings, ex `{ (0, false): "(match) yes", }`
-    var knownInvalidRecordChars = zeroOrMore(notChars("\"'"));
+    var knownInvalidRecordChars = zeroOrMore(notChars("\"'^&|="));
     this.recordList = pair(
       begin: exactly("("),
       end: exactly(")"),
