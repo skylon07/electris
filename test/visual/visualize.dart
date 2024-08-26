@@ -166,8 +166,8 @@ void myFn(
   }
   var callback = (abc def, abc ghi, abc jkl, {abc xyz, required abc bbc,}) {};
 
-  // `(max, value)` should not be recognized as a record
-  var thing = [].reduce((max, value) => (max < value)? value : max);
+  // `<asdf>` should be a type parameter list; `(max, value)` should not be recognized as a record
+  var thing = [].reduce(<asdf>(max, value) => (max < value)? value : max);
   
   // shading should all be the same level
   something Function(abc, def) Function(abc, def) Function(abc, def) Function(abc, def) myFunction() {

@@ -936,6 +936,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             either([
               exactly("["),
               exactly("{"),
+              exactly("("), // for anonymous functions
             ]),
           ])
         ),
