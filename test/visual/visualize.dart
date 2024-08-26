@@ -228,6 +228,9 @@ typedef myLongType = (
   ddd,
 );
 
+typedef MyFn    = int Function(num, int, String);
+typedef MyFnFn  = int Function(num, int, String) Function(String);
+
 var mapMaker = () => {
   (0, false): "(match) yes",
   (0, true): "does not match",

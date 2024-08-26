@@ -574,6 +574,13 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       variablePlain,
     ]);
 
+    var typeContextCommonEnd = either([
+      typeIdentifier,
+      genericList.end,
+      nullableOperator,
+      recordList.end,
+    ]);
+
     var functionCallParametersStart = concat([
       space(req: false),
       optional(exactly("!")),
@@ -600,10 +607,18 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     this.functionType = pair(
       begin: concat([
+        optional(concat([
+          typeContextCommonEnd,
+          space(req: true),
+        ])),
         phrase("Function"),
         aheadIs(functionCallParametersStart),
       ]),
-      end: behindIs(recordList.end),
+      end: concat([
+        behindIs(recordList.end),
+        // recognize recursively, like `void Function() Function()`
+        aheadIsNot(spaceBefore(phrase("Function"))),
+      ]),
     );
 
     var keywordHardWord = either([
@@ -906,12 +921,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
       end: concat([
         aheadIs(space(req: true)),
-        behindIs(either([
-          typeIdentifier,
-          genericList.end,
-          nullableOperator,
-          recordList.end,
-        ])),
+        behindIs(typeContextCommonEnd),
         aheadIsNot(concat([
           space(req: false),
           functionType.begin,
