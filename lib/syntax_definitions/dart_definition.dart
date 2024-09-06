@@ -72,6 +72,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 
     simpleOperation, // `?` in `_?._` must be above `_ ? _ : _`
     conditionalOperation, // `:` in `_ ? _ : _` must be above `{_: _}`
+    chainOperation,
     mapLiteralPunctuation, // `{}` must be above `{`, `}` (ie general punctuation)
 
     functionCall, // `myFunction()` must be above `myFunction_noCall`
@@ -224,6 +225,12 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       collection.conditionalOperation_$else: ElectrisStyleName.sourceCode_operator
     },
     innerUnits: () => [self],
+  );
+
+  late final chainOperation = createUnit(
+    "chainOperation",
+    styleName: ElectrisStyleName.sourceCode_variable, // not the normal operator style
+    match: collection.chainOperation,
   );
 
   late final functionCall = createUnit(
@@ -417,6 +424,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair   conditionalOperation;
   late final GroupRef     conditionalOperation_$test = GroupRef();
   late final GroupRef     conditionalOperation_$else = GroupRef();
+  late final RegExpRecipe chainOperation;
 
   late final RegExpRecipe literalNumber;
 
@@ -695,7 +703,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       zeroOrMore(identifierCharOrDot),
     ]);
 
-    var propertyAccess = exactly(".");
+    var propertyAccess = concat([
+      behindIsNot(exactly(".")),
+      exactly("."),
+      aheadIsNot(exactly(".")),
+    ]);
     this.organizationalPunctuation = either([
       // breaks records when included here; handled in function call grammar instead
       // exactly("("), 
@@ -752,6 +764,12 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       begin:  capture(exactly("?"), this.conditionalOperation_$test),
       end:    capture(exactly(":"), this.conditionalOperation_$else),
     );
+
+    this.chainOperation = concat([
+      behindIsNot(exactly(".")),
+      exactly(".."),
+      aheadIsNot(exactly(".")),
+    ]);
 
     RegExpPair stringPattern(RegExpRecipe pattern, {required bool eolTerminates, required bool isRaw}) {
       var patterns = pair(begin: pattern, end: pattern);

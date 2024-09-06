@@ -70,6 +70,9 @@
                     "include": "#conditionalOperation"
                 },
                 {
+                    "include": "#chainOperation"
+                },
+                {
                     "include": "#mapLiteralPunctuation"
                 },
                 {
@@ -141,6 +144,9 @@
                 },
                 {
                     "include": "#conditionalOperation"
+                },
+                {
+                    "include": "#chainOperation"
                 },
                 {
                     "include": "#mapLiteralPunctuation"
@@ -216,6 +222,9 @@
                     "include": "#conditionalOperation"
                 },
                 {
+                    "include": "#chainOperation"
+                },
+                {
                     "include": "#mapLiteralPunctuation"
                 },
                 {
@@ -269,6 +278,9 @@
                 },
                 {
                     "include": "#conditionalOperation"
+                },
+                {
+                    "include": "#chainOperation"
                 },
                 {
                     "include": "#mapLiteralPunctuation"
@@ -361,6 +373,9 @@
                 },
                 {
                     "include": "#conditionalOperation"
+                },
+                {
+                    "include": "#chainOperation"
                 },
                 {
                     "include": "#mapLiteralPunctuation"
@@ -535,7 +550,7 @@
         },
         "simpleOperation": {
             "name": "electris.source-code.operator debugName.dart.simpleOperation",
-            "match": "(\\+\\+|\\-\\-|\\+|\\-|\\*|/|~/|%|!|<<|>>|>>>|&|\\||\\^|~|=|\\?\\?=|\\+=|\\-=|\\*=|/=|~/=|%=|<<=|>>=|>>>=|&=|\\|=|\\^=|~=|>|>=|<|<=|==|!=|\\?\\?|(\\?(?=\\.))|#|\\.\\.\\.|=>)"
+            "match": "(\\+\\+|\\-\\-|\\+|\\-|\\*|/|~/|%|!|<<|>>|>>>|&|\\||\\^|~|=|\\?\\?=|\\+=|\\-=|\\*=|/=|~/=|%=|<<=|>>=|>>>=|&=|\\|=|\\^=|~=|>|>=|<|<=|==|!=|\\?\\?|(\\?(?=(?<!\\.)\\.(?!\\.)))|#|\\.\\.\\.|=>)"
         },
         "conditionalOperation": {
             "name": "debugName.dart.conditionalOperation",
@@ -556,6 +571,10 @@
                     "name": "electris.source-code.operator debugName.dart.conditionalOperation.endCaptures[1]"
                 }
             }
+        },
+        "chainOperation": {
+            "name": "electris.source-code.variable debugName.dart.chainOperation",
+            "match": "((?<!\\.)\\.\\.(?!\\.))"
         },
         "mapLiteralPunctuation": {
             "name": "debugName.dart.mapLiteralPunctuation",
@@ -621,7 +640,7 @@
         },
         "organizationalPunctuation": {
             "name": "electris.source-code.punctuation debugName.dart.organizationalPunctuation",
-            "match": "(\\)|\\[|\\]|\\{|\\}|:|,|;|\\.)"
+            "match": "(\\)|\\[|\\]|\\{|\\}|:|,|;|((?<!\\.)\\.(?!\\.)))"
         },
         "variablePlain": {
             "name": "electris.source-code.variable debugName.dart.variablePlain",
@@ -693,6 +712,9 @@
                         },
                         {
                             "include": "#conditionalOperation"
+                        },
+                        {
+                            "include": "#chainOperation"
                         },
                         {
                             "include": "#mapLiteralPunctuation"
