@@ -144,7 +144,7 @@ var mapThing = true ?
 
 
 // functions and records
-void myFn(
+void myFnAndRecords(
   abc def,
   abc ghi,
   abc jkl,
@@ -190,6 +190,8 @@ void myFn(
   <(int, (String, String))>[];
   // the inside of this wrapper `(_,)` should match the above
   ((int, (String, String)),) something;
+
+  (int aaa, List<int> bbb, (bool? ccc, List<int>? ddd, ({int eee}))) thing;
 }
 
 // hard keywords as functions (should look like keywords)
@@ -246,7 +248,7 @@ type       fn      ((rec, rec) id) {
 type<type> fn      ((rec, rec) id) {
 type       fn<type>((rec, rec) id) {
 type<type> fn<type>((rec, rec) id) {
-   
+
 var fn = ((rec, rec) id) =>
 var fn = ((rec, rec) id) {
 var fn = (((rec, rec), rec) id) =>

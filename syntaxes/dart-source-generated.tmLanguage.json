@@ -656,7 +656,7 @@
         },
         "recordVariable": {
             "name": "electris.source-code.variable debugName.dart.recordVariable",
-            "match": "((?<=([.]|([a-zA-Z_$0-9]))+\\s+)([a-zA-Z_$0-9])+)"
+            "match": "((?<=(([.]|([a-zA-Z_$0-9]))+|>|\\?|\\))\\s+)(?!((([.]|([a-zA-Z_$0-9]))+|>|\\?|\\))\\s+)?((?<=[^a-zA-Z0-9_$]|^)Function(?=[^a-zA-Z0-9_$]|$))(?=\\s*!?\\s*((<(?=([^+\\-*\\/\\^|&~=]*>)|([^+\\-*\\/\\^|&~=]+\\s*$))).*>)?\\s*\\())([a-zA-Z_$0-9])+)"
         },
         "literalStringInterpOper": {
             "name": "debugName.dart.literalStringInterpOper",

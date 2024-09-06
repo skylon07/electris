@@ -569,11 +569,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     );
     // any `recordList.asSingleRecipe()` should instead be this
     var recordListAsSingleRecipe = recordList.asSingleRecipe(knownInvalidRecordChars);
-    this.recordVariable = concat([
-      behindIs(spaceReqAfter(typeIdentifier)),
-      variablePlain,
-    ]);
-
+    
     var typeContextCommonEnd = either([
       typeIdentifier,
       genericList.end,
@@ -620,6 +616,12 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         aheadIsNot(spaceBefore(phrase("Function"))),
       ]),
     );
+
+    this.recordVariable = concat([
+      behindIs(spaceReqAfter(typeContextCommonEnd)),
+      aheadIsNot(functionType.begin),
+      variablePlain,
+    ]);
 
     var keywordHardWord = either([
       phrase("class"),    phrase("extends"),  phrase("with"),   phrase("super"),
