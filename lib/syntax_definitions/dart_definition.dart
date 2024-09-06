@@ -853,13 +853,16 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("typedef"),  phrase("is"),         phrase("as"),
     ]);
     this.typeAfterKeywordContext = pair(
-      begin: either([
-        behindIs(typeAfterKeywordPrefixKeyword),
-        behindIs(concat([
-          phrase("typedef"),
-          zeroOrMore(anything),
-          exactly("="),
+      begin: concat([
+        behindIs(either([
+          typeAfterKeywordPrefixKeyword,
+          concat([
+            phrase("typedef"),
+            zeroOrMore(anything),
+            exactly("="),
+          ]),
         ])),
+        aheadIsNot(spaceBefore(keywordWord)),
       ]),
       end: behindIsNot(either([
         space(req: true),

@@ -98,7 +98,7 @@ true == false == null
 
 // contextual type highlighting: declarations and casts (after certain keywords)
 class MyClass<ItemT> with someMixin implements someInterface {}
-class notAGoodClassName extends alsoNotAGoodClassName {}
+mixin class notAGoodClassName extends alsoNotAGoodClassName {}
 test = myThing is something;
 test = myThing is   something;
 test = myThing as something;
