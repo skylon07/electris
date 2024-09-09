@@ -209,12 +209,13 @@ this () {}
 // soft keywords as functions (should look like functions)
 extension(){}
 extension<type>() {}
-extension () {}
 import(){}
 import<type>() {}
-import () {}
 part(){}
 part<type>() {}
+// soft keywords with spacing (should look like keywords)
+extension () {}
+import () {}
 part () {}
 // (should recognize `part` as a keyword, not a type)
 part of(){}

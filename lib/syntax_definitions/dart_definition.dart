@@ -620,6 +620,70 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       space(req: false),
       recordList.begin,
     ]);
+
+    var keywordHardWord = either([
+      phrase("class"),    phrase("extends"),  phrase("with"),   phrase("super"),
+      phrase("is"),       phrase("as"),       phrase("enum"),   phrase("var"),
+      phrase("const"),    phrase("final"),    phrase("if"),     phrase("else"),
+      phrase("for"),      phrase("in"),       phrase("while"),  phrase("continue"),
+      phrase("break"),    phrase("do"),       phrase("switch"), phrase("case"),
+      phrase("default"),  phrase("try"),      phrase("catch"),  phrase("finally"),
+      phrase("throw"),    phrase("rethrow"),  phrase("assert"), phrase("this"),
+      phrase("new"),      phrase("return"),
+    ]);
+    var keywordHard = keywordHardWord;
+    
+    var keywordSoftWord = either([
+      phrase("import"),     phrase("export"),     phrase("library"),    phrase("hide"),
+      phrase("show"),       phrase("deferred"),   phrase("part of"),    phrase("part"),
+      phrase("abstract"),   phrase("interface"),  phrase("implements"), phrase("mixin"),
+      phrase("base"),       phrase("sealed"),     phrase("typedef"),    phrase("dynamic"),
+      phrase("static"),     phrase("covariant"),  phrase("late"),       phrase("extension type"),
+      phrase("extension"),  phrase("when"),       phrase("on"),         phrase("async"),
+      phrase("await"),      phrase("sync"),       phrase("get"),        phrase("set"),
+      phrase("yield"),      phrase("external"),   phrase("required"),   phrase("factory"),
+      phrase("macro"),
+    ]);
+    var keywordSoft = concat([
+      keywordSoftWord,
+      aheadIsNot(concat([
+        // interpret `keyword()` as a function call, but `keyword ()` as a keyword
+        // (ex. `static (int, int) myFn() {}` or `await (a ? b : c)`)
+        aheadIsNot(space(req: true)),
+        functionCallParametersStart,
+      ])),
+    ]);
+
+    var validOperator = concat([
+      either([
+        exactly(">"),   exactly(">="),  exactly("<"),   exactly("<="),  exactly("=="),
+        exactly("+"),   exactly("-"),   exactly("*"),   exactly("/"),   exactly("~/"),  exactly("%"),
+        exactly("<<"),  exactly(">>"),  exactly(">>>"),
+        exactly("^"),   exactly("&"),   exactly("|"),   exactly("~"),
+        exactly("[]"),  exactly("[]="),
+      ]),
+      aheadIs(either([
+        functionCallParametersStart,
+        endsWith(space(req: false)),
+      ])),
+    ]);
+    var invalidOperator = either([
+      zeroOrMore(notChars(r"(\s")),
+      endsWith(nothing),
+    ]);
+    var keywordOperatorWord = phrase("operator");
+    var keywordOperator = concat([
+      keywordOperatorWord,
+      space(req: false),
+      either([
+        capture(validOperator, this.keywordOperator_$valid),
+        capture(invalidOperator, this.keywordOperator_$invalid),
+      ]),
+    ]);
+
+    var keywordWord = either([keywordHardWord, keywordSoftWord, keywordOperatorWord]);
+    this.keyword = either([keywordHard, keywordSoft, keywordOperator]);
+
     var multilineGenericListStart = concat([
       genericList.begin,
       endsWith(space(req: false)),
@@ -657,73 +721,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       aheadIsNot(functionType.begin),
       variablePlain,
     ]);
-
-    var keywordHardWord = either([
-      phrase("class"),    phrase("extends"),  phrase("with"),   phrase("super"),
-      phrase("is"),       phrase("as"),       phrase("enum"),   phrase("var"),
-      phrase("const"),    phrase("final"),    phrase("if"),     phrase("else"),
-      phrase("for"),      phrase("in"),       phrase("while"),  phrase("continue"),
-      phrase("break"),    phrase("do"),       phrase("switch"), phrase("case"),
-      phrase("default"),  phrase("try"),      phrase("catch"),  phrase("finally"),
-      phrase("throw"),    phrase("rethrow"),  phrase("assert"), phrase("this"),
-      phrase("new"),      phrase("return"),
-    ]);
-    var keywordHard = keywordHardWord;
-    
-    var keywordSoftWord = either([
-      phrase("import"),     phrase("export"),     phrase("library"),    phrase("hide"),
-      phrase("show"),       phrase("deferred"),   phrase("part of"),    phrase("part"),
-      phrase("abstract"),   phrase("interface"),  phrase("implements"), phrase("mixin"),
-      phrase("base"),       phrase("sealed"),     phrase("typedef"),    phrase("dynamic"),
-      phrase("static"),     phrase("covariant"),  phrase("late"),       phrase("extension type"),
-      phrase("extension"),  phrase("when"),       phrase("on"),         phrase("async"),
-      phrase("await"),      phrase("sync"),       phrase("get"),        phrase("set"),
-      phrase("yield"),      phrase("external"),   phrase("required"),   phrase("factory"),
-      phrase("macro"),
-    ]);
-    var keywordSoft = concat([
-      keywordSoftWord,
-      aheadIsNot(concat([
-        functionCallParametersStart,
-        // don't treat "static" as a function in `static (int, int) myFn() {}`
-        aheadIsNot(concat([
-          zeroOrMore(anything),
-          recordList.end,
-          space(req: false),
-          variablePlain,
-        ])),
-      ])),
-    ]);
-
-    var validOperator = concat([
-      either([
-        exactly(">"),   exactly(">="),  exactly("<"),   exactly("<="),  exactly("=="),
-        exactly("+"),   exactly("-"),   exactly("*"),   exactly("/"),   exactly("~/"),  exactly("%"),
-        exactly("<<"),  exactly(">>"),  exactly(">>>"),
-        exactly("^"),   exactly("&"),   exactly("|"),   exactly("~"),
-        exactly("[]"),  exactly("[]="),
-      ]),
-      aheadIs(either([
-        functionCallParametersStart,
-        endsWith(space(req: false)),
-      ])),
-    ]);
-    var invalidOperator = either([
-      zeroOrMore(notChars(r"(\s")),
-      endsWith(nothing),
-    ]);
-    var keywordOperatorWord = phrase("operator");
-    var keywordOperator = concat([
-      keywordOperatorWord,
-      space(req: false),
-      either([
-        capture(validOperator, this.keywordOperator_$valid),
-        capture(invalidOperator, this.keywordOperator_$invalid),
-      ]),
-    ]);
-
-    var keywordWord = either([keywordHardWord, keywordSoftWord, keywordOperatorWord]);
-    this.keyword = either([keywordHard, keywordSoft, keywordOperator]);
 
     this.annotation = concat([
       exactly("@"),
