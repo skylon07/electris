@@ -71,6 +71,7 @@ str = "$my_var$"; // second `$` should be an operator
 str = "$my_var_$my_var_";
 str = "${my_var_}$my_var_";
 str = "$my_var_${my_var_}";
+str = "$myVar$MyType$MY_CONST$myVar";
 str = "strstr\n\"; // this comment is actually part of the string!
 str = "strstr\n\""; // this comment is not a part of the string either
 str = "strstr\n\\"; // this comment is not a part of the string

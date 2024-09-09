@@ -66,9 +66,11 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     literalString,
     literalKeyword, // `true` must be above `true_thy`
     variableConst, // `MY_CONST` must be above `MyConst` and `myConst`
+    variableConstNoDollar,
 
     builtinType, // `int` must be above `int_eger`
     variableType, // `MyType` must be above `myType`
+    variableTypeNoDollar,
 
     simpleOperation, // `?` in `_?._` must be above `_ ? _ : _`
     conditionalOperation, // `:` in `_ ? _ : _` must be above `{_: _}`
@@ -81,6 +83,7 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     annotation,
     organizationalPunctuation,
     variablePlain,
+    variablePlainNoDollar,
   ];
 
 
@@ -160,16 +163,34 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     match: collection.variablePlain,
   );
 
+  late final variablePlainNoDollar = createUnit(
+    "variablePlainNoDollar",
+    styleName: ElectrisStyleName.sourceCode_variable,
+    match: collection.variablePlainNoDollar,
+  );
+
   late final variableType = createUnit(
     "variableType",
     styleName: ElectrisStyleName.sourceCode_types_type,
     match: collection.variableType,
   );
 
+  late final variableTypeNoDollar = createUnit(
+    "variableTypeNoDollar",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.variableTypeNoDollar,
+  );
+
   late final variableConst = createUnit(
     "variableConst",
     styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
     match: collection.variableConst,
+  );
+
+  late final variableConstNoDollar = createUnit(
+    "variableConstNoDollar",
+    styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
+    match: collection.variableConstNoDollar,
   );
 
   late final keyword = createUnit(
@@ -309,12 +330,18 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       createUnitInline(
         styleName: ElectrisStyleName.sourceCode_operator,
         matchPair: collection.literalStringInterpOperIdentifier,
-        innerUnits: () => [
-          createUnitInline(
-            styleName: ElectrisStyleName.sourceCode_variable,
-            match: collection.variablePlainNoDollar,
-          ),
-        ],
+        innerUnits: () {
+          var variableNoDollarUnits = {
+            variablePlainNoDollar,
+            variableTypeNoDollar,
+            variableConstNoDollar,
+          };
+          // filtering the list guarantees the originally defined unit order is preserved
+          return [
+            for (var unit in defaultContextUnits)
+              if (variableNoDollarUnits.contains(unit)) unit
+          ];
+        },
       ),
     ],
   );
@@ -411,7 +438,9 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpRecipe variablePlain;
   late final RegExpRecipe variablePlainNoDollar;
   late final RegExpRecipe variableType;
+  late final RegExpRecipe variableTypeNoDollar;
   late final RegExpRecipe variableConst;
+  late final RegExpRecipe variableConstNoDollar;
 
   late final RegExpRecipe keyword;
   late final GroupRef     keywordOperator_$valid = GroupRef();
@@ -500,53 +529,51 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     var identifierUpperChar     = chars(r"A..Z");
     var identifierSpacerChar    = chars(r"_");
     var identifierDollarChar    = chars(r"$");
-    var identifierCharsSet      = [
+    var identifierChars         = {
       identifierLowerChar,
       identifierUpperChar,
       identifierSpacerChar,
       identifierDollarChar,
       numberChar,
-    ];
-    var identifierChar = either(identifierCharsSet);
-    var identifierCharOrDot = either([
-      identifierChar,
-      chars("."),
-    ]);
+    };
+    var identifierCharsOrDot = identifierChars.union({chars(r".")});
 
-    this.variablePlain = oneOrMore(identifierChar);
-    this.variablePlainNoDollar = oneOrMore(either([
-      for (var char in identifierCharsSet)
-        if (char != identifierDollarChar) char
-    ]));
-    this.nullableOperator = exactly("?");
-    this.variableType = concat([
-      zeroOrMore(either([
-        for (var char in identifierCharsSet)
-          if (char != identifierUpperChar && char != identifierLowerChar) char
-      ])),
-      identifierUpperChar,
-      zeroOrMore(identifierChar),
-    ]);
-    this.variableConst = concat([
-      // must be at least two letters long; single uppercase should be type color
-      // (to avoid flashing const color when typing out type names)
-      repeatAtLeast(2, concat([
-        zeroOrMore(either([
-          for (var char in identifierCharsSet)
-            if (char != identifierUpperChar && char != identifierLowerChar) char
-        ])),
+    RegExpRecipe variablePlainPattern(Set<RegExpRecipe> charsSet) => 
+      oneOrMore(either(charsSet.toList()));
+    this.variablePlain          = variablePlainPattern(identifierChars);
+    this.variablePlainNoDollar  = variablePlainPattern(identifierChars.difference({identifierDollarChar}));
+    RegExpRecipe variableTypePattern(Set<RegExpRecipe> charsSet) => 
+      concat([
+        zeroOrMore(either(
+          charsSet.difference({identifierUpperChar, identifierLowerChar}).toList()
+        )),
         identifierUpperChar,
-      ])),
-      zeroOrMore(either([
-        for (var char in identifierCharsSet)
-          if (char != identifierLowerChar) char
-      ])),
-      aheadIsNot(identifierChar),
-    ]);
+        zeroOrMore(either(charsSet.toList())),
+      ]);
+    this.variableType         = variableTypePattern(identifierChars);
+    this.variableTypeNoDollar = variableTypePattern(identifierChars.difference({identifierDollarChar}));
+    RegExpRecipe variableConstPattern(Set<RegExpRecipe> charsSet) =>
+      concat([
+        // must be at least two letters long; single uppercase should be type color
+        // (to avoid flashing const color when typing out type names)
+        repeatAtLeast(2, concat([
+          zeroOrMore(either(
+            charsSet.difference({identifierUpperChar, identifierLowerChar}).toList()
+          )),
+          identifierUpperChar,
+        ])),
+        zeroOrMore(either(
+          charsSet.difference({identifierLowerChar}).toList()
+        )),
+        aheadIsNot(either(charsSet.toList())),
+      ]);
+    this.variableConst          = variableConstPattern(identifierChars);
+    this.variableConstNoDollar  = variableConstPattern(identifierChars.difference({identifierDollarChar}));
 
     this.builtinType = either([
       phrase("num"), phrase("int"), phrase("double"), phrase("bool"), phrase("void"),
     ]);
+    this.nullableOperator = exactly("?");
     var validGenericChars = notChars(r"+-*/^|&~=");
     this.genericList = pair(
       begin: concat([
@@ -564,7 +591,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
       end: exactly(">"),
     );
-    this.typeIdentifier = oneOrMore(identifierCharOrDot);
+    this.typeIdentifier = oneOrMore(either(identifierCharsOrDot.toList()));
     this.typeParameterKeyword = either([
       phrase("dynamic"), phrase("extends"),
     ]);
@@ -700,7 +727,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     this.annotation = concat([
       exactly("@"),
-      zeroOrMore(identifierCharOrDot),
+      zeroOrMore(either(identifierCharsOrDot.toList())),
     ]);
 
     var propertyAccess = concat([
@@ -814,7 +841,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     this.literalStringInterpOperIdentifier = pair( 
       begin: exactly(r"$"),
-      end: aheadIsNot(variablePlainNoDollar),
+      end: either([
+        aheadIsNot(variablePlain),
+        aheadIs(exactly(r"$")),
+      ]),
     );
     this.literalStringInterpOperExpression = pair(
       begin: capture(
@@ -937,7 +967,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             ])),
             keywordWord,
           ])),
-          identifierChar,
+          either(identifierChars.toList()),
         ])),
         // don't match `final` in `late final myVar`
         aheadIsNot(spaceBefore(keywordWord)),
