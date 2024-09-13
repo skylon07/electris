@@ -900,7 +900,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.typeAfterKeywordContext = pair(
       begin: concat([
         behindIs(either([
-          typeAfterKeywordPrefixKeyword,
+          concat([
+            typeAfterKeywordPrefixKeyword,
+            behindIs(spaceReqAfter(variablePlain)), // TODO: is this really the cleanest way to fix this...?
+          ]),
           concat([
             phrase("typedef"),
             zeroOrMore(anything),
@@ -949,7 +952,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             ])),
           ]),
           behindIs(either([
-            variablePrefixKeyword,
+            concat([
+              variablePrefixKeyword,
+              behindIs(spaceReqAfter(variablePlain)), // TODO: is this really the cleanest way to fix this...?
+            ]),
             recordList.begin, exactly(","),
             // don't forget optional and named function parameters!
             exactly("["), exactly("{"),
