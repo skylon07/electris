@@ -926,6 +926,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
     this.typeAnnotationContext = pair(
       begin: concat([
+        // check behind to see if we are "in context"
         either([
           concat([
             startsWith(nothing),
@@ -955,11 +956,14 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
               variablePrefixKeyword,
               behindIs(spaceReqAfter(variablePlain)), // TODO: is this really the cleanest way to fix this...?
             ]),
+            // check if annotating function parameters...
             recordList.begin, exactly(","),
             // don't forget optional and named function parameters!
             exactly("["), exactly("{"),
           ])),
         ]),
+
+        // check ahead to see if it's a valid type
         aheadIs(either([
           concat([
             space(req: false),
