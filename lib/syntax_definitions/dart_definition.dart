@@ -929,6 +929,17 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             startsWith(nothing),
             // fixes recognizing anonymous functions like `(void Function() callback) {...}` as records
             aheadIsNot(concat([
+              space(req: false),
+              // ...but recognizing `(rec, rec) fn() {...}` is still okay
+              aheadIsNot(concat([
+                recordListAsSingleRecipe,
+                space(req: false),
+                either([
+                  functionCall.begin,
+                  phrase("get"),
+                  phrase("set"),
+                ]),
+              ])),
               recordListAsSingleRecipe,
               zeroOrMore(anything),
               either([
