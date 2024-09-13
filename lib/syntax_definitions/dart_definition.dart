@@ -702,15 +702,15 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     this.functionType = pair(
       begin: concat([
-        optional(concat([
-          typeContextCommonEnd,
-          space(req: true),
-        ])),
         phrase("Function"),
         aheadIs(functionCallParametersStart),
       ]),
       end: concat([
-        behindIs(recordList.end),
+        behindIs(either([
+          recordList.end,
+          nullableOperator,
+        ])),
+        aheadIsNot(nullableOperator),
         // recognize recursively, like `void Function() Function()`
         aheadIsNot(spaceBefore(phrase("Function"))),
       ]),
@@ -915,6 +915,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       end: concat([
         behindIs(typeContextCommonEnd),
         aheadIsNot(nullableOperator),
+        aheadIsNot(spaceBefore(functionType.begin)),
       ]),
     );
 
@@ -959,27 +960,30 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             exactly("["), exactly("{"),
           ])),
         ]),
-        aheadIs(concat([
-          space(req: false),
-          either([
-            concat([
-              typeIdentifier,
-              optional(genericList.asSingleRecipe()),
+        aheadIs(either([
+          concat([
+            space(req: false),
+            either([
+              concat([
+                typeIdentifier,
+                optional(genericList.asSingleRecipe()),
+              ]),
+              recordListAsSingleRecipe,
+              functionType.asSingleRecipe(),
             ]),
-            recordListAsSingleRecipe,
-          ]),
-          optional(nullableOperator),
-          space(req: true),
-          // don't allow keywords after matching, like `notAType in someList`
-          aheadIsNot(concat([
-            // ...except for a couple of keywords
-            aheadIsNot(either([
-              phrase("get"),
-              phrase("set"),
+            optional(nullableOperator),
+            space(req: true),
+            // don't allow keywords after matching, like `notAType in someList`
+            aheadIsNot(concat([
+              // ...except for a couple of keywords
+              aheadIsNot(either([
+                phrase("get"),
+                phrase("set"),
+              ])),
+              keywordWord,
             ])),
-            keywordWord,
-          ])),
-          either(identifierChars.toList()),
+            either(identifierChars.toList()),
+          ]),
         ])),
         // don't match `final` in `late final myVar`
         aheadIsNot(spaceBefore(keywordWord)),
