@@ -912,12 +912,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         ])),
         aheadIsNot(spaceBefore(keywordWord)),
       ]),
-      end: behindIsNot(either([
-        space(req: true),
-        // ensure we haven't just started at `begin`
-        typeAfterKeywordPrefixKeyword,
-        exactly("="),
-      ])),
+      end: concat([
+        behindIs(typeContextCommonEnd),
+        aheadIsNot(nullableOperator),
+      ]),
     );
 
     var variablePrefixKeyword = either([

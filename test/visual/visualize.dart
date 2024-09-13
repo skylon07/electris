@@ -100,11 +100,11 @@ true == false == null
 // contextual type highlighting: declarations and casts (after certain keywords)
 class MyClass<ItemT> with someMixin implements someInterface {}
 mixin class notAGoodClassName extends alsoNotAGoodClassName {}
-test = myThing is something;
+test = myThing is something?;
 test = myThing is   something;
 test = myThing as something;
-test = myThing as   something;
-typedef something = somethingElse;
+test = myThing as   something?;
+typedef something = somethingElse?;
 typedef   something =   somethingElse;
 extension type myint(int val) {}
 
