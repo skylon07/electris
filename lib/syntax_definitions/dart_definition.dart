@@ -986,6 +986,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
               ])),
               keywordWord,
             ])),
+            // two characters needed to prevent `thing` from being a type in `for (var thing i`
+            either(identifierChars.toList()),
             either(identifierChars.toList()),
           ]),
         ])),
