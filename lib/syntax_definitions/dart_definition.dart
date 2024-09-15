@@ -286,19 +286,19 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     styleName: ElectrisStyleName.sourceCode_primitiveLiteral,
     innerUnits: () => [
       createUnitInline(
-        matchPair: collection.literalStringDouble,
-        innerUnits: () => literalStringInnerUnits,
-      ),
-      createUnitInline(
-        matchPair: collection.literalStringSingle,
-        innerUnits: () => literalStringInnerUnits,
-      ),
-      createUnitInline(
         matchPair: collection.literalStringTripleDouble,
         innerUnits: () => literalStringInnerUnits,
       ),
       createUnitInline(
         matchPair: collection.literalStringTripleSingle,
+        innerUnits: () => literalStringInnerUnits,
+      ),
+      createUnitInline(
+        matchPair: collection.literalStringDouble,
+        innerUnits: () => literalStringInnerUnits,
+      ),
+      createUnitInline(
+        matchPair: collection.literalStringSingle,
         innerUnits: () => literalStringInnerUnits,
       ),
       createUnitInline(matchPair: collection.rawStringDouble),
