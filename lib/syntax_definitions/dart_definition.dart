@@ -901,6 +901,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       begin: concat([
         behindIs(either([
           concat([
+            // restrict keyword maching to the same line
+            // (in case the line above is, say, a comment ending with `class`)
+            startsWith(nothing),
+            space(req: false),
             typeAfterKeywordPrefixKeyword,
             behindIs(spaceReqAfter(variablePlain)), // TODO: is this really the cleanest way to fix this...?
           ]),

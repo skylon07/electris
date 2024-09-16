@@ -107,6 +107,8 @@ test = myThing as   something?;
 typedef something = somethingElse?;
 typedef   something =   somethingElse;
 extension type myint(int val) {}
+// test: the next line should be a keyword, not a type -- class
+class
 
 // contextual type highlighting: annotations
 MyClass   myThing;
