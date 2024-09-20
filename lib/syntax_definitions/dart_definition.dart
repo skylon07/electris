@@ -897,6 +897,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("extends"),  phrase("implements"), phrase("with"),
       phrase("typedef"),  phrase("is"),         phrase("as"),
     ]);
+    final _nonWordChar = notChars(r"a..zA..Z0..9_$"); // DEBUG
     this.typeAfterKeywordContext = pair(
       begin: concat([
         behindIs(either([
@@ -905,8 +906,13 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             // (in case the line above is, say, a comment ending with `class`)
             startsWith(nothing),
             space(req: false),
+            // allow things like `base mixin ...`
+            zeroOrMore(concat([
+              keywordWord,
+              behindIs(spaceReqAfter(variablePlain)), // TODO: I don't like this... maybe keywords shouldn't be `phrase()`
+            ])),
             typeAfterKeywordPrefixKeyword,
-            behindIs(spaceReqAfter(variablePlain)), // TODO: is this really the cleanest way to fix this...?
+            behindIs(spaceReqAfter(variablePlain)), // TODO: I don't like this... maybe keywords shouldn't be `phrase()`
           ]),
           concat([
             phrase("typedef"),
@@ -958,7 +964,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           behindIs(either([
             concat([
               variablePrefixKeyword,
-              behindIs(spaceReqAfter(variablePlain)), // TODO: is this really the cleanest way to fix this...?
+              behindIs(spaceReqAfter(variablePlain)), // TODO: I don't like this... maybe keywords shouldn't be `phrase()`
             ]),
             // check if annotating function parameters...
             recordList.begin, exactly(","),
