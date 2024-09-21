@@ -106,7 +106,7 @@ test = myThing as something;
 test = myThing as   something?;
 typedef something = somethingElse?;
 typedef   something =   somethingElse;
-extension type myint(int val) {}
+extension type myint.constructor(int val) {}
 // test: the next line should be a keyword, not a type -- class
 class
 

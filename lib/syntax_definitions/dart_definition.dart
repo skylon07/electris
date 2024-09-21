@@ -32,7 +32,10 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   late final typeAnnotationContext = createUnit(
     "typeAnnotationContext",
     matchPair: collection.typeAnnotationContext,
-    innerUnits: () => typeContextUnits,
+    innerUnits: () => [
+      libSeparator,
+      ...typeContextUnits,
+    ],
   );
 
   late final typeParameterContext = createUnit(
@@ -93,6 +96,12 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
     "typeIdentifier",
     styleName: ElectrisStyleName.sourceCode_types_type,
     match: collection.typeIdentifier,
+  );
+
+  late final libSeparator = createUnit(
+    "libSeparator",
+    styleName: ElectrisStyleName.sourceCode_types_type,
+    match: collection.libSeparator,
   );
 
   late final nullableOperator = createUnit(
@@ -478,6 +487,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
   late final RegExpRecipe builtinType;
   late final RegExpRecipe typeIdentifier;
+  late final RegExpRecipe libSeparator;
   late final RegExpRecipe nullableOperator;
   late final RegExpPair   genericList;
   late final RegExpRecipe typeParameterKeyword;
@@ -536,7 +546,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       identifierDollarChar,
       numberChar,
     };
-    var identifierCharsOrDot = identifierChars.union({chars(r".")});
 
     RegExpRecipe variablePlainPattern(Set<RegExpRecipe> charsSet) => 
       oneOrMore(either(charsSet.toList()));
@@ -591,7 +600,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
       end: exactly(">"),
     );
-    this.typeIdentifier = oneOrMore(either(identifierCharsOrDot.toList()));
+    this.typeIdentifier = oneOrMore(either(identifierChars.toList()));
+    this.libSeparator = exactly(".");
     this.typeParameterKeyword = either([
       phrase("dynamic"), phrase("extends"),
     ]);
@@ -724,7 +734,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     this.annotation = concat([
       exactly("@"),
-      zeroOrMore(either(identifierCharsOrDot.toList())),
+      zeroOrMore(either([
+        ...identifierChars,
+        libSeparator,
+      ])),
     ]);
 
     var propertyAccess = concat([
@@ -897,7 +910,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("extends"),  phrase("implements"), phrase("with"),
       phrase("typedef"),  phrase("is"),         phrase("as"),
     ]);
-    final _nonWordChar = notChars(r"a..zA..Z0..9_$"); // DEBUG
     this.typeAfterKeywordContext = pair(
       begin: concat([
         behindIs(either([
@@ -979,6 +991,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             space(req: false),
             either([
               concat([
+                zeroOrMore(concat([
+                  typeIdentifier,
+                  libSeparator,
+                ])),
                 typeIdentifier,
                 optional(genericList.asSingleRecipe()),
               ]),
