@@ -2,7 +2,7 @@ import 'dart:isolate';
 
 import 'package:vscode_theming_tools/vscode_theming_tools.dart';
 
-import './syntax_definitions/dart_definition.dart';
+import './src/syntax_definitions/dart_definition.dart';
 
 
 void main() async {

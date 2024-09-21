@@ -9,7 +9,7 @@
 			"name": "Run All Generators",
 			"type": "dart",
 			"request": "launch",
-			"program": "lib/generate_all.dart"
+			"program": "lib/main.dart"
 		},
 		{
 			"name": "Run Extension",
