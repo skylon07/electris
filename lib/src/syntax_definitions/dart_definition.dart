@@ -614,13 +614,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     );
     // any `recordList.asSingleRecipe()` should instead be this
     var recordListAsSingleRecipe = recordList.asSingleRecipe(knownInvalidRecordChars);
-    
-    var typeContextCommonEnd = either([
-      typeIdentifier,
-      genericList.end,
-      nullableOperator,
-      recordList.end,
-    ]);
 
     var functionCallParametersStart = concat([
       space(req: false),
@@ -726,8 +719,22 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
     );
 
+    var typeContextCommonBeginPiece = either([
+      typeIdentifier,
+      genericList.begin,
+      recordList.begin,
+      nullableOperator,
+      spaceBefore(functionType.begin),
+    ]);
+    var typeContextCommonEndPiece = either([
+      typeIdentifier,
+      genericList.end,
+      nullableOperator,
+      recordList.end,
+    ]);
+
     this.recordVariable = concat([
-      behindIs(spaceReqAfter(typeContextCommonEnd)),
+      behindIs(spaceReqAfter(typeContextCommonEndPiece)),
       aheadIsNot(functionType.begin),
       variablePlain,
     ]);
@@ -909,20 +916,12 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("class"),    phrase("mixin"),      phrase("extension type"),
       phrase("extends"),  phrase("implements"), phrase("with"),
       phrase("typedef"),  phrase("is"),         phrase("as"),
+      phrase("on"),
     ]);
     this.typeAfterKeywordContext = pair(
       begin: concat([
         behindIs(either([
           concat([
-            // restrict keyword maching to the same line
-            // (in case the line above is, say, a comment ending with `class`)
-            startsWith(nothing),
-            space(req: false),
-            // allow things like `base mixin ...`
-            zeroOrMore(concat([
-              keywordWord,
-              behindIs(spaceReqAfter(variablePlain)), // TODO: I don't like this... maybe keywords shouldn't be `phrase()`
-            ])),
             typeAfterKeywordPrefixKeyword,
             behindIs(spaceReqAfter(variablePlain)), // TODO: I don't like this... maybe keywords shouldn't be `phrase()`
           ]),
@@ -933,11 +932,13 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           ]),
         ])),
         aheadIsNot(spaceBefore(keywordWord)),
+        // restrict keyword maching to the same line
+        // (in case the line above is, say, a comment ending with `class`)
+        aheadIsNot(endsWith(space(req: false))),
       ]),
       end: concat([
-        behindIs(typeContextCommonEnd),
-        aheadIsNot(nullableOperator),
-        aheadIsNot(spaceBefore(functionType.begin)),
+        behindIs(typeContextCommonEndPiece),
+        aheadIsNot(typeContextCommonBeginPiece),
       ]),
     );
 
@@ -1022,7 +1023,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
       end: concat([
         aheadIs(space(req: true)),
-        behindIs(typeContextCommonEnd),
+        behindIs(typeContextCommonEndPiece),
         aheadIsNot(concat([
           space(req: false),
           functionType.begin,

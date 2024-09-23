@@ -99,7 +99,7 @@ true == false == null
 
 // contextual type highlighting: declarations and casts (after certain keywords)
 class MyClass<ItemT> with someMixin implements someInterface {}
-mixin class notAGoodClassName extends alsoNotAGoodClassName {}
+mixin class notAGoodClassName extends alsoNotAGoodClassName on reallyShouldDoBetterClassNames {}
 test = myThing is something?;
 test = myThing is   something;
 test = myThing as something;
@@ -174,14 +174,12 @@ void myFnAndRecords(
   <something extends > // `>` should be an operator, not in the "unrecognized" style
   
   // shading should all be the same level
-  something Function(abc, def) Function(abc, def) Function(abc, def) Function(abc, def) myFunction() {
-    
-  }
+  something Function(abc, def) Function(abc, def) Function(abc, def) Function(abc, def) myFunction() {}
+  myFunction as something Function(abc, def) Function(abc, def) Function(abc, def) Function(abc, def);
 
   // `void` should be shaded as an error
-  hi Function(hi Function(hi Function(hi Function(hi Function(hi Function(void)))))) myFunction() {
-
-  }
+  hi Function(hi Function(hi Function(hi Function(hi Function(hi Function(void)))))) myFunction() {}
+  myFunction as hi Function(hi Function(hi Function(hi Function(hi Function(hi Function(void))))));
 
   // `void` should be shaded as an error
   (asdf, (asdf, (asdf, (asdf, (asdf, (void,)))))) myThing;
