@@ -986,37 +986,36 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           ])),
         ]),
 
-        // check ahead to see if it's a valid type
-        aheadIs(either([
-          concat([
-            space(req: false),
-            either([
-              concat([
-                zeroOrMore(concat([
-                  typeIdentifier,
-                  libSeparator,
-                ])),
+        // check ahead to see if it's a valid type annotation
+        aheadIs(concat([
+          space(req: false),
+          either([
+            concat([
+              aheadIsNot(functionCall.begin),
+              zeroOrMore(concat([
                 typeIdentifier,
-                optional(genericList.asSingleRecipe()),
-              ]),
-              recordListAsSingleRecipe,
-              functionType.asSingleRecipe(),
-            ]),
-            optional(nullableOperator),
-            space(req: true),
-            // don't allow keywords after matching, like `notAType in someList`
-            aheadIsNot(concat([
-              // ...except for a couple of keywords
-              aheadIsNot(either([
-                phrase("get"),
-                phrase("set"),
+                libSeparator,
               ])),
-              keywordWord,
-            ])),
-            // two characters needed to prevent `thing` from being a type in `for (var thing i`
-            either(identifierChars.toList()),
-            either(identifierChars.toList()),
+              typeIdentifier,
+              optional(genericList.asSingleRecipe()),
+            ]),
+            recordListAsSingleRecipe,
+            functionType.asSingleRecipe(),
           ]),
+          optional(nullableOperator),
+          space(req: true),
+          // don't allow keywords after matching, like `notAType in someList`
+          aheadIsNot(concat([
+            // ...except for a couple of keywords
+            aheadIsNot(either([
+              phrase("get"),
+              phrase("set"),
+            ])),
+            keywordWord,
+          ])),
+          // two characters needed to prevent `thing` from being a type in `for (var thing i`
+          either(identifierChars.toList()),
+          either(identifierChars.toList()),
         ])),
         // don't match `final` in `late final myVar`
         aheadIsNot(spaceBefore(keywordWord)),

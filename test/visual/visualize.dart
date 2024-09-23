@@ -222,6 +222,11 @@ part of(){}
 part of<type>() {}
 part  of () {}
 
+// here lie some strange functions that tricked some typing rules...
+class SomeWeirdClass {
+  static myTypelessFunction<WithGenerics>(List<int> someGenericParam) {}
+}
+
 
 
 // records
