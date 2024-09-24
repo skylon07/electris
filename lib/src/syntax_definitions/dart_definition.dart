@@ -920,6 +920,11 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     ]);
     this.typeAfterKeywordContext = pair(
       begin: concat([
+        behindIsNot(concat([
+          zeroOrMore(anything),
+          phrase("import"),
+          zeroOrMore(anything),
+        ])),
         behindIs(either([
           concat([
             typeAfterKeywordPrefixKeyword,

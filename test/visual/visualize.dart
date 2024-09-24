@@ -15,7 +15,7 @@
 
 // keywords
 import 'dart:async';
-  import 'dart:async';
+  import 'dart:async' as asynclib; // should look like a variable
 
 // keywords with spaces
 part 'something';
