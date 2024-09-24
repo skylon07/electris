@@ -29,6 +29,7 @@
 
         "triple-syntax-paired-styles": {
             "patterns": [
+                { "include": "#code-slice-triple" },
                 { "include": "#code-block" }
             ]
         },
@@ -36,7 +37,8 @@
             "patterns": [
                 { "include": "#style-bold" },
                 { "include": "#style-strikethrough" },
-                { "include": "#extended-style-highlighted" }
+                { "include": "#extended-style-highlighted" },
+                { "include": "#code-slice-double" }
             ]
         },
         "single-syntax-paired-styles": {
@@ -44,7 +46,7 @@
                 { "include": "#style-emphasized" },
                 { "include": "#extended-style-subscript" },
                 { "include": "#extended-style-superscript" },
-                { "include": "#code-slice" },
+                { "include": "#code-slice-single" },
                 { "include": "#footnote-def" },
                 { "include": "#footnote-ref" },
                 { "include": "#box-image" },
@@ -232,10 +234,32 @@
             ]
         },
 
-        "code-slice": {
+        "code-slice-single": {
             "contentName": "electris.markdown.code",
             "begin": "(?<!(?<!\\\\)\\\\)(`)",
             "end": "(`)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "code-slice-double": {
+            "contentName": "electris.markdown.code",
+            "begin": "(?<!(?<!\\\\)\\\\)(``)",
+            "end": "(``)",
+            "beginCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            },
+            "endCaptures": {
+                "1": { "name": "electris.markdown.style-operator" }
+            }
+        },
+        "code-slice-triple": {
+            "contentName": "electris.markdown.code",
+            "begin": "(?<!(?<!\\\\)\\\\)(```)(?=.*```)",
+            "end": "(```)",
             "beginCaptures": {
                 "1": { "name": "electris.markdown.style-operator" }
             },
