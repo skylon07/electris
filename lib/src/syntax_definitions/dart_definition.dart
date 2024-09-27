@@ -995,8 +995,24 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         aheadIs(concat([
           space(req: false),
           either([
+            // type identifier with optional generic
             concat([
-              aheadIsNot(functionCall.begin),
+              // make sure we're not about to match a function name
+              aheadIsNot(concat([
+                typeIdentifier,
+                // make sure we aren't matching something like:
+                //         ******************
+                //    `type<type> fn<generic>()`
+                aheadIsNot(concat([
+                  optional(genericList.asSingleRecipe()),
+                  space(req: false),
+                  functionCall.begin,
+                ])),
+                optional(genericList.asSingleRecipe()),
+                recordList.begin,
+              ])),
+
+              // (actual match)
               zeroOrMore(concat([
                 typeIdentifier,
                 libSeparator,
