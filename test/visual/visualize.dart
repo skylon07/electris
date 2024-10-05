@@ -241,6 +241,8 @@ typedef myLongType = (
 typedef MyFn    = int  Function(num, int, String);
 typedef MyFnFn  = int? Function(num, int, String)? Function(String);
 
+typedef myFnWithReqBits = void Function(int integer, {required String string});
+
 Function()? asdf() {}
 Function()? Function()? asdf() {}
 Function()? Function()? Function()? asdf() {}

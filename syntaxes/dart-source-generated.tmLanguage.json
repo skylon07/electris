@@ -343,7 +343,7 @@
         },
         "typeParameterKeyword": {
             "name": "electris.source-code.operator debugName.dart.typeParameterKeyword",
-            "match": "(((?<=[^a-zA-Z0-9_$]|^)dynamic(?=[^a-zA-Z0-9_$]|$))|((?<=[^a-zA-Z0-9_$]|^)extends(?=[^a-zA-Z0-9_$]|$)))"
+            "match": "(((?<=[^a-zA-Z0-9_$]|^)dynamic(?=[^a-zA-Z0-9_$]|$))|((?<=[^a-zA-Z0-9_$]|^)extends(?=[^a-zA-Z0-9_$]|$))|((?<=[^a-zA-Z0-9_$]|^)required(?=[^a-zA-Z0-9_$]|$)))"
         },
         "genericList": {
             "name": "electris.source-code.types.type-recursive debugName.dart.genericList",
@@ -451,10 +451,10 @@
             "name": "electris.source-code.types.type debugName.dart.recordListTop",
             "patterns": [
                 {
-                    "include": "#recordVariable"
+                    "include": "#recursiveTypeParameter"
                 },
                 {
-                    "include": "#recursiveTypeParameter"
+                    "include": "#recordVariable"
                 }
             ],
             "begin": "\\(",
@@ -714,10 +714,10 @@
             "name": "debugName.dart.recordListNoStyle",
             "patterns": [
                 {
-                    "include": "#recordVariable"
+                    "include": "#recursiveTypeParameter"
                 },
                 {
-                    "include": "#recursiveTypeParameter"
+                    "include": "#recordVariable"
                 }
             ],
             "begin": "\\(",
@@ -739,7 +739,7 @@
         },
         "recordVariable": {
             "name": "electris.source-code.variable debugName.dart.recordVariable",
-            "match": "((?<=(([a-zA-Z_$0-9])+|>|\\?|\\))\\s+)(?!((?<=[^a-zA-Z0-9_$]|^)Function(?=[^a-zA-Z0-9_$]|$))(?=\\s*!?\\s*((<(?=([^+\\-*\\/\\^|&~=]*>)|([^+\\-*\\/\\^|&~=]+\\s*$))).*>)?\\s*\\())([a-zA-Z_$0-9])+)"
+            "match": "((?<=(([a-zA-Z_$0-9])+|>|\\?|\\))\\s+)(?!(?<=((?<=[^a-zA-Z0-9_$]|^)dynamic([^a-zA-Z0-9_$]|$))|((?<=[^a-zA-Z0-9_$]|^)extends([^a-zA-Z0-9_$]|$))|((?<=[^a-zA-Z0-9_$]|^)required([^a-zA-Z0-9_$]|$))))(?!((?<=[^a-zA-Z0-9_$]|^)Function(?=[^a-zA-Z0-9_$]|$))(?=\\s*!?\\s*((<(?=([^+\\-*\\/\\^|&~=]*>)|([^+\\-*\\/\\^|&~=]+\\s*$))).*>)?\\s*\\())([a-zA-Z_$0-9])+)"
         },
         "literalStringInterpOper": {
             "name": "debugName.dart.literalStringInterpOper",
@@ -847,10 +847,10 @@
             "name": "electris.source-code.types.type-recursive debugName.dart.recordListRecursive",
             "patterns": [
                 {
-                    "include": "#recordVariable"
+                    "include": "#recursiveTypeParameter"
                 },
                 {
-                    "include": "#recursiveTypeParameter"
+                    "include": "#recordVariable"
                 }
             ],
             "begin": "\\(",

@@ -126,8 +126,8 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
       styleName: styleName,
       matchPair: collection.recordList,
       innerUnits: () => [
-        recordVariable,
         recursiveTypeContextUnits,
+        recordVariable,
       ],
     );
   late final recordListNoStyle    = recordListFactory("recordListNoStyle",    null);
@@ -603,7 +603,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.typeIdentifier = oneOrMore(either(identifierChars.toList()));
     this.libSeparator = exactly(".");
     this.typeParameterKeyword = either([
-      phrase("dynamic"), phrase("extends"),
+      phrase("dynamic"), phrase("extends"), phrase("required"),
     ]);
 
     // fixes recognizing record related stuff inside strings, ex `{ (0, false): "(match) yes", }`
@@ -735,6 +735,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
 
     this.recordVariable = concat([
       behindIs(spaceReqAfter(typeContextCommonEndPiece)),
+      behindIsNot(typeParameterKeyword),
       aheadIsNot(functionType.begin),
       variablePlain,
     ]);
