@@ -175,37 +175,37 @@
 			}
 		},
 
-		// light blue/green -- variables in record/function types
+		// light blue(60%)/green(40%) -- variables in record/function types
 		{
 			"scope": "electris.source-code.types.type electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b5",
+				"foreground": "#7ec2c2",
 			}
 		},
 
-		// light blue/green fading -- variables in generic lists
+		// light blue(60%)/green(40%) fading -- variables in generic lists
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b5b3"
+				"foreground": "#7ec2c2b3"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b57d"
+				"foreground": "#7ec2c27d"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b557"
+				"foreground": "#7ec2c257"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#76c0b53d"
+				"foreground": "#7ec2c23d"
 			}
 		},
 
@@ -217,29 +217,35 @@
 			}
 		},
 
-		// blue fading -- operators in generic lists
+		// blue(60%)/green(40%) fading -- operators in generic lists
+		{
+			"scope": "electris.source-code.types.type electris.source-code.operator",
+			"settings": {
+				"foreground": "#3da5bfd4"
+			}
+		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef4b3"
+				"foreground": "#3da5bfb3"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef47d"
+				"foreground": "#3da5bf7d"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef457"
+				"foreground": "#3da5bf57"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#339ef43d"
+				"foreground": "#3da5bf3d"
 			}
 		},
 
