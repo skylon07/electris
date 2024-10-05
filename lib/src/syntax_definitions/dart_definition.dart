@@ -1034,9 +1034,12 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             ])),
             keywordWord,
           ])),
-          // two characters needed to prevent `thing` from being a type in `for (var thing i`
+          // two characters needed (or a punctuation) to prevent `thing` from being a type in `for (var thing i`
           either(identifierChars.toList()),
-          either(identifierChars.toList()),
+          either([
+            ...identifierChars.toList(),
+            organizationalPunctuation,
+          ]),
         ])),
         // don't match `final` in `late final myVar`
         aheadIsNot(spaceBefore(keywordWord)),
