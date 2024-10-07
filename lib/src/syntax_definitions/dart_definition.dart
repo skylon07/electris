@@ -698,9 +698,17 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           functionCallParametersStart,
           multilineGenericListStart,
           genericList.begin,
+          behindIs(concat([
+            either([
+              phrase("get"),
+              phrase("set"),
+            ]),
+            space(req: false),
+            variablePlain,
+          ])),
         ])),
       ]),
-      end: behindIs(recordList.end),
+      end: behindIs(either([recordList.end, exactly("}")])),
     );
 
     this.functionType = pair(
