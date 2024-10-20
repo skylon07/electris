@@ -179,7 +179,7 @@
 		{
 			"scope": "electris.source-code.types.type electris.source-code.variable",
 			"settings": {
-				"foreground": "#7ec2c2",
+				"foreground": "#8ac7d7",
 			}
 		},
 
@@ -187,25 +187,25 @@
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#7ec2c2b3"
+				"foreground": "#8ac7d7b3"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#7ec2c27d"
+				"foreground": "#8ac7d77d"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#7ec2c257"
+				"foreground": "#8ac7d757"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.variable",
 			"settings": {
-				"foreground": "#7ec2c23d"
+				"foreground": "#8ac7d73d"
 			}
 		},
 
@@ -221,31 +221,31 @@
 		{
 			"scope": "electris.source-code.types.type electris.source-code.operator",
 			"settings": {
-				"foreground": "#3da5bfd4"
+				"foreground": "#39a2d3d4"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#3da5bfb3"
+				"foreground": "#39a2d3b3"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#3da5bf7d"
+				"foreground": "#39a2d37d"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#3da5bf57"
+				"foreground": "#39a2d357"
 			}
 		},
 		{
 			"scope": "electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.types.type-recursive electris.source-code.operator",
 			"settings": {
-				"foreground": "#3da5bf3d"
+				"foreground": "#39a2d33d"
 			}
 		},
 
