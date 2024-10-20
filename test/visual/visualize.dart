@@ -289,8 +289,8 @@ var fn = (type Function() fn(), id) {
 (rec, rec)? asyn
 (id, id)    sync
 (id, id)    async
-(rec, rec)? sync
-(rec, rec)? async
+(id, id)? sync
+(id, id)? async
    
 class MyClass {
          (type, type)      get something                      => (5, 5);
