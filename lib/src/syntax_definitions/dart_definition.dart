@@ -632,7 +632,16 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("break"),    phrase("do"),       phrase("switch"), phrase("case"),
       phrase("default"),  phrase("try"),      phrase("catch"),  phrase("finally"),
       phrase("throw"),    phrase("rethrow"),  phrase("assert"), phrase("this"),
-      phrase("new"),      phrase("return"),
+      phrase("return"),
+
+      concat([
+        phrase("new"),
+        behindIsNot(concat([
+          exactly("."),
+          space(req: false),
+          exactly("new"),
+        ])),
+      ])
     ]);
     var keywordHard = keywordHardWord;
     
@@ -655,6 +664,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         aheadIsNot(space(req: true)),
         functionCallParametersStart,
       ])),
+      behindIsNot(spaceAfter(exactly("."))),
     ]);
 
     var validOperator = concat([
