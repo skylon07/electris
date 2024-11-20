@@ -737,10 +737,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
     );
 
-    var typeContextCommonBeginPiece = either([
+    var typeContextCommonContinuationPiece = either([
       typeIdentifier,
       genericList.begin,
-      recordList.begin,
+      // records don't "continue" type context; ex `MyType<...>` vs `MyType(...)`
       nullableOperator,
       spaceBefore(functionType.begin),
     ]);
@@ -962,7 +962,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       ]),
       end: concat([
         behindIs(typeContextCommonEndPiece),
-        aheadIsNot(typeContextCommonBeginPiece),
+        aheadIsNot(typeContextCommonContinuationPiece),
       ]),
     );
 
