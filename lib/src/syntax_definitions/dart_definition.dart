@@ -1044,14 +1044,14 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           ]),
           optional(nullableOperator),
           space(req: true),
-          // don't allow keywords after matching, like `notAType in someList`
+          // don't allow keywords after matching, for cases like `notAType in someList`
           aheadIsNot(concat([
             // ...except for a couple of keywords
             aheadIsNot(either([
               phrase("get"),
               phrase("set"),
             ])),
-            keywordWord,
+            keywordHardWord, // soft keywords should still be allowed, like `bool? required`
           ])),
           // two characters needed (or a punctuation) to prevent `thing` from being a type in `for (var thing i`
           either(identifierChars.toList()),

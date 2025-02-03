@@ -223,6 +223,9 @@ part () {}
 part of(){}
 part of<type>() {}
 part  of () {}
+// (should recognize `bool?` as a type)
+bool? required
+bool? required = false;
 
 // here lie some strange functions that tricked some typing rules...
 class SomeWeirdClass {
