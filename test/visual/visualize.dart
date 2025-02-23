@@ -195,6 +195,9 @@ void myFnAndRecords(
   ((int, (String, String)),) something;
 
   (int aaa, List<int> bbb, (bool? ccc, List<int>? ddd, ({int eee}))) thing;
+
+  takesCallback((event, emit) sync* {})
+  takesCallback<Type>((event, emit) async {})
 }
 
 // hard keywords as functions (should look like keywords)

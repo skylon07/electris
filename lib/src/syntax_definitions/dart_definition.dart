@@ -1051,7 +1051,20 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
               phrase("get"),
               phrase("set"),
             ])),
-            keywordHardWord, // soft keywords should still be allowed, like `bool? required`
+            either([
+              keywordHardWord, // soft keywords should still be allowed, like `bool? required`
+              // don't match argument lists for sync/async lambdas
+              concat([
+                behindIs(concat([
+                  recordList.end,
+                  space(req: false),
+                ])),
+                either([
+                  phrase("async"),
+                  phrase("sync")
+                ]),
+              ]),
+            ]),
           ])),
           // two characters needed (or a punctuation) to prevent `thing` from being a type in `for (var thing i`
           either(identifierChars.toList()),
