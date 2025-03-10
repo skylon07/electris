@@ -232,7 +232,8 @@ bool? required = false;
 
 // here lie some strange functions that tricked some typing rules...
 class SomeWeirdClass {
-  static myTypelessFunction<WithGenerics>(List<int> someGenericParam) {}
+  static myTypelessFunction              (List<int> someParam) {}
+  static myTypelessFunction<WithGenerics>(List<int> someParam) {}
 }
 
 
