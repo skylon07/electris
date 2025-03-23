@@ -15,6 +15,6 @@ packages:
       path: "/Users/skylon07/Code/vscode_theming_tools"
       relative: false
     source: path
-    version: "1.0.2"
+    version: "1.0.4"
 sdks:
   dart: ">=3.4.0 <4.0.0"
