@@ -969,7 +969,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     var variablePrefixKeyword = either([
       phrase("var"),      phrase("final"),      phrase("const"),
       phrase("dynamic"),  phrase("covariant"),  phrase("static"),
-      phrase("abstract"), phrase("required"),
+      phrase("abstract"), phrase("required"),   phrase("late"),
     ]);
     this.typeAnnotationContext = pair(
       begin: concat([
