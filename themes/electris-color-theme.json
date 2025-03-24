@@ -9,7 +9,7 @@
 		"editorLineNumber.activeForeground": "#399ef4", // aka currently selected line
 		"editorWhitespace.foreground": "#efefef80", // aka $tab arrows and space dots added during text selection
 		"editorIndentGuide.background1": "#263040", // indentation lines
-		"editorIndentGuide.activeBackground1": "#535a6b",
+		"editorIndentGuide.activeBackground1": "#9397a3",
 		"editorCursor.foreground": "#efefef",
 		"editor.selectionBackground": "#399ef440",
 		"editor.selectionHighlightBackground": "#efefef2a", // aka variables matching the one under cursor
