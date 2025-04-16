@@ -1022,10 +1022,16 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           either([
             // type identifier with optional generic
             concat([
+              // (first part of actual match)
+              zeroOrMore(concat([
+                typeIdentifier,
+                libSeparator,
+              ])),
+
               // make sure we're not about to match a function name
               aheadIsNot(concat([
                 typeIdentifier,
-                // make sure we aren't matching something like:
+                // escape/allow when the match is something like:
                 //         ******************
                 //    `type<type> fn<generic>()`
                 aheadIsNot(concat([
@@ -1037,11 +1043,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
                 recordList.begin,
               ])),
 
-              // (actual match)
-              zeroOrMore(concat([
-                typeIdentifier,
-                libSeparator,
-              ])),
+              // (rest of actual match)
               typeIdentifier,
               optional(genericList.asSingleRecipe()),
             ]),

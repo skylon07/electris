@@ -199,6 +199,10 @@ void myFnAndRecords(
 
   takesCallback((event, emit) sync* {})
   takesCallback<Type>((event, emit) async {})
+
+  // make sure the `=>` isn't screwing up type annotation recognition
+  genericWithCallback<String>((item) => item);
+  obj.genericWithCallback<String>((item) => item);
 }
 
 // hard keywords as functions (should look like keywords)
