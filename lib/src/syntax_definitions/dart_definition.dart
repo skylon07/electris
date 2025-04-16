@@ -1028,20 +1028,19 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
                 libSeparator,
               ])),
 
-              // make sure we're not about to match a function name
-              aheadIsNot(concat([
-                typeIdentifier,
-                // escape/allow when the match is something like:
-                //         ******************
+              either([
+                // make sure we're not about to match a function name
+                aheadIsNot(functionCall.begin),
+                // ...but allow when the match is something like:
                 //    `type<type> fn<generic>()`
-                aheadIsNot(concat([
-                  optional(genericList.asSingleRecipe()),
-                  space(req: false),
+                //         ^^^^^^^^^^^^^^^^^^
+                aheadIs(concat([
+                  typeIdentifier,
+                  genericList.asSingleRecipe(),
+                  space(req: true),
                   functionCall.begin,
                 ])),
-                optional(genericList.asSingleRecipe()),
-                recordList.begin,
-              ])),
+              ]),
 
               // (rest of actual match)
               typeIdentifier,
