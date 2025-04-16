@@ -1,7 +1,7 @@
 name: electris_generator
 
 environment:
-  sdk: '^3.4.0'
+  sdk: '^3.6.0'
 
 dependencies:
   vscode_theming_tools:

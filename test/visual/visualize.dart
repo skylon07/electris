@@ -61,6 +61,7 @@ var someNumbers = [
   0x5afd, !0xfghj
   1e-567, !1.e+445,
   1.2E51, !.E215,
+  1_2_3,  !_1_2_3,
 ];
 
 // string literals

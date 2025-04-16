@@ -504,19 +504,25 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     var numberChar          = chars(r"0..9");
     var numberLowerHexChar  = chars(r"a..f");
     var numberUpperHexChar  = chars(r"A..F");
+    var numberSepChar       = chars(r"_");
+    var numberWithPossibleSep = concat([
+      numberChar,
+      zeroOrMore(either([numberChar, numberSepChar])),
+    ]);
     var literalNumberDecimal = concat([
       exactly("."),
-      oneOrMore(numberChar),
+      numberWithPossibleSep,
     ]);
     var literalNumberScientific = concat([
       chars("eE"),
       optional(chars("+-")),
-      oneOrMore(numberChar),
+      numberWithPossibleSep,
     ]);
     var hexNumberChar = either([
       numberChar,
       numberLowerHexChar,
       numberUpperHexChar,
+      numberSepChar,
     ]);
     this.literalNumber = either([
       concat([
@@ -525,7 +531,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         zeroOrMore(hexNumberChar),
       ]),
       concat([
-        oneOrMore(numberChar),
+        numberWithPossibleSep,
         optional(literalNumberDecimal),
         optional(literalNumberScientific),
       ]),

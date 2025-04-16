@@ -501,7 +501,7 @@
         },
         "literalNumber": {
             "name": "electris.source-code.primitive-literal debugName.dart.literalNumber",
-            "match": "((0[xX]([0-9a-fA-F])*)|([0-9]+(\\.[0-9]+)?([eE][+\\-]?[0-9]+)?)|((\\.[0-9]+)([eE][+\\-]?[0-9]+)?))"
+            "match": "((0[xX]([0-9a-fA-F_])*)|(([0-9]([0-9_])*)(\\.([0-9]([0-9_])*))?([eE][+\\-]?([0-9]([0-9_])*))?)|((\\.([0-9]([0-9_])*))([eE][+\\-]?([0-9]([0-9_])*))?))"
         },
         "literalString": {
             "name": "electris.source-code.primitive-literal debugName.dart.literalString",
@@ -841,7 +841,7 @@
         },
         "literalStringEscapeSequence": {
             "name": "electris.source-code.escape debugName.dart.literalStringEscapeSequence",
-            "match": "((\\\\x([0-9a-fA-F]){,2})|(\\\\u\\{([0-9a-fA-F])*\\})|(\\\\u([0-9a-fA-F]){,4})|(\\\\.?))"
+            "match": "((\\\\x([0-9a-fA-F_]){,2})|(\\\\u\\{([0-9a-fA-F_])*\\})|(\\\\u([0-9a-fA-F_]){,4})|(\\\\.?))"
         },
         "recordListRecursive": {
             "name": "electris.source-code.types.type-recursive debugName.dart.recordListRecursive",
