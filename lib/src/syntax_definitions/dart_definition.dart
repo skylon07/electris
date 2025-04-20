@@ -713,7 +713,16 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         aheadIs(either([
           functionCallParametersStart,
           multilineGenericListStart,
-          genericList.begin,
+          concat([
+            // make sure this isn't a type annotation...
+            aheadIsNot(concat([
+              genericList.asSingleRecipe(),
+              optional(nullableOperator),
+              space(req: true),
+              variablePlain,
+            ])),
+            genericList.begin,
+          ]),
           behindIs(concat([
             either([
               phrase("get"),
