@@ -1037,6 +1037,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
                 aheadIs(concat([
                   typeIdentifier,
                   genericList.asSingleRecipe(),
+                  optional(nullableOperator),
                   space(req: true),
                   functionCall.begin,
                 ])),

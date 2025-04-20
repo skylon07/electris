@@ -166,7 +166,7 @@ void myFnAndRecords(
     fnCallButHaventTypedParensYet<int>
   }
 
-  myType someFunction<T>(type1 id1, id2, type3 id3, [type4 id4, type5 id5]) {
+  myType<test>? someFunction<T>(type1 id1, id2, type3 id3, [type4 id4, type5 id5]) {
     mytype mything;
     void lerp(Color? a, Color? b, List<int>? c);
   }
