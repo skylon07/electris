@@ -1103,7 +1103,6 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         concat([
           behindIs(concat([
             typeIdentifier,
-            space(req: false),
             optional(exactly("!")),
           ])),
           aheadIs(either([
