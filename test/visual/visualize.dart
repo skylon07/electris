@@ -232,8 +232,14 @@ part of(){}
 part of<type>() {}
 part  of () {}
 // (should recognize `bool?` as a type)
-bool? required
-bool? required = false;
+boooolean required
+boooolean required = false;
+// (should *not* recognize `myVar` as a type, but other `type`s okay)
+if (something case              myVar when myVar > 5)
+if (something case final        myVar when myVar > 5)
+if (something case        type  myVar when myVar > 5)
+if (something case final  type  myVar when myVar > 5)
+funkyfunc when = null;
 
 // here lie some strange functions that tricked some typing rules...
 class SomeWeirdClass {

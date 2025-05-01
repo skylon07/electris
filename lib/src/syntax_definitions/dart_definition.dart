@@ -985,6 +985,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
       phrase("var"),      phrase("final"),      phrase("const"),
       phrase("dynamic"),  phrase("covariant"),  phrase("static"),
       phrase("abstract"), phrase("required"),   phrase("late"),
+      phrase("case")
     ]);
     this.typeAnnotationContext = pair(
       begin: concat([
@@ -1087,6 +1088,24 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
         ])),
         // don't match `final` in `late final myVar`
         aheadIsNot(spaceBefore(keywordWord)),
+        either([
+          // don't match `variable` in `case var variable when ...`
+          aheadIsNot(concat([
+            space(req: false),
+            variablePlain,
+            space(req: true),
+            phrase("when"),
+          ])),
+          // ...but still match it if we're not in `case` syntax
+          behindIsNot(concat([
+            phrase("case"),
+            space(req: false),
+            optional(concat([
+              variablePrefixKeyword,
+              space(req: false),
+            ])),
+          ])),
+        ]),
       ]),
       end: concat([
         aheadIs(space(req: true)),
