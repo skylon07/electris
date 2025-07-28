@@ -239,6 +239,7 @@ if (something case              myVar when myVar > 5)
 if (something case final        myVar when myVar > 5)
 if (something case        type  myVar when myVar > 5)
 if (something case final  type  myVar when myVar > 5)
+if (something case     SomeEnum.value when myVar > 5)
 funkyfunc when = null;
 
 // here lie some strange functions that tricked some typing rules...

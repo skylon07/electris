@@ -611,6 +611,10 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
     this.typeParameterKeyword = either([
       phrase("dynamic"), phrase("extends"), phrase("required"),
     ]);
+    var libReferencePrefix = zeroOrMore(concat([
+      typeIdentifier,
+      libSeparator,
+    ]));
 
     // fixes recognizing record related stuff inside strings, ex `{ (0, false): "(match) yes", }`
     var knownInvalidRecordChars = zeroOrMore(notChars("\"'^&|="));
@@ -1033,10 +1037,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
             // type identifier with optional generic
             concat([
               // (first part of actual match)
-              zeroOrMore(concat([
-                typeIdentifier,
-                libSeparator,
-              ])),
+              libReferencePrefix,
 
               either([
                 // make sure we're not about to match a function name
@@ -1092,6 +1093,8 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           // don't match `variable` in `case var variable when ...`
           aheadIsNot(concat([
             space(req: false),
+            libReferencePrefix,
+            // TODO: check other `variablePlain`s to see if they need `libReferencePrefix`
             variablePlain,
             space(req: true),
             phrase("when"),
