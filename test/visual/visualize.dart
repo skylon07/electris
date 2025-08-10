@@ -125,6 +125,7 @@ final WithMultiline<
   Here,
 > someVariable;
 final notAType < someVariable;
+object.function<int, String>((param) => function(param));
 
 // contextual type highlighting: type parameters
 // (`void`s should be shaded as errors)

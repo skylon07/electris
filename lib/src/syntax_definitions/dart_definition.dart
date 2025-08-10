@@ -604,7 +604,19 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           ]),
         ])),
       ]),
-      end: exactly(">"),
+      end: concat([
+        behindIs(either([
+          concat([
+            exactly("<"),
+            zeroOrMore(validGenericChars),
+          ]),
+          concat([
+            startsWith(nothing),
+            zeroOrMore(notChars("<")),
+          ]),
+        ])),
+        exactly(">"),
+      ]),
     );
     this.typeIdentifier = oneOrMore(either(identifierChars.toList()));
     this.libSeparator = exactly(".");
