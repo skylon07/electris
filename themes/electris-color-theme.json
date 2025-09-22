@@ -513,6 +513,14 @@
 			}
 		},
 
+        // gray -- comments
+		{
+			"scope": "electris.markdown.comment",
+			"settings": {
+				"foreground": "#717a8dde"
+			}
+		},
+
 
 		// blue -- tag braces/assignment
 		{

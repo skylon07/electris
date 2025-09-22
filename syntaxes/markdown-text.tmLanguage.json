@@ -43,6 +43,7 @@
         },
         "single-syntax-paired-styles": {
             "patterns": [
+                { "include": "#block-comment" },
                 { "include": "#style-emphasized" },
                 { "include": "#extended-style-subscript" },
                 { "include": "#extended-style-superscript" },
@@ -57,6 +58,12 @@
                 { "include": "#definition-operator" },
                 { "include": "#html-block" }
             ]
+        },
+
+        "block-comment": {
+            "name": "electris.markdown.comment",
+            "begin": "<!--",
+            "end": "-->"
         },
 
         "list-operator": {
