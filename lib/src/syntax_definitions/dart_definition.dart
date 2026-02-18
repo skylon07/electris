@@ -612,7 +612,7 @@ final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
           ]),
           concat([
             startsWith(nothing),
-            zeroOrMore(notChars("<")),
+            zeroOrMore(validGenericChars),
           ]),
         ])),
         exactly(">"),

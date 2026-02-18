@@ -123,6 +123,9 @@ final WithMultiline<
   Type,
   Params,
   Here,
+  List<
+    List<String>
+  >,
 > someVariable;
 final notAType < someVariable;
 object.function<int, String>((param) => function(param));
@@ -204,6 +207,7 @@ void myFnAndRecords(
   // make sure the `=>` isn't screwing up type annotation recognition
   genericWithCallback<String>((item) => item);
   obj.genericWithCallback<String>((item) => item);
+  List.generate(5, ()=><String>{});
 }
 
 // hard keywords as functions (should look like keywords)
