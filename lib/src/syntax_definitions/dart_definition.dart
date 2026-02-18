@@ -3,6 +3,9 @@ import 'package:vscode_theming_tools/vscode_theming_tools.dart';
 import '../style_names.dart';
 
 
+// TODO: with all the changes (units-as-enums, regex collection dependencies),
+//  it might be worth making a diagram or flow chart for the architecture
+//  (definition -> unit enum -> [syntax enum, regex collection -> regex collection -> ...])
 final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartRegExpCollector> {
   DartDefinition() : super(
     scopePrefix: "electris",
@@ -24,6 +27,9 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   // -- contexts and their units --
 
   late final typeAfterKeywordContext = createUnit(
+    // TODO: having to stringify the variable like this is kind of annoying...
+    //  maybe use an enum instead of `late final` variables?
+    //  (then provide operations like getting a unit from the enum value, etc)
     "typeAfterKeywordContext",
     matchPair: collection.typeAfterKeywordContext,
     innerUnits: () => typeContextUnits,
@@ -394,7 +400,9 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
   );
 
 
-
+  // TODO: this hasn't been implemented (its problem still exists xurrently),
+  //  but I'm not sure implementing this "hack" is easier than coming up with
+  //  a more meaningful solution
   /// Detects non-[Record] pairs of parentheses, like `(...) {...}`.
   /// 
   /// This "hack" expression is attempting to solve a contextual grammar problem
@@ -439,6 +447,9 @@ final class DartDefinition extends SyntaxDefinition<DartRegExpCollector, DartReg
 }
 
 
+// TODO: this "collector" needs to be split up into multiple groups of regexes
+//  that depend on each other (one low-level one for literals, one high-level
+//  one for contexts, etc); this also means SyntaxDefinition shouldn't need type parameters
 final class DartRegExpCollector extends RegExpBuilder<DartRegExpCollector> {
   late final RegExpPair   typeAfterKeywordContext;
   late final RegExpPair   typeAnnotationContext;
